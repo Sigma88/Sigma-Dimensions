@@ -4,4 +4,4 @@
 **The Universal Rescale Mod for KSP**
 
 
-KSP Forum Thread: http://forum.kerbalspaceprogram.com/threads/140687
+KSP Forum Thread: http://forum.kerbalspaceprogram.com/index.php/topic/126548-/
