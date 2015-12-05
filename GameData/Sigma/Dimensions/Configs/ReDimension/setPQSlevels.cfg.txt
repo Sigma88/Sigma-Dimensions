@@ -1,0 +1,39 @@
+@Kopernicus:AFTER[SigDim]
+{
+	@Body:HAS[@Properties:HAS[#radius[*]]]
+	{
+		%PQS
+		{
+			%bodyRadius = #$../Properties/radius$
+			%minLevel = 1
+			%maxLevel = 2
+		}
+		@PQS:HAS[#bodyRadius[>5000]]
+		{
+			minLevel = 2
+			maxLevel = 6
+		}
+		@PQS:HAS[#bodyRadius[>130000]]
+		{
+			minLevel = 2
+			maxLevel = 8
+		}
+		@PQS:HAS[#bodyRadius[>499000]]
+		{
+			minLevel = 2
+			maxLevel = 6
+		}
+		@PQS
+		{
+			!bodyRadius = DEL
+		}
+	}
+	@Body[Mun]
+	{
+		@PQS
+		{
+			minDetailDistance = 100
+		}
+	}
+	
+}
