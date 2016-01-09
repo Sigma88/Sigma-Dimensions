@@ -103,6 +103,14 @@ HeightColorMap sometimes does not rescale properly, in that case you could try e
 
 ---
 
+# resizeScatter (default value = 1)
+
+- Disabled only if set to 0
+
+If enabled, scatter size will be multiplied by the "Resize" parameter.
+
+---
+
 
 
 ## For other questions, visit the Forum Thread:
