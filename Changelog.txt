@@ -1,5 +1,3 @@
 **v0.1.0**
 
 - First Beta Release
-- Added calculation of parameters needed by the mod
-- Added KSP-AVC support
