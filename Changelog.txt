@@ -1,3 +1,15 @@
+**v0.2.0**
+
+- Multiple atmosphere fixes
+- Sun temperature curve fix
+- Mass calculation fix
+- KSC repositioning fix
+- Added KSCSwitcher compatibility
+- Added PQSMOD_VertexRidgedAltitudeCurve
+- Changed Cache file folder structure
+- Added EVE Clouds cfg to resize clouds
+
+
 **v0.1.0**
 
 - First Beta Release
