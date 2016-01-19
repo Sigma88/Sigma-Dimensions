@@ -1,5 +1,8 @@
 ## Sigma Dimensions ##
 
+# Forum Thread: http://forum.kerbalspaceprogram.com/index.php/topic/126548-/
+
+
 
 ## Base Settings Definitions
 
@@ -54,6 +57,30 @@ Mass of each body will be changed in order to obtain the correct result.
 
 ---
 
+# landscape (default value = 1)
+
+- Enabled only if set to any number >0
+
+Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
+
+---
+
+# atmoVisualEffect (default value = 1)
+
+- Enabled only if set to any number >0
+
+The height of the atmosphere visual effect will be multiplied by this parameter.
+
+---
+
+# resizeScatter (default value = 1)
+
+- Disabled only if set to 0
+
+If enabled, scatter size will be multiplied by the "Resize" parameter.
+
+---
+
 # SoIsFromRadius (default value = 0)
 
 - Can only be set to 0 or 1
@@ -76,47 +103,55 @@ If 1 - Multiplies the rings size by "Resize"
 
 ---
 
-# orbitalPeriod (default value = 0)
 
-- Enabled only if set to any number >0
 
-Orbital period of each body will be multiplied by this value.
-Recalculates the "Rescale" parameter in order to obtain the correct result.
 
----
+## Planet Specific Changes
 
-# daysVSyearRatio (default value = 0)
 
-- Enabled only if set to any number >0
+In order to apply Planet Specific Changes you need to:
 
-The ratio [RotationPeriod]/[OrbitalPeriod] will be multiplied by this value.
-Recalculates the "dayLenghtMultiplier" parameter in order to obtain the correct result.
 
----
+#01 - create a .cfg file with the following code in it
 
-# resizeScatter (default value = 1)
+//  START CODE  //
 
-- Disabled only if set to 0
+@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+{
+	@Body:HAS[#name[PLANET_NAME_HERE]]
+	{
+		%PlanetDimensions = Resize,Rescale,Atmosphere,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,SoIsFromRadius,RingsFromRadius
+	}
+}
 
-If enabled, scatter size will be multiplied by the "Resize" parameter.
+//   END CODE   //
 
----
 
-# landscape (default value = 1)
+#02 - Replace 'PLANET_NAME_HERE' with the 'name' of the planet you want to change
 
-- Enabled only if set to any number >0
 
-Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
+#03 - Replace the name of the parameter you want to change with the value you want
 
----
+	Example: (Set to '0.5' the 'Atmosphere' parameter for Kerbin)
 
-# atmoVisualEffect (default value = 1)
+	//  START CODE  //
 
-- Enabled only if set to any number >0
+	@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+	{
+		@Body:HAS[#name[Kerbin]]
+		{
+			%PlanetDimensions = Resize,Rescale,0.5,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,SoIsFromRadius,RingsFromRadius
+		}
+	}
 
-The height of the atmosphere visual effect will be multiplied by this parameter.
+	//   END CODE   //
 
----
+
+#04 - To edit another planet paste another copy of the code and edit it accordingly
+
+
+#05 - Save the .cfg file anywhere in your KSP GameData folder.
+
 
 
 
