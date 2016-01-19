@@ -9,7 +9,7 @@
 - Changed Cache file folder structure
 - Fixed cfg file names for Linux compatibility
 - Fixed EVE Clouds resizing
-- Added Planet Specific Changes
+- Planet Specific Changes are now allowed
 
 
 **v0.2.0**
