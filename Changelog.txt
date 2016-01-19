@@ -1,8 +1,12 @@
 **v0.3.0**
 
 - Removed 'HeightColorFix' parameter
-- Added the 'atmoVisualEffect' parameter
-- Added the 'landscape' parameter
+- Removed 'SoIsFromRadius' parameter
+- Removed 'RingsFromRadius' parameter
+- Added 'atmoVisualEffect' parameter
+- Added 'landscape' parameter
+- Added 'CustomSoISize' parameter
+- Added 'CustomRingSize' parameter
 - Fixed bug with extremely low Resize
 - Fixed Atmosphere height rendering
 - Fixed HeightColorMap issue
