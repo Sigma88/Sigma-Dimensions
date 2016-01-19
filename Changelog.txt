@@ -1,3 +1,16 @@
+**v0.3.0**
+
+- Removed 'HeightColorFix' parameter
+- Added the 'atmoVisualEffect' parameter
+- Added the 'landscape' parameter
+- Fixed bug with extremely low Resize
+- Fixed Atmosphere height rendering
+- Fixed HeightColorMap issue
+- Changed Cache file folder structure
+- Fixed cfg file names for Linux compatibility
+- Fixed EVE Clouds resizing (only 2D layers)
+
+
 **v0.2.0**
 
 - Multiple atmosphere fixes
