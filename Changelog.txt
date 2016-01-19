@@ -8,7 +8,8 @@
 - Fixed HeightColorMap issue
 - Changed Cache file folder structure
 - Fixed cfg file names for Linux compatibility
-- Fixed EVE Clouds resizing (only 2D layers)
+- Fixed EVE Clouds resizing
+- Added Planet Specific Changes
 
 
 **v0.2.0**

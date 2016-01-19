@@ -153,6 +153,8 @@ In order to apply Planet Specific Changes you need to:
 #05 - Save the .cfg file anywhere in your KSP GameData folder.
 
 
+#06 - Do not mess this up. Everything will break.
+
 
 
 ## For other questions, visit the Forum Thread:
