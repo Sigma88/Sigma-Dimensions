@@ -94,20 +94,27 @@ Recalculates the "dayLenghtMultiplier" parameter in order to obtain the correct 
 
 ---
 
-# HeightColorFix (default value = 0)
-
-- Enabled only if set to 1
-
-Some planet packs use a mod called "HeightColorMap" to define the colors of their planets.
-HeightColorMap sometimes does not rescale properly, in that case you could try enabling this workaround.
-
----
-
 # resizeScatter (default value = 1)
 
 - Disabled only if set to 0
 
 If enabled, scatter size will be multiplied by the "Resize" parameter.
+
+---
+
+# landscape (default value = 1)
+
+- Enabled only if set to any number >0
+
+Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
+
+---
+
+# atmoVisualEffect (default value = 1)
+
+- Enabled only if set to any number >0
+
+The height of the atmosphere visual effect will be multiplied by this parameter.
 
 ---
 
