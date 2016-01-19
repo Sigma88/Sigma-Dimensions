@@ -1,3 +1,21 @@
+**v0.3.0**
+
+- Removed 'HeightColorFix' parameter
+- Removed 'SoIsFromRadius' parameter
+- Removed 'RingsFromRadius' parameter
+- Added 'atmoVisualEffect' parameter
+- Added 'landscape' parameter
+- Added 'CustomSoISize' parameter
+- Added 'CustomRingSize' parameter
+- Fixed bug with extremely low Resize
+- Fixed Atmosphere height rendering
+- Fixed HeightColorMap issue
+- Changed Cache file folder structure
+- Fixed cfg file names for Linux compatibility
+- Fixed EVE Clouds resizing
+- Planet Specific Changes are now allowed
+
+
 **v0.2.0**
 
 - Multiple atmosphere fixes

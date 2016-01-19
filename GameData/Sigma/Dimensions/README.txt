@@ -1,5 +1,8 @@
 ## Sigma Dimensions ##
 
+# Forum Thread: http://forum.kerbalspaceprogram.com/index.php/topic/126548-/
+
+
 
 ## Base Settings Definitions
 
@@ -54,52 +57,19 @@ Mass of each body will be changed in order to obtain the correct result.
 
 ---
 
-# SoIsFromRadius (default value = 0)
-
-- Can only be set to 0 or 1
-
-Affects only bodies with Sphere of Influence defined in their config file.
-
-If 0 - Multiplies the sphere of influence size by "Rescale"
-If 1 - Multiplies the sphere of influence size by "Resize"
-
----
-
-# RingsFromRadius (default value = 0)
-
-- Can only be set to 0 or 1
-
-Affects only bodies with rings
-
-If 0 - Multiplies the rings size by "Rescale"
-If 1 - Multiplies the rings size by "Resize"
-
----
-
-# orbitalPeriod (default value = 0)
+# landscape (default value = 1)
 
 - Enabled only if set to any number >0
 
-Orbital period of each body will be multiplied by this value.
-Recalculates the "Rescale" parameter in order to obtain the correct result.
+Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
 
 ---
 
-# daysVSyearRatio (default value = 0)
+# atmoVisualEffect (default value = 1)
 
 - Enabled only if set to any number >0
 
-The ratio [RotationPeriod]/[OrbitalPeriod] will be multiplied by this value.
-Recalculates the "dayLenghtMultiplier" parameter in order to obtain the correct result.
-
----
-
-# HeightColorFix (default value = 0)
-
-- Enabled only if set to 1
-
-Some planet packs use a mod called "HeightColorMap" to define the colors of their planets.
-HeightColorMap sometimes does not rescale properly, in that case you could try enabling this workaround.
+The height of the atmosphere visual effect will be multiplied by this parameter.
 
 ---
 
@@ -110,6 +80,80 @@ HeightColorMap sometimes does not rescale properly, in that case you could try e
 If enabled, scatter size will be multiplied by the "Resize" parameter.
 
 ---
+
+# CustomSoISize (default value = 0)
+
+- Enabled only if set to any number >0
+
+Affects only bodies with Sphere of Influence defined in their config file.
+
+By default, SoI size is multiplied by the "Rescale" parameter.
+
+When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instead.
+
+---
+
+# CustomRingSize (default value = 0)
+
+- Enabled only if set to any number >0
+
+By default, rings size is multiplied by the "Rescale" parameter.
+
+When "CustomRingSize" is enabled, rings size is multiplyed by this parameter instead.
+
+---
+
+
+
+
+## Planet Specific Changes
+
+
+In order to apply Planet Specific Changes you need to:
+
+
+#01 - create a .cfg file with the following code in it
+
+//  START CODE  //
+
+@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+{
+	@Body:HAS[#name[PLANET_NAME_HERE]]
+	{
+		%PlanetDimensions = Resize,Rescale,Atmosphere,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
+	}
+}
+
+//   END CODE   //
+
+
+#02 - Replace 'PLANET_NAME_HERE' with the 'name' of the planet you want to change
+
+
+#03 - Replace the name of the parameter you want to change with the value you want
+
+	Example: (Set to '0.5' the 'Atmosphere' parameter for Kerbin)
+
+	//  START CODE  //
+
+	@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+	{
+		@Body:HAS[#name[Kerbin]]
+		{
+			%PlanetDimensions = Resize,Rescale,0.5,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
+		}
+	}
+
+	//   END CODE   //
+
+
+#04 - To edit another planet paste another copy of the code and edit it accordingly
+
+
+#05 - Save the .cfg file anywhere in your KSP GameData folder.
+
+
+#06 - Do not mess this up. Everything will break.
 
 
 
