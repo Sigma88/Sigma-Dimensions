@@ -81,25 +81,25 @@ If enabled, scatter size will be multiplied by the "Resize" parameter.
 
 ---
 
-# SoIsFromRadius (default value = 0)
+# CustomSoISize (default value = 0)
 
-- Can only be set to 0 or 1
+- Enabled only if set to any number >0
 
 Affects only bodies with Sphere of Influence defined in their config file.
 
-If 0 - Multiplies the sphere of influence size by "Rescale"
-If 1 - Multiplies the sphere of influence size by "Resize"
+By default, SoI size is multiplied by the "Rescale" parameter.
+
+When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instead.
 
 ---
 
-# RingsFromRadius (default value = 0)
+# CustomRingSize (default value = 0)
 
-- Can only be set to 0 or 1
+- Enabled only if set to any number >0
 
-Affects only bodies with rings
+By default, rings size is multiplied by the "Rescale" parameter.
 
-If 0 - Multiplies the rings size by "Rescale"
-If 1 - Multiplies the rings size by "Resize"
+When "CustomRingSize" is enabled, rings size is multiplyed by this parameter instead.
 
 ---
 
@@ -120,7 +120,7 @@ In order to apply Planet Specific Changes you need to:
 {
 	@Body:HAS[#name[PLANET_NAME_HERE]]
 	{
-		%PlanetDimensions = Resize,Rescale,Atmosphere,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,SoIsFromRadius,RingsFromRadius
+		%PlanetDimensions = Resize,Rescale,Atmosphere,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
 	}
 }
 
@@ -140,7 +140,7 @@ In order to apply Planet Specific Changes you need to:
 	{
 		@Body:HAS[#name[Kerbin]]
 		{
-			%PlanetDimensions = Resize,Rescale,0.5,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,SoIsFromRadius,RingsFromRadius
+			%PlanetDimensions = Resize,Rescale,0.5,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
 		}
 	}
 
