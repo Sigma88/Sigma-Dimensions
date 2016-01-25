@@ -81,9 +81,9 @@ If enabled, scatter size will be multiplied by the "Resize" parameter.
 
 ---
 
-# CustomSoISize (default value = 1)
+# CustomSoISize (default value = 0)
 
-- Can be set to any number >0
+- Enabled only if set to a number >0
 
 Affects only bodies with Sphere of Influence defined in their config file.
 
@@ -93,9 +93,9 @@ When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instea
 
 ---
 
-# CustomRingSize (default value = 1)
+# CustomRingSize (default value = 0)
 
-- Can be set to any number >0
+- Enabled only if set to a number >0
 
 By default, rings size is multiplied by the "Rescale" parameter.
 
