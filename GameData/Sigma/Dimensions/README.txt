@@ -9,7 +9,7 @@
 
 # Resize (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Each celestial body size will be multiplied by this value.
 
@@ -19,7 +19,7 @@ Mass of each body will be changed in order to maintain the same gravity at surfa
 
 # Rescale (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Orbit size (SemiMajor Axis) will be multiplied by this value.
 
@@ -27,7 +27,7 @@ Orbit size (SemiMajor Axis) will be multiplied by this value.
 
 # Atmosphere (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Height of the Atmosphere on each body will be multiplied by this value.
 
@@ -35,7 +35,7 @@ Height of the Atmosphere on each body will be multiplied by this value.
 
 # dayLengthMultiplier (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Rotation period of each body will be multiplied by this value.
 Doesn't affect tidally locked bodies.
@@ -50,7 +50,7 @@ Doesn't affect tidally locked bodies.
 
 # geeASLmultiplier (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Gravity at surface level will be multiplied by this value.
 Mass of each body will be changed in order to obtain the correct result.
@@ -59,7 +59,7 @@ Mass of each body will be changed in order to obtain the correct result.
 
 # landscape (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
 
@@ -67,7 +67,7 @@ Altitude of geographical features will be first multiplied by the "Resize" param
 
 # atmoVisualEffect (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 The height of the atmosphere visual effect will be multiplied by this parameter.
 
@@ -83,7 +83,7 @@ If enabled, scatter size will be multiplied by the "Resize" parameter.
 
 # CustomSoISize (default value = 0)
 
-- Enabled only if set to a number >0
+- Enabled only if set to a positive number
 
 Affects only bodies with Sphere of Influence defined in their config file.
 
@@ -95,7 +95,7 @@ When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instea
 
 # CustomRingSize (default value = 0)
 
-- Enabled only if set to a number >0
+- Enabled only if set to a positive number
 
 By default, rings size is multiplied by the "Rescale" parameter.
 
@@ -105,7 +105,7 @@ When "CustomRingSize" is enabled, rings size is multiplyed by this parameter ins
 
 # atmoASL (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Atmospheric pressure at surface level is multiplied by this parameter.
 
@@ -113,7 +113,7 @@ Atmospheric pressure at surface level is multiplied by this parameter.
 
 # tempASL (default value = 1)
 
-- Can be set to any number >0
+- Can be set to any positive number
 
 Atmospheric temperature at surface level is multiplied by this parameter.
 
