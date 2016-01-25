@@ -59,7 +59,7 @@ Mass of each body will be changed in order to obtain the correct result.
 
 # landscape (default value = 1)
 
-- Enabled only if set to any number >0
+- Can be set to any number >0
 
 Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
 
@@ -67,7 +67,7 @@ Altitude of geographical features will be first multiplied by the "Resize" param
 
 # atmoVisualEffect (default value = 1)
 
-- Enabled only if set to any number >0
+- Can be set to any number >0
 
 The height of the atmosphere visual effect will be multiplied by this parameter.
 
@@ -81,9 +81,9 @@ If enabled, scatter size will be multiplied by the "Resize" parameter.
 
 ---
 
-# CustomSoISize (default value = 0)
+# CustomSoISize (default value = 1)
 
-- Enabled only if set to any number >0
+- Can be set to any number >0
 
 Affects only bodies with Sphere of Influence defined in their config file.
 
@@ -93,13 +93,29 @@ When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instea
 
 ---
 
-# CustomRingSize (default value = 0)
+# CustomRingSize (default value = 1)
 
-- Enabled only if set to any number >0
+- Can be set to any number >0
 
 By default, rings size is multiplied by the "Rescale" parameter.
 
 When "CustomRingSize" is enabled, rings size is multiplyed by this parameter instead.
+
+---
+
+# atmoASL (default value = 1)
+
+- Can be set to any number >0
+
+Atmospheric pressure at surface level is multiplied by this parameter.
+
+---
+
+# tempASL (default value = 1)
+
+- Can be set to any number >0
+
+Atmospheric temperature at surface level is multiplied by this parameter.
 
 ---
 
@@ -116,11 +132,11 @@ In order to apply Planet Specific Changes you need to:
 
 //  START CODE  //
 
-@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+@Kopernicus:BEFORE[SigDim2]:NEEDS[SigDim]
 {
 	@Body:HAS[#name[PLANET_NAME_HERE]]
 	{
-		%PlanetDimensions = Resize,Rescale,Atmosphere,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
+		@PlanetDimensions[id] = value
 	}
 }
 
@@ -130,7 +146,22 @@ In order to apply Planet Specific Changes you need to:
 #02 - Replace 'PLANET_NAME_HERE' with the 'name' of the planet you want to change
 
 
-#03 - Replace the name of the parameter you want to change with the value you want
+#03 - Replace 'id' with the number of the parameter you want to overwrite
+
+	List of parameters:
+	
+	[0]  - Resize
+	[1]  - Rescale
+	[2]  - Atmosphere
+	[3]  - dayLengthMultiplier
+	[4]  - geeASLmultiplier
+	[5]  - landscape
+	[6]  - atmoVisualEffect
+	[7]  - resizeScatter
+	[8]  - CustomSoISize
+	[9]  - CustomRingSize
+	[10] - atmoASL
+	[11] - tempASL
 
 	Example: (Set to '0.5' the 'Atmosphere' parameter for Kerbin)
 
@@ -140,14 +171,14 @@ In order to apply Planet Specific Changes you need to:
 	{
 		@Body:HAS[#name[Kerbin]]
 		{
-			%PlanetDimensions = Resize,Rescale,0.5,dayLengthMultiplier,geeASLmultiplier,landscape,atmoVisualEffect,resizeScatter,CustomSoISize,CustomRingSize
+			@PlanetDimensions[2] = 0.5
 		}
 	}
 
 	//   END CODE   //
 
 
-#04 - To edit another planet paste another copy of the code and edit it accordingly
+#04 - To edit another parameter paste another copy of the code and edit it accordingly
 
 
 #05 - Save the .cfg file anywhere in your KSP GameData folder.
