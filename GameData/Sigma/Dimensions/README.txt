@@ -167,7 +167,7 @@ In order to apply Planet Specific Changes you need to:
 
 	//  START CODE  //
 
-	@Kopernicus:BEFORE[SigDim]:NEEDS[SigDim]
+	@Kopernicus:BEFORE[SigDim2]:NEEDS[SigDim]
 	{
 		@Body:HAS[#name[Kerbin]]
 		{
