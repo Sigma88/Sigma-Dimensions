@@ -5,6 +5,7 @@
 - Improved Planet Specific Changes
 - Improved the parameters code for easier modification
 - Improved calculation of AtmosphereFromGround
+- Added conversion of meanAnomalyAtEpochD (deg) to meanAnomalyAtEpoch (rad)
 
 
 **v0.3.0**
