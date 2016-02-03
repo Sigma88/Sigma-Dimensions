@@ -1,3 +1,9 @@
+**v0.4.1**
+
+- Fixed Pol GroundScatter
+- Fixed removeAllPQSMods compatibility
+
+
 **v0.4.0**
 
 - Added 'atmoASL' parameter
