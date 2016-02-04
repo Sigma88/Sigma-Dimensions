@@ -1,3 +1,9 @@
+**v0.4.2**
+
+- Tweaked Atmosphere Visuals
+- Fixed issue with rescaleAtmo
+
+
 **v0.4.1**
 
 - Fixed Pol GroundScatter
