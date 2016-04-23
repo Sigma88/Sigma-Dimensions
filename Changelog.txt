@@ -1,3 +1,14 @@
+**v0.4.3**
+
+- Fixed Kerbin Rotation
+- Fixed AtmosphereFromGround rescaling
+- Added SCANsat compatibility
+- Added KerbalKonstructs compatibility
+- Added ISP Fix when changing atmosphere pressure ASL
+- Fixed bug with LandControl Rescaling
+- First steps towards Physics.cfg rescale
+
+
 **v0.4.2**
 
 - Tweaked Atmosphere Visuals
