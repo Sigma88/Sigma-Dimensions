@@ -119,6 +119,14 @@ Atmospheric temperature at surface level is multiplied by this parameter.
 
 ---
 
+# scanAltitude (default value = 1)
+
+- Can be set to any positive number
+
+Altitude limits for orbital scanners will be first multiplied by the "Resize" parameter and then by the "scanAltitude" parameter.
+
+---
+
 
 
 
