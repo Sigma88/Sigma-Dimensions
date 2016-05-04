@@ -9,36 +9,37 @@
 
 # Resize (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Each celestial body size will be multiplied by this value.
+Planetary Radius is multiplied by this value.
 
-Mass of each body will be changed in order to maintain the same gravity at surface level
+The mass of each body is changed to maintain the same surface gravity.
 
 ---
 
 # Rescale (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Orbit size (SemiMajor Axis) will be multiplied by this value.
+Orbit size (SemiMajor Axis) is multiplied by this value.
 
 ---
 
 # Atmosphere (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Height of the Atmosphere on each body will be multiplied by this value.
+Atmosphere height is multiplied by this value.
 
 ---
 
 # dayLengthMultiplier (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Rotation period of each body will be multiplied by this value.
-Doesn't affect tidally locked bodies.
+Rotation period is multiplied by this value.
+
+Does not affect tidally locked bodies.
 
 ---
 
@@ -50,26 +51,25 @@ Doesn't affect tidally locked bodies.
 
 # geeASLmultiplier (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Gravity at surface level will be multiplied by this value.
-Mass of each body will be changed in order to obtain the correct result.
+Surface gravity is multiplied by this value.
 
 ---
 
 # landscape (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Altitude of geographical features will be first multiplied by the "Resize" parameter and then by the "landscape" parameter.
+Altitude of geographical features is multiplied by the "Resize" and "landscape" parameters.
 
 ---
 
 # atmoVisualEffect (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-The height of the atmosphere visual effect will be multiplied by this parameter.
+The height of the atmosphere aesthetics is multiplied by this parameter.
 
 ---
 
@@ -77,29 +77,30 @@ The height of the atmosphere visual effect will be multiplied by this parameter.
 
 - Disabled only if set to 0
 
-If enabled, scatter size will be multiplied by the "Resize" parameter.
+ENABLED:  ground scatter size is multiplied by the "Resize" parameter.
+DISABLED: ground scatter size is not modified.
+
+Ground scatter density is always adjusted to account for the different surface area.
 
 ---
 
 # CustomSoISize (default value = 0)
 
-- Enabled only if set to a positive number
+- Enabled if set to a positive number.
 
-Affects only bodies with Sphere of Influence defined in their config file.
+ENABLED:  Sphere of Influence is multiplyed by this parameter.
+DISABLED: Sphere of Influence is multiplyed by the "Rescale" parameter.
 
-By default, SoI size is multiplied by the "Rescale" parameter.
-
-When "CustomSoISize" is enabled, SoI size is multiplyed by this parameter instead.
+Affects only bodies with the Sphere of Influence defined in their config file.
 
 ---
 
 # CustomRingSize (default value = 0)
 
-- Enabled only if set to a positive number
+- Enabled if set to a positive number.
 
-By default, rings size is multiplied by the "Rescale" parameter.
-
-When "CustomRingSize" is enabled, rings size is multiplyed by this parameter instead.
+ENABLED:  rings size is multiplyed by this parameter.
+DISABLED: rings size is multiplyed by the "Rescale" parameter.
 
 ---
 
@@ -113,17 +114,17 @@ Atmospheric pressure at surface level is multiplied by this parameter.
 
 # tempASL (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Atmospheric temperature at surface level is multiplied by this parameter.
+Surface temperature is multiplied by this parameter.
 
 ---
 
 # scanAltitude (default value = 1)
 
-- Can be set to any positive number
+- Can be set to any positive number.
 
-Altitude limits for orbital scanners will be first multiplied by the "Resize" parameter and then by the "scanAltitude" parameter.
+Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
 
 ---
 
@@ -133,7 +134,7 @@ Altitude limits for orbital scanners will be first multiplied by the "Resize" pa
 ## Planet Specific Changes
 
 
-In order to apply Planet Specific Changes you need to:
+To apply Planet Specific Changes follow these instructions.
 
 
 #01 - create a .cfg file with the following code in it
