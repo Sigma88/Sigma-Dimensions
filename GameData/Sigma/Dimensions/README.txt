@@ -75,7 +75,7 @@ The height of the atmosphere aesthetics is multiplied by this parameter.
 
 # resizeScatter (default value = 1)
 
-- Disabled only if set to 0
+- Disabled if set to 0
 
 ENABLED:  ground scatter size is multiplied by the "Resize" parameter.
 DISABLED: ground scatter size is not modified.
