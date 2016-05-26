@@ -1,3 +1,13 @@
+**v0.6.0**
+
+- Overhauled almost all the internal configs
+- Added support for name based PQSMod deletion
+- Added support for name based PQSMod modification
+- Added an option to ignore "landscape" for some PQSMods
+- Simplified syntax for planet specific changes
+- Updated Kittopia Exports and moved these files in a PluginData folder
+
+
 **v0.5.0**
 
 - Updated to KSP 1.1.2 and Kopernicus 1.0.4
