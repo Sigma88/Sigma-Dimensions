@@ -145,7 +145,10 @@ To apply Planet Specific Changes follow these instructions.
 {
 	@Body:HAS[#name[PLANET_NAME_HERE]]
 	{
-		@PlanetDimensions[id] = value
+		@SigmaDimensions
+		{
+			@PARAMETER = VALUE
+		}
 	}
 }
 
@@ -155,22 +158,7 @@ To apply Planet Specific Changes follow these instructions.
 #02 - Replace 'PLANET_NAME_HERE' with the 'name' of the planet you want to change
 
 
-#03 - Replace 'id' with the number of the parameter you want to overwrite
-
-	List of parameters:
-	
-	[0]  - Resize
-	[1]  - Rescale
-	[2]  - Atmosphere
-	[3]  - dayLengthMultiplier
-	[4]  - geeASLmultiplier
-	[5]  - landscape
-	[6]  - atmoVisualEffect
-	[7]  - resizeScatter
-	[8]  - CustomSoISize
-	[9]  - CustomRingSize
-	[10] - atmoASL
-	[11] - tempASL
+#03 - Replace 'PARAMETER' with the name of the parameter you want to overwrite
 
 	Example: (Set to '0.5' the 'Atmosphere' parameter for Kerbin)
 
@@ -180,14 +168,17 @@ To apply Planet Specific Changes follow these instructions.
 	{
 		@Body:HAS[#name[Kerbin]]
 		{
-			@PlanetDimensions[2] = 0.5
+			@SigmaDimensions
+			{
+				@Atmosphere = 0.5
+			}
 		}
 	}
 
 	//   END CODE   //
 
 
-#04 - To edit another parameter paste another copy of the code and edit it accordingly
+#04 - You can edit as many parameters as you want
 
 
 #05 - Save the .cfg file anywhere in your KSP GameData folder.
