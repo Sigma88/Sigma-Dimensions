@@ -6,6 +6,8 @@
 - Added an option to ignore "landscape" for some PQSMods
 - Simplified syntax for planet specific changes
 - Updated Kittopia Exports and moved these files in a PluginData folder
+- Fixed behaviour of parameter atmoASL
+- Fixed behaviour of parameter tempASL
 
 
 **v0.5.0**
