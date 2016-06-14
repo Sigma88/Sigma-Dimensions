@@ -9,19 +9,11 @@
 	}
 	@Body:HAS[@Template:HAS[#name[Sun]],!Template:HAS[#removeAtmosphere[True]]]
 	{
-		@Atmosphere:HAS[~maxAltitude[*]]
-		{
-			maxAltitude = 600000
-		}
 		@Atmosphere
 		{
+			&maxAltitude = 600000
+			&staticPressureASL = 16
 			&temperatureSeaLevel = 5840
-			
-			&addAFG = True
-			%AtmosphereFromGround
-			{
-				&transformScale = 0,0,0
-			}
 			
 			%pressureCurve {}
 			%temperatureCurve {}
@@ -46,6 +38,13 @@
 				key = 250000 5800 0.0009989792 0.0009989792
 				key = 500000 6000 0.001352723 0.001352723
 				key = 600000 10000 0.06371323 0
+			}
+		}
+		@Atmosphere:HAS[~addAFG[False]]
+		{
+			%AtmosphereFromGround
+			{
+				&transformScale = 0,0,0
 			}
 		}
 	}
