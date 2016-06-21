@@ -1,13 +1,13 @@
 @Kopernicus:FOR[SigDim]
 {
-	@Body:HAS[@Template:HAS[#name[Sun]],!Template:HAS[#removeAtmosphere[True]],!Atmosphere]
+	@Body:HAS[@Template:HAS[#name[Sun],~removeAtmosphere[True]],!Atmosphere]
 	{
 		Atmosphere
 		{
-			&addAFG = False
+			addAFG = False
 		}
 	}
-	@Body:HAS[@Template:HAS[#name[Sun]],!Template:HAS[#removeAtmosphere[True]]]
+	@Body:HAS[@Template:HAS[#name[Sun],~removeAtmosphere[True]]]
 	{
 		@Atmosphere
 		{
