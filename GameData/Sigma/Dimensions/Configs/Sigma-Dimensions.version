@@ -1,1 +1,25 @@
-{"NAME":"Sigma Dimensions","URL":"http://ksp-avc.cybutek.net/version.php?id=235","DOWNLOAD":"http://forum.kerbalspaceprogram.com/threads/140687","CHANGE_LOG_URL":"https://github.com/Sigma88/Sigma-Dimensions/raw/master/Changelog.txt","VERSION":{"MAJOR":0,"MINOR":5,"PATCH":0,"BUILD":0},"KSP_VERSION":{"MAJOR":1,"MINOR":1,"PATCH":2}}
+{
+	"NAME": "Sigma Dimensions",
+	"URL": "https://raw.githubusercontent.com/Sigma88/Sigma-Dimensions/master/GameData/Sigma/Dimensions/Configs/Sigma-Dimensions.version",
+	"DOWNLOAD": "http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0",
+	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/Sigma88/Sigma-Dimensions/master/Changelog.txt",
+	"GITHUB":
+	{
+		"USERNAME": "Sigma88",
+		"REPOSITORY": "Sigma-Dimensions",
+		"ALLOW_PRE_RELEASE": false
+	},
+	"VERSION":
+	{
+		"MAJOR": 0,
+		"MINOR": 6,
+		"PATCH": 0,
+		"BUILD": 0
+	},
+	"KSP_VERSION":
+	{
+		"MAJOR": 1,
+		"MINOR": 2,
+		"PATCH": 1
+	}
+}

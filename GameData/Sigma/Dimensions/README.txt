@@ -1,6 +1,6 @@
 ## Sigma Dimensions ##
 
-# Forum Thread: http://forum.kerbalspaceprogram.com/index.php/topic/126548-/
+# Forum Thread: http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0
 
 
 
