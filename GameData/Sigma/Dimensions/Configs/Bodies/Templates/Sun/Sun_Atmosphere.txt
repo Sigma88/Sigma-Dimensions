@@ -1,14 +1,16 @@
 @Kopernicus:FOR[SigDim]
 {
-	@Body:HAS[@Template:HAS[#name[Sun],~removeAtmosphere[True]],!Atmosphere]
+	@Body:HAS[@Template:HAS[#name[Sun]],!Template:HAS[#removeAtmosphere[True]]]
 	{
-		Atmosphere
+		%Atmosphere {}
+		@Atmosphere:HAS[~addAFG[False]]
 		{
-			addAFG = False
+			// temp fix for AFG
+			%AtmosphereFromGround
+			{
+				%transformScale = 0,0,0
+			}
 		}
-	}
-	@Body:HAS[@Template:HAS[#name[Sun],~removeAtmosphere[True]]]
-	{
 		@Atmosphere
 		{
 			&maxAltitude = 600000
@@ -38,13 +40,6 @@
 				key = 250000 5800 0.0009989792 0.0009989792
 				key = 500000 6000 0.001352723 0.001352723
 				key = 600000 10000 0.06371323 0
-			}
-		}
-		@Atmosphere:HAS[~addAFG[False]]
-		{
-			%AtmosphereFromGround
-			{
-				&transformScale = 0,0,0
 			}
 		}
 	}
