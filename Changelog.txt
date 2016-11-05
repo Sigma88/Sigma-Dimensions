@@ -1,12 +1,12 @@
 **v0.6.0**
 
-- Updated to KSP 1.1.3 and Kopernicus 1.0.6
+- Updated to KSP 1.2.1 and Kopernicus 1.2.1
 - Overhauled almost all the internal configs
 - Added support for name based PQSMod deletion
 - Added support for name based PQSMod modification
 - Added an option to ignore "landscape" for some PQSMods
 - Simplified syntax for planet specific changes
-- Updated Kittopia Exports and moved these files in a PluginData folder
+- Updated Kittopia Exports and removed these files from the download
 - Fixed behaviour of parameter atmoASL
 - Fixed behaviour of parameter tempASL
 - Fixed SCANsat compatibility
