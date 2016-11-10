@@ -1,3 +1,8 @@
+**v0.6.1**
+
+- Fixed AtmosphereFromGround resize
+
+
 **v0.6.0**
 
 - Updated to KSP 1.2.1 and Kopernicus 1.2.1-1

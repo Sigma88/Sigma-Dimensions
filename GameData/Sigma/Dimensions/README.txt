@@ -189,7 +189,7 @@ To apply Planet Specific Changes follow these instructions.
 
 
 ## For other questions, visit the Forum Thread:
-# http://forum.kerbalspaceprogram.com/index.php/topic/126548-/
+# http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0
 
 
 
