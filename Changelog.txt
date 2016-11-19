@@ -1,3 +1,9 @@
+**v0.6.2**
+
+- Improved ground textures resize
+- Improved Asteroid rescale
+
+
 **v0.6.1**
 
 - Fixed AtmosphereFromGround resize
