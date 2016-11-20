@@ -1,3 +1,8 @@
+**v0.6.3**
+
+- Fixed display of atmosphere pressure in the tracking station
+
+
 **v0.6.2**
 
 - Improved ground textures resize
