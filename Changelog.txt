@@ -22,7 +22,7 @@
 - Added support for name based PQSMod modification
 - Added an option to ignore 'landscape' for some PQSMods
 - Simplified syntax for planet specific changes
-- Updated Kittopia Exports and moved these files in a PluginData folder
+- Removed Kittopia exports from the download
 - Fixed behaviour of parameter 'atmoASL'
 - Fixed behaviour of parameter 'tempASL'
 - AtmosphereFromGround no longer depends on parameter 'Atmosphere'
