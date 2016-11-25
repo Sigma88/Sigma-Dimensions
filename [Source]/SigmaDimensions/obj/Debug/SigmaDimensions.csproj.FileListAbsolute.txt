@@ -1,0 +1,5 @@
+C:\Github\Sigma-Dimensions\[Source]\Distribution\SigmaDimensions.dll
+C:\Github\Sigma-Dimensions\[Source]\Distribution\SigmaDimensions.pdb
+C:\Github\Sigma-Dimensions\[Source]\SigmaDimensions\obj\Debug\SigmaDimensions.csprojResolveAssemblyReference.cache
+C:\Github\Sigma-Dimensions\[Source]\SigmaDimensions\obj\Debug\SigmaDimensions.dll
+C:\Github\Sigma-Dimensions\[Source]\SigmaDimensions\obj\Debug\SigmaDimensions.pdb

@@ -1,0 +1,13 @@
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\Distribution\SigmaBinary.dll
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\Distribution\SigmaBinary.pdb
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaBinary1.1\obj\Debug\SigmaBinary.dll
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaBinary1.1\obj\Debug\SigmaBinary.pdb
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaBinary1.1\obj\Debug\SigmaBinary.csprojResolveAssemblyReference.cache
+C:\Github\Sigma-Binary\[Source]\Distribution\SigmaBinary.dll
+C:\Github\Sigma-Binary\[Source]\Distribution\SigmaBinary.pdb
+C:\Github\Sigma-Binary\[Source]\SigmaBinary\obj\Debug\SigmaBinary.csprojResolveAssemblyReference.cache
+C:\Github\Sigma-Binary\[Source]\SigmaBinary\obj\Debug\SigmaBinary.dll
+C:\Github\Sigma-Binary\[Source]\SigmaBinary\obj\Debug\SigmaBinary.pdb
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\SigmaBinary.csprojResolveAssemblyReference.cache
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\SigmaBinary.dll
+C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\SigmaBinary.pdb
