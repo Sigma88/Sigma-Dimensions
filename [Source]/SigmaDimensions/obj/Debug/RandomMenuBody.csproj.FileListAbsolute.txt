@@ -1,8 +1,0 @@
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\RandomMenuBody.csprojResolveAssemblyReference.cache
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\Distribution\RandomMenuBody.dll
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\Distribution\RandomMenuBody.pdb
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\RandomMenuBody.dll
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\RandomMenuBody\obj\Debug\RandomMenuBody.pdb
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaDebugLog\obj\Debug\RandomMenuBody.csprojResolveAssemblyReference.cache
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaDebugLog\obj\Debug\RandomMenuBody.dll
-C:\Users\Utente\Documents\Visual Studio 2015\Projects\SigmaDebugLog\obj\Debug\RandomMenuBody.pdb
