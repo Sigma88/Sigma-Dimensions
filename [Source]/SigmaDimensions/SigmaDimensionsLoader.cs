@@ -40,9 +40,5 @@ namespace SigmaDimensionsPlugin
         void IParserEventSubscriber.PostApply(ConfigNode node)
         {
         }
-
-        public SigmaBinaryLoader()
-        {
-        }
     }
 }

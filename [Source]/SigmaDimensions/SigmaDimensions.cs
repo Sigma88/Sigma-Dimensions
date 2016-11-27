@@ -90,6 +90,7 @@ namespace SigmaDimensionsPlugin
         
         void City2Fixer(PQSCity2 pqs)
         {
+            Debug.Log("SigmaLog: " + pqs.name + " > " + pqs.lat + ", " + pqs.lon);
             if (!pqs.snapToSurface)
             {
                 // Offset = Distance from the center of the planet
