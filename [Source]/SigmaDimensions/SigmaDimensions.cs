@@ -1,5 +1,13 @@
 ﻿using UnityEngine;
 using Kopernicus;
+using System.Collections.Generic;
+using System;
+using System.Threading;
+using System.Reflection;
+using System.Linq;
+using KSP.UI.Screens;
+using KSP.UI;
+using Kopernicus.Components;
 
 
 namespace SigmaDimensionsPlugin
@@ -41,15 +49,10 @@ namespace SigmaDimensionsPlugin
 
         void KSCFixer(PQSCity pqs)
         {
-            if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
-            {
-                pqs.repositionRadiusOffset = ((pqs.repositionRadiusOffset + 22.3382130872923) * resize * landscape) - (22.3382130872923 * resizeBuildings);
-                pqs.transform.localScale *= (float)resizeBuildings;
-            }
-            else
-            {
-                CityFixer(pqs);
-            }
+            pqs.repositionToSphereSurface = true;
+            pqs.repositionToSphereSurfaceAddHeight = true;
+            pqs.repositionRadiusOffset = -22.0492050513854 * resizeBuildings;
+            pqs.transform.localScale *= (float)resizeBuildings;
         }
 
         void CityFixer(PQSCity pqs)
