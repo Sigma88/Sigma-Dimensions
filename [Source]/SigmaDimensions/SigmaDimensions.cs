@@ -17,7 +17,7 @@ namespace SigmaDimensionsPlugin
     {
         public double resize = 1;
         public double landscape = 1;
-        public double resizeBuildings= 1;
+        public double resizeBuildings = 1;
         public CelestialBody body = null;
 
         void Start()
@@ -49,13 +49,14 @@ namespace SigmaDimensionsPlugin
 
         void KSCFixer(PQSCity pqs)
         {
-            pqs.repositionToSphereSurface = true;
-            pqs.repositionToSphereSurfaceAddHeight = false;
-            if (resizeBuildings != 1)
+            if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
-                // Resize the Building
-
+                pqs.repositionRadiusOffset = ((pqs.repositionRadiusOffset + 22.3382130872923) * resize * landscape) - (22.3382130872923 * resizeBuildings);
                 pqs.transform.localScale *= (float)resizeBuildings;
+            }
+            else
+            {
+                CityFixer(pqs);
             }
         }
 
@@ -87,16 +88,15 @@ namespace SigmaDimensionsPlugin
                 pqs.transform.localScale *= (float)resizeBuildings;
             }
         }
-        
+
         void City2Fixer(PQSCity2 pqs)
         {
-            Debug.Log("SigmaLog: " + pqs.name + " > " + pqs.lat + ", " + pqs.lon);
             if (!pqs.snapToSurface)
             {
                 // Offset = Distance from the center of the planet
 
-                double fromRadius = pqs.snapHeightOffset - (body.Radius / resize);
-                pqs.snapHeightOffset = fromRadius * resize * landscape + body.Radius;
+                double fromRadius = pqs.alt - (body.Radius / resize);
+                pqs.alt = fromRadius * resize * landscape + body.Radius;
             }
             else if (resizeBuildings != 1)
             {
