@@ -1,13 +1,5 @@
 ﻿using UnityEngine;
 using Kopernicus;
-using System.Collections.Generic;
-using System;
-using System.Threading;
-using System.Reflection;
-using System.Linq;
-using KSP.UI.Screens;
-using KSP.UI;
-using Kopernicus.Components;
 
 
 namespace SigmaDimensionsPlugin
