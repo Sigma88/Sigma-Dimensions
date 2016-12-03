@@ -11,4 +11,3 @@
 [assembly: KSPAssembly("SigmaDimensions", 1, 0)]
 [assembly: KSPAssemblyDependency("Kopernicus", 1, 0)]
 [assembly: AssemblyVersion("1.0.0")]
-
