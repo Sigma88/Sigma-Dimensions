@@ -5,19 +5,22 @@ using UnityEngine;
 
 namespace SigmaDimensionsPlugin
 {
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
     public class SpaceCenterFixer : MonoBehaviour
     {
         void Start()
         {
-            foreach (SpaceCenterCamera2 camera in Resources.FindObjectsOfTypeAll<SpaceCenterCamera2>())
+            if (!HighLogic.LoadedSceneIsFlight)
             {
-                float resizeBuildings = (float)FlightGlobals.GetHomeBody().Get<double>("resizeBuildings");
+                foreach (SpaceCenterCamera2 camera in Resources.FindObjectsOfTypeAll<SpaceCenterCamera2>())
+                {
+                    float resizeBuildings = (float)FlightGlobals.GetHomeBody().Get<double>("resizeBuildings");
 
-                camera.zoomInitial *= resizeBuildings;
-                camera.zoomMax *= resizeBuildings;
-                camera.zoomMin *= resizeBuildings;
-                camera.zoomSpeed *= resizeBuildings;
+                    camera.zoomInitial *= resizeBuildings;
+                    camera.zoomMax *= resizeBuildings;
+                    camera.zoomMin *= resizeBuildings;
+                    camera.zoomSpeed *= resizeBuildings;
+                }
             }
         }
 
@@ -27,11 +30,11 @@ namespace SigmaDimensionsPlugin
 
         void Update()
         {
-            if (fixLight && ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.LaunchPad) == 1)
+            if (fixLight)
             {
                 if (light == null)
                 {
-                    light = Array.Find(GameObject.FindGameObjectsWithTag("KSC_Pad_Water_Tower"), o => o.name == "Spotlight").GetComponent<Light>();
+                    light = Array.Find(GameObject.FindGameObjectsWithTag("KSC_Pad_Water_Tower"), o => o.name == "Spotlight")?.GetComponent<Light>();
                 }
                 else
                 {
