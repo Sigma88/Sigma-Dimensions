@@ -1,8 +1,0 @@
-@STATIC:FOR[SigDim2]
-{
-	@Instances,*
-	{
-		@RadiusOffset *= #$@SigmaDimensions/Resize$
-		@RadiusOffset *= #$@SigmaDimensions/landscape$
-	}
-}
