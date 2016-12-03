@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Kopernicus;
+﻿using Kopernicus;
+using UnityEngine;
 
 
 namespace SigmaDimensionsPlugin
@@ -21,20 +21,17 @@ namespace SigmaDimensionsPlugin
                 landscape = body.Has("landscape") ? body.Get<double>("landscape") : 1;
                 resizeBuildings = body.Has("resizeBuildings") ? body.Get<double>("resizeBuildings") : 1;
 
-                foreach (PQSSurfaceObject obj in body.pqsSurfaceObjects)
+                foreach (PQSCity mod in body.GetComponentsInChildren<PQSCity>(true))
                 {
-                    PQSCity pqscity = obj.GetComponent<PQSCity>();
-                    if (pqscity != null)
-                    {
-                        if (pqscity.name == "KSC")
-                            KSCFixer(pqscity);
-                        else
-                            CityFixer(pqscity);
-                    }
+                    if (mod.name == "KSC")
+                        KSCFixer(mod);
+                    else
+                        CityFixer(mod);
+                }
 
-                    PQSCity2 pqscity2 = obj.GetComponent<PQSCity2>();
-                    if (pqscity2 != null)
-                        City2Fixer(pqscity2);
+                foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
+                {
+                    City2Fixer(mod);
                 }
             }
         }
