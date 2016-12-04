@@ -1,6 +1,6 @@
-﻿using Kopernicus;
-using System;
+﻿using System;
 using UnityEngine;
+using Kopernicus;
 
 
 namespace SigmaDimensionsPlugin

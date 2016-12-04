@@ -1,5 +1,5 @@
-﻿using Kopernicus;
-using UnityEngine;
+﻿using UnityEngine;
+using Kopernicus;
 
 
 namespace SigmaDimensionsPlugin
@@ -23,10 +23,7 @@ namespace SigmaDimensionsPlugin
 
                 foreach (PQSCity mod in body.GetComponentsInChildren<PQSCity>(true))
                 {
-                    if (mod.name == "KSC")
-                        KSCFixer(mod);
-                    else
-                        CityFixer(mod);
+                    CityFixer(mod);
                 }
 
                 foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
@@ -36,28 +33,26 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void KSCFixer(PQSCity pqs)
-        {
-            pqs.repositionToSphereSurface = true;
-            pqs.repositionToSphereSurfaceAddHeight = true;
-            pqs.repositionRadiusOffset = -22.0492050513854 * resizeBuildings;
-            pqs.transform.localScale *= (float)resizeBuildings;
-        }
-
         void CityFixer(PQSCity pqs)
         {
+            double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
+
             if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
                 // Offset = Distance from the center of the planet
 
                 double fromRadius = pqs.repositionRadiusOffset - (body.Radius / resize);
-                pqs.repositionRadiusOffset = fromRadius * resize * landscape + body.Radius;
+                double builtInOffset = fromRadius - groundLevel / (resize * landscape);
+
+                pqs.repositionRadiusOffset = body.Radius + groundLevel + builtInOffset * resizeBuildings;
             }
             if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
                 // Offset = Distance from the radius of the planet
 
-                pqs.repositionRadiusOffset *= resize * landscape;
+                double builtInOffset = pqs.repositionRadiusOffset - groundLevel / (resize * landscape);
+
+                pqs.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
             }
             if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight && resizeBuildings != 1)
             {
@@ -75,14 +70,18 @@ namespace SigmaDimensionsPlugin
 
         void City2Fixer(PQSCity2 pqs)
         {
+            double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
+
             if (!pqs.snapToSurface)
             {
                 // Offset = Distance from the center of the planet
 
                 double fromRadius = pqs.alt - (body.Radius / resize);
-                pqs.alt = fromRadius * resize * landscape + body.Radius;
+                double builtInOffset = fromRadius - groundLevel / (resize * landscape);
+
+                pqs.alt = body.Radius + groundLevel + builtInOffset * resizeBuildings;
             }
-            else if (resizeBuildings != 1)
+            else
             {
                 // Offset = Distance from the surface of the planet
 
