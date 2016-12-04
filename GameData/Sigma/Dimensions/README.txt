@@ -128,6 +128,15 @@ Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAlti
 
 ---
 
+# resizeBuildings (default value = 0)
+
+- Automatic when zero, custom when set to a positive number.
+
+AUTOMATIC: buildings size is multiplied by "Resize" when shrinking planets.
+CUSTOM:    buildings size is multiplied by this parameter.
+
+---
+
 
 
 

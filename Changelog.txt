@@ -1,3 +1,10 @@
+**v0.7.0**
+
+- Included SigmaDimensions.dll plugin
+- Added the parameter resizeBuildings
+- Added support for PQSCity repositioning
+
+
 **v0.6.3**
 
 - Fixed display of atmosphere pressure in the tracking station
