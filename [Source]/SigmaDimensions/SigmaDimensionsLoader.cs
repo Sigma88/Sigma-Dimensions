@@ -45,7 +45,7 @@ namespace SigmaDimensionsPlugin
         }
 
         [ParserTarget("debug", optional = true)]
-        public NumericParser<double> debug
+        public NumericParser<bool> debug
         {
             set
             {
