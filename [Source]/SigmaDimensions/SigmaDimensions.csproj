@@ -38,7 +38,7 @@
     <Compile Include="SigmaDimensionsLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Sigma-Binary\[Source]\KerbalSpaceProgram\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -53,6 +53,10 @@
     <Reference Include="Kopernicus.OnDemand, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Sigma-Binary\[Source]\Kopernicus\Kopernicus.OnDemand.dll</HintPath>
+    </Reference>
+    <Reference Include="Kopernicus.Parser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sigma-Binary\[Source]\Kopernicus\Kopernicus.Parser.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
