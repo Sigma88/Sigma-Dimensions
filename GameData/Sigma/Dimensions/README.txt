@@ -49,14 +49,6 @@ Does not affect tidally locked bodies.
 ## Advanced Settings Definitions
 
 
-# geeASLmultiplier (default value = 1)
-
-- Can be set to any positive number.
-
-Surface gravity is multiplied by this value.
-
----
-
 # landscape (default value = 1)
 
 - Can be set to any positive number.
@@ -65,11 +57,11 @@ Altitude of geographical features is multiplied by the "Resize" and "landscape" 
 
 ---
 
-# atmoVisualEffect (default value = 1)
+# geeASLmultiplier (default value = 1)
 
 - Can be set to any positive number.
 
-The height of the atmosphere aesthetics is multiplied by this parameter.
+Surface gravity is multiplied by this value.
 
 ---
 
@@ -81,6 +73,15 @@ ENABLED:  ground scatter size is multiplied by the "Resize" parameter.
 DISABLED: ground scatter size is not modified.
 
 Ground scatter density is always adjusted to account for the different surface area.
+
+---
+
+# resizeBuildings (default value = 0)
+
+- Automatic when zero, custom when set to a positive number.
+
+AUTOMATIC: buildings size is multiplied by "Resize" when shrinking planets.
+CUSTOM:    buildings size is multiplied by this parameter.
 
 ---
 
@@ -120,20 +121,27 @@ Surface temperature is multiplied by this parameter.
 
 ---
 
+# atmoVisualEffect (default value = 1)
+
+- Can be set to any positive number.
+
+The height of the atmosphere aesthetics is multiplied by this parameter.
+
+---
+
+# atmoTopLayer (default value = 1)
+
+- Can be set to any positive number.
+
+Atmosphere depth is multiplied by this parameter. Atmosphere curves are extended/trimmed accordingly.
+
+---
+
 # scanAltitude (default value = 1)
 
 - Can be set to any positive number.
 
 Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
-
----
-
-# resizeBuildings (default value = 0)
-
-- Automatic when zero, custom when set to a positive number.
-
-AUTOMATIC: buildings size is multiplied by "Resize" when shrinking planets.
-CUSTOM:    buildings size is multiplied by this parameter.
 
 ---
 
