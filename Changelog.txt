@@ -1,3 +1,12 @@
+**v0.7.1**
+
+- Updated to KSP 1.2.2 and Kopernicus 1.2.2-1
+- Added the parameter atmoTopLayer
+  (allows to extend/trim atmosphere curves)
+- Added the parameter debug
+  (completely useless since nobody ever provides logs)
+
+
 **v0.7.0**
 
 - Included SigmaDimensions.dll plugin

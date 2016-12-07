@@ -4,8 +4,8 @@ using Kopernicus.Configuration;
 
 namespace SigmaDimensionsPlugin
 {
-    [ExternalParserTarget("SigmaDimensions")]
-    public class SigmaDimensionsLoader : ExternalParserTargetLoader, IParserEventSubscriber
+    [ParserTargetExternal("Body", "SigmaDimensions")]
+    public class SigmaDimensionsLoader : BaseLoader, IParserEventSubscriber
     {
         [ParserTarget("Resize", optional = true)]
         public NumericParser<double> resize
@@ -31,6 +31,25 @@ namespace SigmaDimensionsPlugin
             set
             {
                 generatedBody.celestialBody.Set("resizeBuildings", value.value);
+            }
+        }
+
+        [ParserTarget("atmoTopLayer", optional = true)]
+        public NumericParser<double> atmoTopLayer
+        {
+            set
+            {
+                if (value.value != 1)
+                    generatedBody.celestialBody.Set("atmoTopLayer", value.value);
+            }
+        }
+
+        [ParserTarget("debug", optional = true)]
+        public NumericParser<bool> debug
+        {
+            set
+            {
+                generatedBody.celestialBody.Set("debug", value.value);
             }
         }
 
