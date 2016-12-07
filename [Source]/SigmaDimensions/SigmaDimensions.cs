@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Kopernicus;
 
 
@@ -65,6 +66,17 @@ namespace SigmaDimensionsPlugin
                 // Resize the Building
 
                 pqs.transform.localScale *= (float)resizeBuildings;
+            }
+            if (pqs.name == "KerbinSide/CoreAssets/ksidehangars1(Clone)")
+            {
+                Vector3 vector = pqs.repositionRadial;
+                Debug.Log("SigmaDimensionsLog: vector = " + vector);
+                Vector3 REFvector = Array.Find(body.GetComponentsInChildren<PQSCity>(), m => m.name == "KSC").repositionRadial;
+                Debug.Log("SigmaDimensionsLog: REFvector = " + vector);
+                Vector3 newVector = Vector3.LerpUnclamped((REFvector * 100).normalized, vector.normalized, (float)(resizeBuildings / resize));
+                Debug.Log("SigmaDimensionsLog: newVector = " + vector);
+                pqs.repositionRadial = newVector;
+                Debug.Log("SigmaDimensionsLog: pqs.repositionRadial = " + pqs.repositionRadial);
             }
         }
 

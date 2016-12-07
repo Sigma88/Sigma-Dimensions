@@ -34,6 +34,25 @@ namespace SigmaDimensionsPlugin
             }
         }
 
+        [ParserTarget("atmoTopLayer", optional = true)]
+        public NumericParser<double> atmoTopLayer
+        {
+            set
+            {
+                if (value.value != 1)
+                    generatedBody.celestialBody.Set("atmoTopLayer", value.value);
+            }
+        }
+
+        [ParserTarget("debug", optional = true)]
+        public NumericParser<double> debug
+        {
+            set
+            {
+                generatedBody.celestialBody.Set("debug", value.value);
+            }
+        }
+
         void IParserEventSubscriber.Apply(ConfigNode node)
         {
         }
