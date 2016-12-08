@@ -1,3 +1,7 @@
+**v0.7.2**
+- Fixed resize of Kopernicus feature SpaceCenter
+
+
 **v0.7.1**
 
 - Updated to KSP 1.2.2 and Kopernicus 1.2.2-1
