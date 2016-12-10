@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Kopernicus;
+using Kopernicus.Configuration;
+using SigmaDimensionsPlugin;
 
 
 namespace SigmaDimensionsPlugin
@@ -67,17 +71,21 @@ namespace SigmaDimensionsPlugin
 
                 pqs.transform.localScale *= (float)resizeBuildings;
             }
-            if (pqs.name == "KerbinSide/CoreAssets/ksidehangars1(Clone)")
+            if (body.Has("PQSCityGroups"))
             {
-                Vector3 vector = pqs.repositionRadial;
-                Debug.Log("SigmaDimensionsLog: vector = " + vector);
-                Vector3 REFvector = Array.Find(body.GetComponentsInChildren<PQSCity>(), m => m.name == "KSC").repositionRadial;
-                Debug.Log("SigmaDimensionsLog: REFvector = " + vector);
-                Vector3 newVector = Vector3.LerpUnclamped((REFvector * 100).normalized, vector.normalized, (float)(resizeBuildings / resize));
-                Debug.Log("SigmaDimensionsLog: newVector = " + vector);
-                pqs.repositionRadial = newVector;
-                Debug.Log("SigmaDimensionsLog: pqs.repositionRadial = " + pqs.repositionRadial);
+                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
+                if (PQSList.ContainsKey(pqs))
+                {
+                    GroupFixer(pqs, PQSList[pqs].normalized);
+                }
             }
+        }
+
+        void GroupFixer(PQSCity pqs, Vector3 REFvector)
+        {
+            Vector3 PQSvector = pqs.repositionRadial.normalized;
+            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector, PQSvector, (float)(resizeBuildings / resize));
+            pqs.repositionRadial = NEWvector;
         }
 
         void City2Fixer(PQSCity2 pqs)

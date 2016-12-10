@@ -1,4 +1,14 @@
+**v0.7.3**
+
+- Time warp limits and other parameters now account for atmoTopLayer
+- Added the possibility to define groups of PQSCity and PQSCity2
+  (allows to keep groups of buildings together when resizing a planet)
+- Improved the debug options
+  (still completely useless, see v0.7.1)
+
+
 **v0.7.2**
+
 - Fixed resize of Kopernicus feature SpaceCenter
 
 

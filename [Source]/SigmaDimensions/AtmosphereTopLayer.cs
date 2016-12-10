@@ -17,8 +17,8 @@ namespace SigmaDimensionsPlugin
             foreach (CelestialBody body in FlightGlobals.Bodies.FindAll(b => b.atmosphere && b.Has("atmoTopLayer")))
             {
                 // Debug
-                debug = body.Has("debug") ? body.Get<bool>("debug") : false;
-                if (debug) PrintCurve(body, "Original Curves");
+                Debug.debug = body.Has("debug") ? body.Get<bool>("debug") : false;
+                PrintCurve(body, "Original Curves");
 
                 Normalize(body, body.atmosphereDepth);
 
@@ -31,13 +31,13 @@ namespace SigmaDimensionsPlugin
                 Normalize(body, 1 / body.atmosphereDepth);
 
                 // Debug
-                if (debug) PrintCurve(body, "Final Curves");
+                PrintCurve(body, "Final Curves");
             }
         }
 
         void FixPressure(FloatCurve curve, double topLayer)
         {
-            List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count < 2) { Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
+            List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count < 2) { UnityEngine.Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
 
             double maxAltitude = list.Last()[0];
 
@@ -68,7 +68,7 @@ namespace SigmaDimensionsPlugin
         {
             if (topLayer > curve.maxTime)
             {
-                List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count == 0) { Debug.Log("SigmaLog: RETURN"); return; }
+                List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count == 0) { UnityEngine.Debug.Log("SigmaLog: This curve is pointless."); return; }
                 list.Last()[3] = 0;
                 list.Add(new double[] { topLayer, list.Last()[1], 0, 0 });
                 curve.Load(WriteCurve(list));
@@ -106,7 +106,7 @@ namespace SigmaDimensionsPlugin
             }
 
             // Debug
-            if (debug) PrintCurve(list, "Extend");
+            PrintCurve(list, "Extend");
         }
 
         void Trim(List<double[]> list, double topLayer)
@@ -125,7 +125,7 @@ namespace SigmaDimensionsPlugin
             list.Add(lastKey);
 
             // Debug
-            if (debug) PrintCurve(list, "Trim");
+            PrintCurve(list, "Trim");
         }
 
         void Smooth(List<double[]> list, double smoothRange)
@@ -148,7 +148,7 @@ namespace SigmaDimensionsPlugin
             list.Add(lastKey);
 
             // Debug
-            if (debug) PrintCurve(list, "Smooth");
+            PrintCurve(list, "Smooth");
         }
 
         // Normalizers
@@ -279,11 +279,9 @@ namespace SigmaDimensionsPlugin
 
         // DEBUG
 
-        bool debug = false;
-
         void PrintCurve(CelestialBody body, string name)
         {
-            Debug.Log("SigmaLog: " + name + " for body " + body.name);
+            Debug.Log(name + " for body " + body.name);
             PrintCurve(body.atmospherePressureCurve, "pressureCurve");
             PrintCurve(body.atmosphereTemperatureCurve, "temperatureCurve");
             PrintCurve(body.atmosphereTemperatureSunMultCurve, "temperatureSunMultCurve");
@@ -305,10 +303,10 @@ namespace SigmaDimensionsPlugin
         {
             ConfigNode config = new ConfigNode();
             curve.Save(config);
-            Debug.Log("SigmaLog: " + name);
+            Debug.Log(name);
             foreach (string key in config.GetValues("key"))
             {
-                Debug.Log("SigmaLog: key = " + key);
+                Debug.Log("key = " + key);
             }
         }
     }

@@ -32,6 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AtmosphereTopLayer.cs" />
+    <Compile Include="PQSCityGroupsLoader.cs" />
+    <Compile Include="SigmaDebugLogger.cs" />
     <Compile Include="SpaceCenterFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SigmaDimensions.cs" />
