@@ -35,7 +35,7 @@ namespace SigmaDimensionsPlugin
                     PQSCityGroupsLoader.GroupList.Add(name, Group);
             }
         }
-        
+
         public static void SaveGroups()
         {
             foreach (ConfigNode Group in PQSCityGroupsLoader.GroupList.Values)

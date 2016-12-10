@@ -278,7 +278,7 @@ namespace SigmaDimensionsPlugin
         }
 
         // DEBUG
-        
+
         void PrintCurve(CelestialBody body, string name)
         {
             Debug.Log(name + " for body " + body.name);
