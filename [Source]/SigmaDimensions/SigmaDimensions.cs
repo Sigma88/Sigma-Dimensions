@@ -40,25 +40,6 @@ namespace SigmaDimensionsPlugin
 
         void CityFixer(PQSCity pqs)
         {
-            // Resize the Building
-
-            pqs.transform.localScale *= (float)resizeBuildings;
-
-
-            // Fix PQSCity Groups
-
-            if (body.Has("PQSCityGroups"))
-            {
-                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
-                if (PQSList.ContainsKey(pqs))
-                {
-                    GroupFixer(pqs, PQSList[pqs].normalized);
-                }
-            }
-
-
-            // Fix Altitude
-
             double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
 
             if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
@@ -70,7 +51,7 @@ namespace SigmaDimensionsPlugin
 
                 pqs.repositionRadiusOffset = body.Radius + groundLevel + builtInOffset * resizeBuildings;
             }
-            else if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
+            if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
                 // Offset = Distance from the radius of the planet
 
@@ -78,23 +59,18 @@ namespace SigmaDimensionsPlugin
 
                 pqs.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
             }
-            else if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight)
+            if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight && resizeBuildings != 1)
             {
                 // Offset = Distance from the surface of the planet
 
                 pqs.repositionRadiusOffset *= resizeBuildings;
             }
-        }
+            if (resizeBuildings != 1)
+            {
+                // Resize the Building
 
-        void City2Fixer(PQSCity2 pqs)
-        {
-            // Resize the Building
-
-            pqs.transform.localScale *= (float)resizeBuildings;
-
-
-            // Fix PQSCity Groups
-
+                pqs.transform.localScale *= (float)resizeBuildings;
+            }
             if (body.Has("PQSCityGroups"))
             {
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
@@ -103,15 +79,23 @@ namespace SigmaDimensionsPlugin
                     GroupFixer(pqs, PQSList[pqs].normalized);
                 }
             }
+        }
 
+        void GroupFixer(PQSCity pqs, Vector3 REFvector)
+        {
+            Vector3 PQSvector = pqs.repositionRadial.normalized;
+            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector, PQSvector, (float)(resizeBuildings / resize));
+            pqs.repositionRadial = NEWvector;
+        }
 
-            // Fix Altitude
+        void City2Fixer(PQSCity2 pqs)
+        {
+            double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
 
             if (!pqs.snapToSurface)
             {
                 // Offset = Distance from the center of the planet
 
-                double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
                 double fromRadius = pqs.alt - (body.Radius / resize);
                 double builtInOffset = fromRadius - groundLevel / (resize * landscape);
 
@@ -123,94 +107,12 @@ namespace SigmaDimensionsPlugin
 
                 pqs.snapHeightOffset *= resizeBuildings;
             }
-        }
-
-        void GroupFixer(PQSCity pqs, Vector3 REFvector)
-        {
-            if (body == FlightGlobals.GetHomeBody())
-                LinkToKSC(pqs);
-
-            Vector3 PQSvector = pqs.repositionRadial.normalized;
-            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector, PQSvector, (float)(resizeBuildings / resize));
-            pqs.repositionRadial = NEWvector;
-        }
-
-        void GroupFixer(PQSCity2 pqs, Vector3 REFvector)
-        {
-            if (body == FlightGlobals.GetHomeBody())
-                LinkToKSC(pqs);
-
-            Vector3 PQSvector = pqs.PlanetRelativePosition.normalized;
-            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector, PQSvector, (float)(resizeBuildings / resize));
-            double[] LLA = ECEFtoLLA(NEWvector);
-            pqs.lat = LLA[0];
-            pqs.lon = LLA[1];
-        }
-
-        void LinkToKSC(PQSCity pqs)
-        {
-            PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
-            Vector3 movedKSC = KSC.repositionRadial.normalized;
-
-            if (body.Get<Dictionary<object, Vector3>>("PQSCityGroups")[pqs].normalized == movedKSC)
+            if (resizeBuildings != 1)
             {
-                // Fix Rotation
-                float angle = KSC.reorientFinalAngle - (-15);
-                pqs.reorientFinalAngle += angle;
+                // Resize the Building
 
-
-                // Fix Latitude and Longitude
-                Vector3 stockKSC = new Vector3(157000, -1000, -570000).normalized;
-                double dLON = (Math.Atan2(movedKSC.z, movedKSC.x) - Math.Atan2(stockKSC.z, stockKSC.x)) * 180 / Math.PI;
-                Quaternion rotation = Quaternion.AngleAxis((float)dLON + angle, movedKSC);
-
-                pqs.repositionRadial = pqs.repositionRadial.normalized + movedKSC - stockKSC;
-                pqs.repositionRadial = rotation * pqs.repositionRadial.normalized;
-
-
-                // Fix Altitude
-                if (!pqs.repositionToSphereSurface)
-                {
-                    pqs.repositionRadiusOffset += (body.pqsController.GetSurfaceHeight(movedKSC) - body.Radius) / (resize * landscape) - 64.7846885412;
-                }
+                pqs.transform.localScale *= (float)resizeBuildings;
             }
-        }
-
-        void LinkToKSC(PQSCity2 pqs)
-        {
-            PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
-            Vector3 movedKSC = KSC.repositionRadial.normalized;
-
-            if (body.Get<Dictionary<object, Vector3>>("PQSCityGroups")[pqs].normalized == movedKSC)
-            {
-                // Fix Rotation
-                float angle = KSC.reorientFinalAngle - (-15);
-                pqs.rotation += angle;
-
-
-                // Fix Latitude and Longitude
-                Vector3 stockKSC = new Vector3(157000, -1000, -570000).normalized;
-                double dLON = (Math.Atan2(movedKSC.z, movedKSC.x) - Math.Atan2(stockKSC.z, stockKSC.x)) * 180 / Math.PI;
-                Quaternion rotation = Quaternion.AngleAxis((float)dLON + angle, movedKSC);
-                Vector3 vector = pqs.PlanetRelativePosition;
-                vector = vector.normalized + movedKSC - stockKSC;
-                vector = rotation * vector.normalized;
-
-
-                // Fix Altitude
-                if (!pqs.snapToSurface)
-                {
-                    pqs.snapHeightOffset += (body.pqsController.GetSurfaceHeight(movedKSC) - body.Radius) / (resize * landscape) - 64.7846885412;
-                }
-            }
-        }
-
-        public double[] ECEFtoLLA(Vector3 vector)
-        {
-            double lat = 90 + Math.Atan2(-vector.z / Math.Sin(Math.Atan2(vector.z, vector.x)), vector.y) * 180 / Math.PI;
-            double lon = Math.Atan2(vector.z, vector.x) * 180 / Math.PI;
-            double alt = Math.Pow(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z, 0.5);
-            return new double[] { lat, lon, alt };
         }
     }
 }
