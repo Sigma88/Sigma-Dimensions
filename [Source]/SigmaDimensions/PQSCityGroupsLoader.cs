@@ -7,22 +7,22 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    class PQSCityGroups
+    public static class PQSCityGroups
     {
         static Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
-        public static Dictionary<string, ConfigNode> ExternalGroupsList = new Dictionary<string, ConfigNode>();
+        public static ConfigNode[] ExternalGroups = { };
 
-        void Start()
+        static void Start()
         {
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
                 AddGroups(GroupsLoader.GetNodes("Group"));
             }
+            AddGroups(ExternalGroups);
             SaveGroups(GroupsList);
-            SaveGroups(ExternalGroupsList);
         }
 
-        void AddGroups(ConfigNode[] Groups)
+        static void AddGroups(ConfigNode[] Groups)
         {
             foreach (ConfigNode Group in Groups)
             {
@@ -35,7 +35,7 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void SaveGroups(Dictionary<string, ConfigNode> list)
+        static void SaveGroups(Dictionary<string, ConfigNode> list)
         {
             foreach (ConfigNode Group in list.Values)
             {
