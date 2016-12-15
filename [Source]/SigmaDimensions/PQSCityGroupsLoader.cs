@@ -7,22 +7,23 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    public static class PQSCityGroups
+    public class PQSCityGroups : MonoBehaviour
     {
-        static Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
+        Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
         public static ConfigNode[] ExternalGroups = { };
 
-        static void Start()
+        void Start()
         {
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
                 AddGroups(GroupsLoader.GetNodes("Group"));
             }
             AddGroups(ExternalGroups);
-            SaveGroups(GroupsList);
+
+            SaveGroups();
         }
 
-        static void AddGroups(ConfigNode[] Groups)
+        void AddGroups(ConfigNode[] Groups)
         {
             foreach (ConfigNode Group in Groups)
             {
@@ -35,9 +36,9 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        static void SaveGroups(Dictionary<string, ConfigNode> list)
+        void SaveGroups()
         {
-            foreach (ConfigNode Group in list.Values)
+            foreach (ConfigNode Group in GroupsList.Values)
             {
                 string name = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.transform.name == Group.GetValue("body"));
