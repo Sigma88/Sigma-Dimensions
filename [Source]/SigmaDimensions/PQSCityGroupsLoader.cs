@@ -10,7 +10,7 @@ namespace SigmaDimensionsPlugin
     public class PQSCityGroups : MonoBehaviour
     {
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
-        public static ConfigNode[] ExternalGroups = { };
+        public static List<ConfigNode> ExternalGroups = new List<ConfigNode>();
 
         void Start()
         {
@@ -18,7 +18,7 @@ namespace SigmaDimensionsPlugin
             {
                 AddGroups(GroupsLoader.GetNodes("Group"));
             }
-            AddGroups(ExternalGroups);
+            AddGroups(ExternalGroups.ToArray());
 
             SaveGroups();
         }
