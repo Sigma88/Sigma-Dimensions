@@ -7,38 +7,38 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    public class PQSCityGroupsLoader : MonoBehaviour
+    public class PQSCityGroups : MonoBehaviour
     {
-        public static Dictionary<string, ConfigNode> GroupList = new Dictionary<string, ConfigNode>();
+        Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
+        public static List<ConfigNode> ExternalGroups = new List<ConfigNode>();
 
         void Start()
         {
-            foreach (ConfigNode GroupLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
+            foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
-                PQSCityGroups.AddGroups(GroupLoader.GetNodes("Group"));
+                AddGroups(GroupsLoader.GetNodes("Group"));
             }
-            PQSCityGroups.SaveGroups();
-        }
-    }
+            AddGroups(ExternalGroups.ToArray());
 
-    public static class PQSCityGroups
-    {
-        public static void AddGroups(ConfigNode[] Groups)
+            SaveGroups();
+        }
+
+        void AddGroups(ConfigNode[] Groups)
         {
             foreach (ConfigNode Group in Groups)
             {
                 string name = Group.GetValue("name");
                 if (string.IsNullOrEmpty(name)) continue;
-                if (PQSCityGroupsLoader.GroupList.ContainsKey(name))
-                    PQSCityGroupsLoader.GroupList[name].AddData(Group);
+                if (GroupsList.ContainsKey(name))
+                    GroupsList[name].AddData(Group);
                 else
-                    PQSCityGroupsLoader.GroupList.Add(name, Group);
+                    GroupsList.Add(name, Group);
             }
         }
 
-        public static void SaveGroups()
+        void SaveGroups()
         {
-            foreach (ConfigNode Group in PQSCityGroupsLoader.GroupList.Values)
+            foreach (ConfigNode Group in GroupsList.Values)
             {
                 string name = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.transform.name == Group.GetValue("body"));
@@ -46,14 +46,17 @@ namespace SigmaDimensionsPlugin
 
                 Vector3Parser center = new Vector3Parser();
                 if (Group.HasValue("CentralPQSCity"))
+                {
                     center = body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == Group.GetValue("CentralPQSCity")).repositionRadial;
+                }
                 else if (Group.HasValue("CentralPQSCity2"))
                 {
-                    PQSCity2 city2 = body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == Group.GetValue("CentralPQSCity2"));
-                    center = Utility.LLAtoECEF(city2.lat, city2.lon, 1, 1);
+                    center = (Vector3)body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == Group.GetValue("CentralPQSCity2")).PlanetRelativePosition;
                 }
                 else if (Group.HasValue("CentralPosition"))
+                {
                     center.SetFromString(Group.GetValue("CentralPosition"));
+                }
                 else if (Group.HasValue("CentralLAT") && Group.HasValue("CentralLON"))
                 {
                     EnumParser<double> LAT = new EnumParser<double>();
@@ -62,21 +65,29 @@ namespace SigmaDimensionsPlugin
                     LON.SetFromString(Group.GetValue("CentralLON"));
                     center = Utility.LLAtoECEF(LAT, LON, 1, 1);
                 }
+                else if (Group.HasValue("PQSCity"))
+                {
+                    center = body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == Group.GetValue("PQSCity")).repositionRadial;
+                }
+                else if (Group.HasValue("PQSCity2"))
+                {
+                    center = (Vector3)body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == Group.GetValue("CentralPQSCity2")).PlanetRelativePosition;
+                }
                 else continue;
 
                 if (!body.Has("PQSCityGroups"))
                     body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
 
-                foreach (string pqs in Group.GetValues("PQSCity"))
+                foreach (string city in Group.GetValues("PQSCity"))
                 {
-                    PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == pqs);
+                    PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == city);
                     if (mod != null && !PQSList.ContainsKey(mod))
                         PQSList.Add(mod, center);
                 }
-                foreach (string pqs in Group.GetValues("PQSCity2"))
+                foreach (string city2 in Group.GetValues("PQSCity2"))
                 {
-                    PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == pqs);
+                    PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == city2);
                     if (mod != null && !PQSList.ContainsKey(mod))
                         PQSList.Add(mod, center);
                 }
