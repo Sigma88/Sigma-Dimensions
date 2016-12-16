@@ -1,3 +1,10 @@
+**v0.7.4**
+
+- Fixed a bug that made atmoTopLayer apply multiple times
+- Tweaked PQSCity_Groups loader for better compatibility
+- PQSCity_Groups centered on the KSC will be moved if KSC is moved
+
+
 **v0.7.3**
 
 - Time warp limits and other parameters now account for atmoTopLayer
