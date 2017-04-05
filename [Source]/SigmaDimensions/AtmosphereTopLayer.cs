@@ -42,7 +42,7 @@ namespace SigmaDimensionsPlugin
             double maxAltitude = list.Last()[0];
 
             bool smoothEnd = list.Last()[1] == 0 && list.Count > 2;
-            double smoothRange = list.Last()[0] - list[list.Count - 2][0];
+
             if (smoothEnd) list.RemoveAt(list.Count - 1);
 
             if (topLayer > maxAltitude)
@@ -58,7 +58,7 @@ namespace SigmaDimensionsPlugin
 
             if (smoothEnd)
             {
-                Smooth(list, smoothRange);
+                Smooth(list);
             }
 
             curve.Load(WriteCurve(list));
@@ -128,24 +128,24 @@ namespace SigmaDimensionsPlugin
             PrintCurve(list, "Trim");
         }
 
-        void Smooth(List<double[]> list, double smoothRange)
+        void Smooth(List<double[]> list)
         {
-            FloatCurve curve = new FloatCurve();
-            curve.Load(WriteCurve(list));
-            double topLayer = curve.maxTime;
-            double smoothStart = topLayer - smoothRange;
+            double minPressure = list.First()[1];
+            double maxPressure = list.First()[1];
 
-            double[] newKey = { smoothStart, curve.Evaluate((float)smoothStart) };
-            double[] lastKey = { topLayer, 0, 0, 0 };
-
-            for (int i = list.Count; i > 0; i--)
+            for (int i = 0; i < list.Count; i++)
             {
-                if (list[i - 1][0] >= smoothStart)
-                    list.RemoveAt(i - 1);
+				if (list[i][1] < minPressure)
+					minPressure = list[i][1];
+				if (list[i][1] > maxPressure)
+					maxPressure = list[i][1];
             }
 
-            list.Add(newKey);
-            list.Add(lastKey);
+            for (int i = 0; i < list.Count; i++)
+            {
+				list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
+            }
+
 
             // Debug
             PrintCurve(list, "Smooth");
