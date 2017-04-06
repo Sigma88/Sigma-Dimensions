@@ -120,14 +120,13 @@ namespace SigmaDimensionsPlugin
             {
                 if (list[i - 2][0] < topLayer)
                 {
-                    double dY = lastKey[1] - curve.Evaluate((float)(0.99 * lastKey[0] - 0.01 * list[i - 2]));
                     double dX = 0.01 * (lastKey[0] - list[i - 2][0]);
-                    double tangent = dY/dX;
+                    double dY = lastKey[1] - curve.Evaluate((float)(lastKey[0] - dX));
+                    double tangent = dY / dX;
 
                     list.RemoveAt(i - 1);
 
-                    lastKey = { lastKey[0], lastKey[1], tangent, tangent };
-                    list.Add(lastKey);
+                    list.Add(new double[] { lastKey[0], lastKey[1], tangent, tangent });
                     break;
                 }
                 else
@@ -158,6 +157,8 @@ namespace SigmaDimensionsPlugin
 				list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
             }
 
+            list.Last()[2] = 0;
+            list.Last()[3] = 0;
 
             // Debug
             PrintCurve(list, "Smooth");
