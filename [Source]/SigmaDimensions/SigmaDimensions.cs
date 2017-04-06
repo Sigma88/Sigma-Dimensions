@@ -107,18 +107,21 @@ namespace SigmaDimensionsPlugin
 
             if (!pqs.snapToSurface)
             {
-                // Offset = Distance from the center of the planet
+                // Offset = Distance from the radius of the planet
 
                 double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
-                double fromRadius = pqs.alt - (body.Radius / resize);
-                double builtInOffset = fromRadius - groundLevel / (resize * landscape);
 
-                pqs.alt = body.Radius + groundLevel + builtInOffset * resizeBuildings;
+                if (body.ocean && groundLevel < 0)
+                {
+                    groundLevel = 0;
+                }
+
+                double builtInOffset = pqs.alt - groundLevel / (resize * landscape);
+                pqs.alt = groundLevel + builtInOffset * resizeBuildings;
             }
             else
             {
                 // Offset = Distance from the surface of the planet
-
                 pqs.snapHeightOffset *= resizeBuildings;
             }
         }
