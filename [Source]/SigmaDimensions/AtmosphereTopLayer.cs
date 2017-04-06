@@ -118,11 +118,23 @@ namespace SigmaDimensionsPlugin
 
             for (int i = list.Count; i > 0; i--)
             {
-                if (list[i - 1][0] >= topLayer)
-                    list.RemoveAt(i - 1);
-            }
+                if (list[i - 2][0] < topLayer)
+                {
+                    double dY = lastKey[1] - curve.Evaluate((float)(0.99 * lastKey[0] - 0.01 * list[i - 2]));
+                    double dX = 0.01 * (lastKey[0] - list[i - 2][0]);
+                    double tangent = dY/dX;
 
-            list.Add(lastKey);
+                    list.RemoveAt(i - 1);
+
+                    lastKey = { lastKey[0], lastKey[1], tangent, tangent };
+                    list.Add(lastKey);
+                    break;
+                }
+                else
+                {
+                    list.RemoveAt(i - 1);
+                }
+            }
 
             // Debug
             PrintCurve(list, "Trim");
