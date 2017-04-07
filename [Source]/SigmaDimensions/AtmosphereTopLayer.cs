@@ -148,15 +148,15 @@ namespace SigmaDimensionsPlugin
 
             for (int i = 0; i < list.Count; i++)
             {
-				if (list[i][1] < minPressure)
-					minPressure = list[i][1];
-				if (list[i][1] > maxPressure)
-					maxPressure = list[i][1];
+                if (list[i][1] < minPressure)
+                    minPressure = list[i][1];
+                if (list[i][1] > maxPressure)
+                    maxPressure = list[i][1];
             }
 
             for (int i = 0; i < list.Count; i++)
             {
-				list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
+                list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
             }
 
             list.Last()[2] = 0;
