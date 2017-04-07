@@ -92,7 +92,9 @@ namespace SigmaDimensionsPlugin
             {
                 newAltitude += dX;
                 double newPressure = getY(newAltitude, list.Last(), K);
-                double[] newKey = { newAltitude, newPressure };
+                double tangent = (newPressure - getY(newAltitude - dX * 0.01, list.Last(), K)) / (dX * 0.01);
+
+                double[] newKey = { newAltitude, newPressure, tangent, tangent };
 
                 if (newKey[1] < 0)
                 {
