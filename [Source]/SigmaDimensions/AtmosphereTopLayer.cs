@@ -143,6 +143,8 @@ namespace SigmaDimensionsPlugin
 
         void Smooth(List<double[]> list)
         {
+            FloatCurve curve = new FloatCurve();
+            curve.Load(WriteCurve(list));
             double minPressure = list.First()[1];
             double maxPressure = list.First()[1];
 
@@ -157,6 +159,14 @@ namespace SigmaDimensionsPlugin
             for (int i = 0; i < list.Count; i++)
             {
                 list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
+
+                if (i > 0)
+                {
+                    double dX = 0.01 * (list[i][0] - list[i - 1][0]);
+                    double dY = list[i][1] - ((curve.Evaluate((float)(list[i][0] - dX)) - minPressure) * maxPressure / (maxPressure - minPressure));
+                    list[i][2] = dY / dX;
+                    list[i][3] = dY / dX;
+                }
             }
 
             list.Last()[2] = 0;
