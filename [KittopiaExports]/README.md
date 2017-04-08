@@ -1,3 +1,3 @@
-﻿#Kittopia Exports have been moved
+# Kittopia Exports have been moved
 
-Find them here: https://github.com/Kopernicus/kittopia-dumps
+## Find them here: https://github.com/Kopernicus/kittopia-dumps
