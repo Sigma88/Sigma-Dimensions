@@ -34,11 +34,13 @@ namespace SigmaDimensionsPlugin
             {
                 if (light == null)
                 {
-                    light = Array.Find(GameObject.FindGameObjectsWithTag("KSC_Pad_Water_Tower"), o => o.name == "Spotlight")?.GetComponent<Light>();
+                    light = Array.Find((Light[])FindObjectsOfType(typeof(Light)), o => o.name == "Spotlight" && o.tag == "KSC_Pad_Water_Tower");
                 }
                 else
                 {
-                    light.range *= (float)(FlightGlobals.GetHomeBody().Has("resizeBuildings") ? FlightGlobals.GetHomeBody().Get<double>("resizeBuildings") : 1);
+                    if (FlightGlobals.GetHomeBody().Has("resizeBuildings"))
+                        light.range *= (float)(FlightGlobals.GetHomeBody().Get<double>("resizeBuildings"));
+
                     fixLight = false;
                 }
             }
