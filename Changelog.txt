@@ -1,3 +1,12 @@
+**v0.7.5**
+
+- Fixed Atmosphere handling when using atmoTopLayer
+- EVE clouds altitude now account for landscape
+- Changed the way timewarp limits are resized
+- Fixed PQSCity2 altitude resize
+- Fixed KSC Water Tower Light resize
+
+
 **v0.7.4**
 
 - Fixed a bug that made atmoTopLayer apply multiple times
