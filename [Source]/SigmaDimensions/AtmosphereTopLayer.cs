@@ -23,7 +23,7 @@ namespace SigmaDimensionsPlugin
                 Normalize(body, body.atmosphereDepth);
 
                 double topLayer = body.Get<double>("atmoTopLayer") * body.atmosphereDepth;
-                FixPressure(body.atmospherePressureCurve, topLayer);
+                FixPressure(body, topLayer);
                 QuickFix(body.atmosphereTemperatureCurve, topLayer);
                 QuickFix(body.atmosphereTemperatureSunMultCurve, topLayer);
                 FixMaxAltitude(body, topLayer);
@@ -35,9 +35,13 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void FixPressure(FloatCurve curve, double topLayer)
+        void FixPressure(CelestialBody body, double topLayer)
         {
-            List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count < 2) { UnityEngine.Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
+            FloatCurve curve = body.atmospherePressureCurve;
+            List<double[]> list = ReadCurve(curve);
+
+            /* Remove ISP FIX   ==> */ if (body.transform.name == "Kerbin" && list.Count > 0) { list.RemoveAt(0); }
+            /* Avoid Bad Curves ==> */ if (list.Count < 2) { UnityEngine.Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
 
             double maxAltitude = list.Last()[0];
 
@@ -60,6 +64,8 @@ namespace SigmaDimensionsPlugin
             {
                 Smooth(list);
             }
+
+            /* Restore ISP FIX ==> */ if (body.transform.name == "Kerbin") { list.Insert(0, new[] { 0, 101.325, 0, 0, }); }
 
             curve.Load(WriteCurve(list));
         }
