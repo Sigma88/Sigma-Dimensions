@@ -133,7 +133,7 @@ The height of the atmosphere aesthetics is multiplied by this parameter.
 
 - Can be set to any positive number.
 
-Atmosphere depth is multiplied by this parameter. Atmosphere curves are extended/trimmed accordingly.
+Atmosphere height is multiplied by this parameter. Atmosphere curves are extended/trimmed accordingly.
 
 ---
 
