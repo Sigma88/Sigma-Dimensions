@@ -1,3 +1,10 @@
+**v0.7.6**
+
+- Tweaked Atmosphere resize when using atmoTopLayer
+- Fixed LandControl resize
+- Fixed PQS levels for oceans on very small planets
+
+
 **v0.7.5**
 
 - Fixed Atmosphere handling when using atmoTopLayer

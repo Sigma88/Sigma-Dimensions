@@ -23,7 +23,7 @@ namespace SigmaDimensionsPlugin
                 Normalize(body, body.atmosphereDepth);
 
                 double topLayer = body.Get<double>("atmoTopLayer") * body.atmosphereDepth;
-                FixPressure(body.atmospherePressureCurve, topLayer);
+                FixPressure(body, topLayer);
                 QuickFix(body.atmosphereTemperatureCurve, topLayer);
                 QuickFix(body.atmosphereTemperatureSunMultCurve, topLayer);
                 FixMaxAltitude(body, topLayer);
@@ -35,9 +35,13 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void FixPressure(FloatCurve curve, double topLayer)
+        void FixPressure(CelestialBody body, double topLayer)
         {
-            List<double[]> list = ReadCurve(curve); /* Avoid Bad Curves ==> */ if (list.Count < 2) { UnityEngine.Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
+            FloatCurve curve = body.atmospherePressureCurve;
+            List<double[]> list = ReadCurve(curve);
+
+            /* Remove ISP FIX   ==> */ if (body.transform.name == "Kerbin" && list.Count > 0) { list.RemoveAt(0); }
+            /* Avoid Bad Curves ==> */ if (list.Count < 2) { UnityEngine.Debug.Log("SigmaLog: This pressure curve has " + (list.Count == 0 ? "no keys" : "just one key") + ". I don't know what you expect me to do with that."); return; }
 
             double maxAltitude = list.Last()[0];
 
@@ -60,6 +64,8 @@ namespace SigmaDimensionsPlugin
             {
                 Smooth(list);
             }
+
+            /* Restore ISP FIX ==> */ if (body.transform.name == "Kerbin") { list.Insert(0, new[] { 0, 101.325, 0, 0, }); }
 
             curve.Load(WriteCurve(list));
         }
@@ -143,6 +149,8 @@ namespace SigmaDimensionsPlugin
 
         void Smooth(List<double[]> list)
         {
+            FloatCurve curve = new FloatCurve();
+            curve.Load(WriteCurve(list));
             double minPressure = list.First()[1];
             double maxPressure = list.First()[1];
 
@@ -157,6 +165,14 @@ namespace SigmaDimensionsPlugin
             for (int i = 0; i < list.Count; i++)
             {
                 list[i][1] = (list[i][1] - minPressure) * maxPressure / (maxPressure - minPressure);
+
+                if (i > 0)
+                {
+                    double dX = 0.01 * (list[i][0] - list[i - 1][0]);
+                    double dY = list[i][1] - ((curve.Evaluate((float)(list[i][0] - dX)) - minPressure) * maxPressure / (maxPressure - minPressure));
+                    list[i][2] = dY / dX;
+                    list[i][3] = dY / dX;
+                }
             }
 
             list.Last()[2] = 0;
