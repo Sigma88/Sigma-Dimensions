@@ -85,6 +85,14 @@ CUSTOM:    buildings size is multiplied by this parameter.
 
 ---
 
+# groundTiling (default value = 1)
+
+- Can be set to any positive number.
+
+Ground textures tiling is multiplied by this parameter.
+
+---
+
 # CustomSoISize (default value = 0)
 
 - Enabled if set to a positive number.
@@ -121,19 +129,19 @@ Surface temperature is multiplied by this parameter.
 
 ---
 
-# atmoVisualEffect (default value = 1)
-
-- Can be set to any positive number.
-
-The height of the atmosphere aesthetics is multiplied by this parameter.
-
----
-
 # atmoTopLayer (default value = 1)
 
 - Can be set to any positive number.
 
 Atmosphere height is multiplied by this parameter. Atmosphere curves are extended/trimmed accordingly.
+
+---
+
+# atmoVisualEffect (default value = 1)
+
+- Can be set to any positive number.
+
+The height of the atmosphere aesthetics is multiplied by this parameter.
 
 ---
 
