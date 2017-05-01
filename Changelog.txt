@@ -1,3 +1,9 @@
+**v0.7.7**
+
+- Added the parameter groundTiling
+- Ground textures tiling is now off by default and can be changed using groundTiling
+
+
 **v0.7.6**
 
 - Tweaked Atmosphere resize when using atmoTopLayer
