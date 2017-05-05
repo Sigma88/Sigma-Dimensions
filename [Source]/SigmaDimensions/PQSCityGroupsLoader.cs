@@ -10,16 +10,15 @@ namespace SigmaDimensionsPlugin
     public class PQSCityGroups : MonoBehaviour
     {
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
-        public static List<ConfigNode> ExternalGroups = new List<ConfigNode>();
-
+        public static Dictionary<string[], List<object>> ExternalGroups = new Dictionary<string[], List<object>>();
+        
         void Start()
         {
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
-                AddGroups(GroupsLoader.GetNodes("Group"));
+                AddGroups(GroupsLoader.GetNodes("GROUP"));
             }
-            AddGroups(ExternalGroups.ToArray());
-
+            
             SaveGroups();
         }
 
@@ -38,61 +37,180 @@ namespace SigmaDimensionsPlugin
 
         void SaveGroups()
         {
+            // LOAD SD GROUPS
             foreach (ConfigNode Group in GroupsList.Values)
             {
                 string name = Group.GetValue("name");
-                CelestialBody body = FlightGlobals.Bodies.First(b => b.transform.name == Group.GetValue("body"));
+                CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(name) || body == null) continue;
 
-                Vector3Parser center = new Vector3Parser();
-                if (Group.HasValue("CentralPQSCity"))
+                // Find Group Center
+                Vector3Parser center = null;
+
+                if (Group.HasNode("CENTER"))
                 {
-                    center = body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == Group.GetValue("CentralPQSCity")).repositionRadial;
+                    ConfigNode C = Group.GetNode("CENTER");
+
+                    if (C.HasValue("CentralPQSCity"))
+                    {
+                        if (body == FlightGlobals.GetHomeBody() && C.GetValue("CentralPQSCity") == "KSC")
+                            center = new Vector3(157000, -1000, -570000);
+                    }
+
+                    if (center == null)
+                        center = GetCenter(C, body);
                 }
-                else if (Group.HasValue("CentralPQSCity2"))
-                {
-                    center = (Vector3)body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == Group.GetValue("CentralPQSCity2")).PlanetRelativePosition;
-                }
-                else if (Group.HasValue("CentralPosition"))
-                {
-                    center.SetFromString(Group.GetValue("CentralPosition"));
-                }
-                else if (Group.HasValue("CentralLAT") && Group.HasValue("CentralLON"))
-                {
-                    EnumParser<double> LAT = new EnumParser<double>();
-                    EnumParser<double> LON = new EnumParser<double>();
-                    LAT.SetFromString(Group.GetValue("CentralLAT"));
-                    LON.SetFromString(Group.GetValue("CentralLON"));
-                    center = Utility.LLAtoECEF(LAT, LON, 1, 1);
-                }
-                else if (Group.HasValue("PQSCity"))
-                {
-                    center = body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == Group.GetValue("PQSCity")).repositionRadial;
-                }
-                else if (Group.HasValue("PQSCity2"))
-                {
-                    center = (Vector3)body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == Group.GetValue("CentralPQSCity2")).PlanetRelativePosition;
-                }
-                else continue;
 
                 if (!body.Has("PQSCityGroups"))
                     body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
 
-                foreach (string city in Group.GetValues("PQSCity"))
+                if (Group.HasNode("MODS"))
                 {
-                    PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == city);
-                    if (mod != null && !PQSList.ContainsKey(mod))
-                        PQSList.Add(mod, center);
+                    ConfigNode M = Group.GetNode("MODS");
+
+                    foreach (string city in M.GetValues("PQSCity"))
+                    {
+                        PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == city);
+
+                        if (mod != null)
+                        {
+                            if (center == null)
+                                center = mod.repositionRadial;
+                            if (!PQSList.ContainsKey(mod))
+                                PQSList.Add(mod, center);
+                        }
+                    }
+                    foreach (string city2 in M.GetValues("PQSCity2"))
+                    {
+                        PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == city2);
+
+                        if (mod != null)
+                        {
+                            if (center == null)
+                                center = (Vector3)mod.PlanetRelativePosition;
+                            if (!PQSList.ContainsKey(mod))
+                                PQSList.Add(mod, center);
+                        }
+                    }
                 }
-                foreach (string city2 in Group.GetValues("PQSCity2"))
+
+                if (center == null) continue;
+
+
+                // ADD EXTERNAL MODS TO THIS GROUP
+                string[] group = new[] { body.name, name };
+                if (ExternalGroups.ContainsKey(group))
                 {
-                    PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == city2);
-                    if (mod != null && !PQSList.ContainsKey(mod))
-                        PQSList.Add(mod, center);
+                    foreach (object mod in ExternalGroups[group])
+                    {
+                        if (!PQSList.ContainsKey(mod))
+                            PQSList.Add(mod, center);
+                    }
+                    ExternalGroups.Remove(group);
                 }
+
+                body.Set("PQSCityGroups", PQSList);
+
+
+                // ADD THIS GROUP TO THE MOVE LIST
+
+                if (Group.HasNode("MOVE"))
+                {
+                    ConfigNode C2 = Group.GetNode("MOVE");
+                    Vector3? newCenter = GetCenter(C2, body);
+
+                    if (newCenter == null) continue;
+                    Vector3[] keys = new Vector3[] { center, (Vector3)newCenter };
+
+
+                    NumericParser<double>[] values = new[] { 0, 0, new NumericParser<double>() };
+                    values[2].SetFromString("-Infinity");
+
+                    if (C2.HasValue("Rotate"))
+                        values[0].SetFromString(C2.GetValue("Rotate"));
+                    if (C2.HasValue("fixAltitude"))
+                        values[1].SetFromString(C2.GetValue("fixAltitude"));
+                    if (C2.HasValue("originalAltitude"))
+                        values[2].SetFromString(C2.GetValue("originalAltitude"));
+                    
+
+                    if (!body.Has("PQSCityGroupsMove"))
+                        body.Set("PQSCityGroupsMove", new Dictionary<Vector3[], NumericParser<double>[]>());
+                    Dictionary<Vector3[], NumericParser<double>[]> MoveList = body.Get<Dictionary<Vector3[], NumericParser<double>[]>>("PQSCityGroupsMove");
+
+
+                    if (!MoveList.ContainsKey(keys))
+                        MoveList.Add(keys, values);
+
+                    body.Set("PQSCityGroupsMove", MoveList);
+                }
+            }
+
+
+            // LOAD REMAINING EXTERNAL GROUPS
+
+            foreach (string[] group in ExternalGroups.Keys)
+            {
+                string name = group[1];
+                CelestialBody body = FlightGlobals.Bodies.First(b => b.name == group[0]);
+                if (string.IsNullOrEmpty(name) || body == null || ExternalGroups[group].Count == 0) continue;
+
+                // Since these groups are new they don't have a center
+                // Define the center as the position of the first mod in the array
+                Vector3? center = null;
+                center = GetPosition(ExternalGroups[group][0]);
+                if (center == null) continue;
+
+                if (!body.Has("PQSCityGroups"))
+                    body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
+                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
+
+                foreach (object mod in ExternalGroups[group])
+                {
+                    if (!PQSList.ContainsKey(mod))
+                        PQSList.Add(mod, (Vector3)center);
+                }
+
                 body.Set("PQSCityGroups", PQSList);
             }
+        }
+
+        Vector3? GetCenter(ConfigNode node, CelestialBody body)
+        {
+            if (node.HasValue("CentralPQSCity"))
+            {
+                return body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == node.GetValue("CentralPQSCity")).repositionRadial;
+            }
+            else if (node.HasValue("CentralPQSCity2"))
+            {
+                return body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == node.GetValue("CentralPQSCity2")).PlanetRelativePosition;
+            }
+            else if (node.HasValue("CentralPosition"))
+            {
+                Vector3Parser v = new Vector3Parser();
+                v.SetFromString(node.GetValue("CentralPosition"));
+                return v;
+            }
+            else if (node.HasValue("CentralLAT") && node.HasValue("CentralLON"))
+            {
+                NumericParser<double> LAT = new NumericParser<double>();
+                NumericParser<double> LON = new NumericParser<double>();
+                LAT.SetFromString(node.GetValue("CentralLAT"));
+                LON.SetFromString(node.GetValue("CentralLON"));
+                return Utility.LLAtoECEF(LAT, LON, 1, 1);
+            }
+            else return null;
+        }
+
+        Vector3? GetPosition(object mod)
+        {
+            string type = mod.GetType().ToString();
+            if (type == "PQSCity")
+                return ((PQSCity)mod).repositionRadial;
+            else if (type == "PQSCity2")
+                return ((PQSCity2)mod).PlanetRelativePosition;
+            else return null;
         }
     }
 }
