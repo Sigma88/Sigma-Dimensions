@@ -10,7 +10,7 @@ namespace SigmaDimensionsPlugin
     public class PQSCityGroups : MonoBehaviour
     {
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
-        public static Dictionary<string[], List<object>> ExternalGroups = new Dictionary<string[], List<object>>();
+        public static Dictionary<string, Dictionary<string, List<object>>> ExternalGroups = new Dictionary<string, Dictionary<string, List<object>>>();
         
         void Start()
         {
@@ -99,15 +99,13 @@ namespace SigmaDimensionsPlugin
 
 
                 // ADD EXTERNAL MODS TO THIS GROUP
-                string[] group = new[] { body.name, name };
-                if (ExternalGroups.ContainsKey(group))
+                if (ExternalGroups.ContainsKey(body.name) && ExternalGroups[body.name].ContainsKey(name))
                 {
-                    foreach (object mod in ExternalGroups[group])
+                    foreach (object mod in ExternalGroups[body.name][name])
                     {
                         if (!PQSList.ContainsKey(mod))
                             PQSList.Add(mod, center);
                     }
-                    ExternalGroups.Remove(group);
                 }
 
                 body.Set("PQSCityGroups", PQSList);
@@ -153,30 +151,31 @@ namespace SigmaDimensionsPlugin
 
 
             // LOAD REMAINING EXTERNAL GROUPS
-
-            foreach (string[] group in ExternalGroups.Keys)
+            foreach (string planet in ExternalGroups.Keys)
             {
-                string name = group[1];
-                CelestialBody body = FlightGlobals.Bodies.First(b => b.name == group[0]);
-                if (string.IsNullOrEmpty(name) || body == null || ExternalGroups[group].Count == 0) continue;
-
-                // Since these groups are new they don't have a center
-                // Define the center as the position of the first mod in the array
-                Vector3? center = null;
-                center = GetPosition(ExternalGroups[group][0]);
-                if (center == null) continue;
-
-                if (!body.Has("PQSCityGroups"))
-                    body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
-                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
-
-                foreach (object mod in ExternalGroups[group])
+                foreach (string group in ExternalGroups[planet].Keys)
                 {
-                    if (!PQSList.ContainsKey(mod))
-                        PQSList.Add(mod, (Vector3)center);
-                }
+                    CelestialBody body = FlightGlobals.Bodies.FirstOrDefault(b => b.name == planet);
+                    if (body == null || ExternalGroups[planet][group].Count == 0) continue;
 
-                body.Set("PQSCityGroups", PQSList);
+                    // Since these groups are new they don't have a center
+                    // Define the center as the position of the first mod in the array
+                    Vector3? center = null;
+                    center = GetPosition(ExternalGroups[planet][group][0]);
+                    if (center == null) continue;
+
+                    if (!body.Has("PQSCityGroups"))
+                        body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
+                    Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
+
+                    foreach (object mod in ExternalGroups[planet][group])
+                    {
+                        if (!PQSList.ContainsKey(mod))
+                            PQSList.Add(mod, (Vector3)center);
+                    }
+
+                    body.Set("PQSCityGroups", PQSList);
+                }
             }
         }
 
