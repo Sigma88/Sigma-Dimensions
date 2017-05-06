@@ -11,6 +11,7 @@ namespace SigmaDimensionsPlugin
     {
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
         public static Dictionary<string, Dictionary<string, List<object>>> ExternalGroups = new Dictionary<string, Dictionary<string, List<object>>>();
+        public static List<Vector3> debug = new List<Vector3>();
 
         void Start()
         {
@@ -40,9 +41,20 @@ namespace SigmaDimensionsPlugin
             // LOAD SD GROUPS
             foreach (ConfigNode Group in GroupsList.Values)
             {
+                Debug.debug = false;
+                if (Group.HasValue("debug"))
+                {
+                    NumericParser<bool> log = new NumericParser<bool>();
+                    log.SetFromString(Group.GetValue("debug"));
+                    if (log.value)
+                        Debug.debug = true;
+                }
+
                 string name = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(name) || body == null) continue;
+                Debug.Log("Planet name = " + body.name + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
+                Debug.Log("Group name = " + name);
 
 
                 // FIND GROUP CENTER
@@ -70,33 +82,36 @@ namespace SigmaDimensionsPlugin
                 {
                     ConfigNode M = Group.GetNode("MODS");
 
+                    if (center == null)
+                        center = GetCenter(M, body);
+                    if (center == null) continue;
+                    if (Debug.debug && !debug.Contains(center)) debug.Add(center);
+                    Debug.Log("Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+
+                    // ADD PQS MODS TO THE GROUP
+
                     foreach (string city in M.GetValues("PQSCity"))
                     {
                         PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == city);
 
                         if (mod != null)
                         {
-                            if (center == null)
-                                center = mod.repositionRadial;
-                            if (!PQSList.ContainsKey(mod))
-                                PQSList.Add(mod, center);
+                            if (PQSList.ContainsKey(mod)) continue;
+
+                            PQSList.Add(mod, center);
+                            Debug.Log("    PQSCity  >>> " + mod.name);
                         }
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
                     {
                         PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == city2);
 
-                        if (mod != null)
-                        {
-                            if (center == null)
-                                center = (Vector3)mod.PlanetRelativePosition;
-                            if (!PQSList.ContainsKey(mod))
-                                PQSList.Add(mod, center);
-                        }
+                        if (PQSList.ContainsKey(mod)) continue;
+
+                        PQSList.Add(mod, center);
+                        Debug.Log("    PQSCity2 >>> " + mod.name);
                     }
                 }
-
-                if (center == null) continue;
 
 
                 // ADD EXTERNAL MODS TO THIS GROUP
@@ -104,8 +119,10 @@ namespace SigmaDimensionsPlugin
                 {
                     foreach (object mod in ExternalGroups[body.name][name])
                     {
-                        if (!PQSList.ContainsKey(mod))
-                            PQSList.Add(mod, center);
+                        if (PQSList.ContainsKey(mod)) continue;
+
+                        PQSList.Add(mod, center);
+                        Debug.Log("    external >>> " + mod);
                     }
                 }
 
@@ -119,27 +136,29 @@ namespace SigmaDimensionsPlugin
                     Vector3? newCenter = GetCenter(C2, body);
 
                     if (newCenter == null) continue;
-                    Vector3[] keys = new Vector3[] { center, (Vector3)newCenter };
+                    Debug.Log("Move Group to position = " + newCenter.Value + ", (LAT: " + new SigmaDimensions.LatLon(newCenter.Value).lat + ", LON: " + new SigmaDimensions.LatLon(newCenter.Value).lon + ")");
 
-
-                    NumericParser<double>[] values = new[] { 0, 0, new NumericParser<double>() };
-                    values[2].SetFromString("-Infinity");
+                    var info = new KeyValuePair<Vector3[], NumericParser<double>[]>(new[] { center.value, (Vector3)newCenter }, new[] { 0, 0, new NumericParser<double>() });
 
                     if (C2.HasValue("Rotate"))
-                        values[0].SetFromString(C2.GetValue("Rotate"));
+                        info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("Rotate group = " + info.Value[0].value);
                     if (C2.HasValue("fixAltitude"))
-                        values[1].SetFromString(C2.GetValue("fixAltitude"));
+                        info.Value[1].SetFromString(C2.GetValue("fixAltitude")); Debug.Log("Fix group altitude = " + info.Value[1].value);
                     if (C2.HasValue("originalAltitude"))
-                        values[2].SetFromString(C2.GetValue("originalAltitude"));
-
+                        info.Value[2].SetFromString(C2.GetValue("originalAltitude"));
+                    else
+                        info.Value[2].SetFromString("-Infinity"); Debug.Log("Original group altitude = " + (info.Value[2].value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].value.ToString()));
+                    
 
                     if (!body.Has("PQSCityGroupsMove"))
-                        body.Set("PQSCityGroupsMove", new Dictionary<Vector3[], NumericParser<double>[]>());
-                    Dictionary<Vector3[], NumericParser<double>[]> MoveList = body.Get<Dictionary<Vector3[], NumericParser<double>[]>>("PQSCityGroupsMove");
+                        body.Set("PQSCityGroupsMove", new Dictionary<string, Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>>());
+                    var MoveList = body.Get<Dictionary<string, Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>>>("PQSCityGroupsMove");
 
 
-                    if (!MoveList.ContainsKey(keys))
-                        MoveList.Add(keys, values);
+                    if (!MoveList.ContainsKey(body.name))
+                        MoveList.Add(body.name, new Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>());
+                    if (!MoveList[body.name].ContainsKey(name))
+                        MoveList[body.name].Add(name, info);
 
                     body.Set("PQSCityGroupsMove", MoveList);
                 }
@@ -198,6 +217,14 @@ namespace SigmaDimensionsPlugin
                 LAT.SetFromString(node.GetValue("CentralLAT"));
                 LON.SetFromString(node.GetValue("CentralLON"));
                 return Utility.LLAtoECEF(LAT, LON, 1, 1);
+            }
+            else if (node.HasValue("PQSCity"))
+            {
+                return body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(p => p.name == node.GetValue("PQSCity")).repositionRadial;
+            }
+            else if (node.HasValue("PQSCity2"))
+            {
+                return body.GetComponentsInChildren<PQSCity2>(true).First(p => p.name == node.GetValue("PQSCity2")).PlanetRelativePosition;
             }
             else return null;
         }
