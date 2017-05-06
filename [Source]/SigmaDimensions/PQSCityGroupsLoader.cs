@@ -111,7 +111,11 @@ namespace SigmaDimensionsPlugin
                 }
 
                 body.Set("PQSCityGroups", PQSList);
-
+                Debug.debug = true;
+                foreach(object k in PQSList.Keys)
+                {
+                    Debug.Log(k + " >>> " + PQSList[k]);
+                }
 
                 // ADD THIS GROUP TO THE MOVE LIST
 
