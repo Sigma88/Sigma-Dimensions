@@ -44,8 +44,7 @@ namespace SigmaDimensionsPlugin
 
         void CityFixer(PQSCity pqs)
         {
-            Debug.debug = PQSCityGroups.debug.Contains(pqs.repositionRadial);
-            Debug.Log("    > PQSCity: " + pqs.name);
+            Debug.debug = false;
 
             // Resize the Building
             pqs.transform.localScale *= (float)resizeBuildings;
@@ -149,7 +148,7 @@ namespace SigmaDimensionsPlugin
             }
             else if (body.Has("PQSCityGroupsMove"))
             {
-                var MovesInfo = body.Get<Dictionary<string, Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>>> ("PQSCityGroupsMove");
+                var MovesInfo = body.Get<Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>> ("PQSCityGroupsMove");
 
                 if (MovesInfo.ContainsKey(body.name) && MovesInfo[body.name].ContainsKey(name))
                 {
