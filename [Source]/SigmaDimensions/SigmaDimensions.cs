@@ -140,6 +140,8 @@ namespace SigmaDimensionsPlugin
         void GroupFixer(object mod, Vector3 REFvector)
         {
             // Moves the group
+            Vector3 PQSposition = ((Vector3)GetPosition(mod));
+
             if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
             {
                 PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
@@ -148,20 +150,19 @@ namespace SigmaDimensionsPlugin
             }
             else if (body.Has("PQSCityGroupsMove"))
             {
-                var MovesInfo = body.Get<Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>> ("PQSCityGroupsMove");
+                var MovesInfo = body.Get<Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>>("PQSCityGroupsMove");
 
-                if (MovesInfo.ContainsKey(body.name) && MovesInfo[body.name].ContainsKey(name))
+                if (MovesInfo.ContainsKey(PQSposition))
                 {
-                    var info = MovesInfo[body.name][name];
-                    MoveGroup(mod, info.Key[1], (float)info.Value[0], info.Value[1], info.Value[2]);
-                    REFvector = info.Key[1]; // Change the REFvector the the new position for Lerping
+                    var info = MovesInfo[PQSposition];
+                    MoveGroup(mod, info.Key, (float)info.Value[0], info.Value[1], info.Value[2]);
+                    REFvector = info.Key; // Change the REFvector the the new position for Lerping
                 }
             }
 
 
             // Spread or Shrinks the group to account for Resize
-            Vector3 PQSvector = ((Vector3)GetPosition(mod)).normalized;
-            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector.normalized, PQSvector, (float)(resizeBuildings / resize));
+            Vector3 NEWvector = Vector3.LerpUnclamped(REFvector.normalized, PQSposition.normalized, (float)(resizeBuildings / resize));
             SetPosition(mod, NEWvector);
             Debug.Log("        > Mod lerped position = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
         }

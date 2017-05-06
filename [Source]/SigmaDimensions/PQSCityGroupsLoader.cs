@@ -138,7 +138,8 @@ namespace SigmaDimensionsPlugin
                     if (newCenter == null) continue;
                     Debug.Log("Move Group to position = " + newCenter.Value + ", (LAT: " + new SigmaDimensions.LatLon(newCenter.Value).lat + ", LON: " + new SigmaDimensions.LatLon(newCenter.Value).lon + ")");
 
-                    var info = new KeyValuePair<Vector3[], NumericParser<double>[]>(new[] { center.value, (Vector3)newCenter }, new[] { 0, 0, new NumericParser<double>() });
+
+                    var info = new KeyValuePair<Vector3, NumericParser<double>[]>((Vector3)newCenter, new[] { 0, 0, new NumericParser<double>() });
 
                     if (C2.HasValue("Rotate"))
                         info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("Rotate group = " + info.Value[0].value);
@@ -151,14 +152,11 @@ namespace SigmaDimensionsPlugin
                     
 
                     if (!body.Has("PQSCityGroupsMove"))
-                        body.Set("PQSCityGroupsMove", new Dictionary<string, Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>>());
-                    var MoveList = body.Get<Dictionary<string, Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>>>("PQSCityGroupsMove");
-
-
-                    if (!MoveList.ContainsKey(body.name))
-                        MoveList.Add(body.name, new Dictionary<string, KeyValuePair<Vector3[], NumericParser<double>[]>>());
-                    if (!MoveList[body.name].ContainsKey(name))
-                        MoveList[body.name].Add(name, info);
+                        body.Set("PQSCityGroupsMove", new Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>());
+                    var MoveList = body.Get<Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>>("PQSCityGroupsMove");
+                    
+                    if (!MoveList.ContainsKey(center.value))
+                        MoveList.Add(center.value, info);
 
                     body.Set("PQSCityGroupsMove", MoveList);
                 }
