@@ -11,14 +11,14 @@ namespace SigmaDimensionsPlugin
     {
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
         public static Dictionary<string, Dictionary<string, List<object>>> ExternalGroups = new Dictionary<string, Dictionary<string, List<object>>>();
-        
+
         void Start()
         {
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
                 AddGroups(GroupsLoader.GetNodes("GROUP"));
             }
-            
+
             SaveGroups();
         }
 
@@ -44,7 +44,8 @@ namespace SigmaDimensionsPlugin
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(name) || body == null) continue;
 
-                // Find Group Center
+
+                // FIND GROUP CENTER
                 Vector3Parser center = null;
 
                 if (Group.HasNode("CENTER"))
@@ -109,14 +110,9 @@ namespace SigmaDimensionsPlugin
                 }
 
                 body.Set("PQSCityGroups", PQSList);
-                Debug.debug = true;
-                foreach(object k in PQSList.Keys)
-                {
-                    Debug.Log(k + " >>> " + PQSList[k]);
-                }
+
 
                 // ADD THIS GROUP TO THE MOVE LIST
-
                 if (Group.HasNode("MOVE"))
                 {
                     ConfigNode C2 = Group.GetNode("MOVE");
@@ -135,7 +131,7 @@ namespace SigmaDimensionsPlugin
                         values[1].SetFromString(C2.GetValue("fixAltitude"));
                     if (C2.HasValue("originalAltitude"))
                         values[2].SetFromString(C2.GetValue("originalAltitude"));
-                    
+
 
                     if (!body.Has("PQSCityGroupsMove"))
                         body.Set("PQSCityGroupsMove", new Dictionary<Vector3[], NumericParser<double>[]>());

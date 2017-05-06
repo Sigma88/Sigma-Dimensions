@@ -125,7 +125,12 @@ namespace SigmaDimensionsPlugin
         void GroupFixer(object mod, Vector3 REFvector)
         {
             // Moves the group
-            if (body.Has("PQSCityGroupsMove"))
+            if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
+            {
+                PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
+                MoveGroup(mod, KSC.repositionRadial, KSC.reorientFinalAngle - (-15), 0, 64.7846885412);
+            }
+            else if (body.Has("PQSCityGroupsMove"))
             {
                 Dictionary<Vector3[], EnumParser<double>[]> MovesInfo = body.Get<Dictionary<Vector3[], EnumParser<double>[]>>("PQSCityGroupsMove");
 
@@ -133,15 +138,7 @@ namespace SigmaDimensionsPlugin
 
                 if (vectors != null)
                 {
-                    if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
-                    {
-                        PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
-                        MoveGroup(mod, KSC.repositionRadial, KSC.reorientFinalAngle - (-15), 0, 64.7846885412);
-                    }
-                    else
-                    {
-                        MoveGroup(mod, vectors[1], (float)MovesInfo[vectors][0], MovesInfo[vectors][1], MovesInfo[vectors][2]);
-                    }
+                    MoveGroup(mod, vectors[1], (float)MovesInfo[vectors][0], MovesInfo[vectors][1], MovesInfo[vectors][2]);
                 }
             }
 
