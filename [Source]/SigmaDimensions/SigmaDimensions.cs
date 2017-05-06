@@ -39,12 +39,10 @@ namespace SigmaDimensionsPlugin
         void CityFixer(PQSCity pqs)
         {
             // Resize the Building
-
             pqs.transform.localScale *= (float)resizeBuildings;
 
 
             // Fix PQSCity Groups
-
             if (body.Has("PQSCityGroups"))
             {
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
@@ -54,7 +52,6 @@ namespace SigmaDimensionsPlugin
 
 
             // Fix Altitude
-
             double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
 
             if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
@@ -71,7 +68,6 @@ namespace SigmaDimensionsPlugin
                 // Offset = Distance from the radius of the planet
 
                 double builtInOffset = pqs.repositionRadiusOffset - groundLevel / (resize * landscape);
-
                 pqs.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
             }
             else if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight)
@@ -85,12 +81,10 @@ namespace SigmaDimensionsPlugin
         void City2Fixer(PQSCity2 pqs)
         {
             // Resize the Building
-
             pqs.transform.localScale *= (float)resizeBuildings;
 
 
             // Fix PQSCity Groups
-
             if (body.Has("PQSCityGroups"))
             {
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
@@ -100,7 +94,6 @@ namespace SigmaDimensionsPlugin
 
 
             // Fix Altitude
-
             if (!pqs.snapToSurface)
             {
                 // Offset = Distance from the radius of the planet
@@ -108,9 +101,7 @@ namespace SigmaDimensionsPlugin
                 double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
 
                 if (body.ocean && groundLevel < 0)
-                {
                     groundLevel = 0;
-                }
 
                 double builtInOffset = pqs.alt - groundLevel / (resize * landscape);
                 pqs.alt = groundLevel + builtInOffset * resizeBuildings;
@@ -118,6 +109,7 @@ namespace SigmaDimensionsPlugin
             else
             {
                 // Offset = Distance from the surface of the planet
+
                 pqs.snapHeightOffset *= resizeBuildings;
             }
         }
@@ -129,6 +121,7 @@ namespace SigmaDimensionsPlugin
             {
                 PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
                 MoveGroup(mod, KSC.repositionRadial, KSC.reorientFinalAngle - (-15), 0, 64.7846885412);
+                REFvector = KSC.repositionRadial;
             }
             else if (body.Has("PQSCityGroupsMove"))
             {
@@ -139,8 +132,10 @@ namespace SigmaDimensionsPlugin
                 if (vectors != null)
                 {
                     MoveGroup(mod, vectors[1], (float)MovesInfo[vectors][0], MovesInfo[vectors][1], MovesInfo[vectors][2]);
+                    REFvector = vectors[1];
                 }
             }
+
 
             // Spread or Shrinks the group to account for Resize
             Vector3 PQSvector = ((Vector3)GetPosition(mod)).normalized;
@@ -184,8 +179,9 @@ namespace SigmaDimensionsPlugin
 
             // Fix Altitude
             if (originalAltitude == double.NegativeInfinity)
-                originalAltitude = body.pqsController.GetSurfaceHeight(origin.vector) - body.Radius;
+                originalAltitude = (body.pqsController.GetSurfaceHeight(origin.vector) - body.Radius) / (resize * landscape);
             FixAltitude(mod, (body.pqsController.GetSurfaceHeight(target.vector) - body.Radius) / (resize * landscape) - originalAltitude + fixAltitude);
+            Debug.Log("SigmaLog: mod altitude = " + ((PQSCity)mod).repositionRadiusOffset);
         }
 
         Vector3? GetPosition(object mod)
@@ -279,15 +275,15 @@ namespace SigmaDimensionsPlugin
                 v = Utility.LLAtoECEF(data[0], data[1], 0, data[2]);
             }
 
-            public LatLon() //LLA()
+            public LatLon()
             {
             }
 
-            public LatLon(Vector3 input)//LLA(Vector3 input)
+            public LatLon(Vector3 input)
             {
                 vector = input;
             }
-            public LatLon(LatLon input)//LLA(LatLon input)
+            public LatLon(LatLon input)
             {
                 data[0] = input.lat;
                 data[1] = input.lon;
