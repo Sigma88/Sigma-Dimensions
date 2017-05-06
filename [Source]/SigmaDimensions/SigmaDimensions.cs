@@ -20,8 +20,9 @@ namespace SigmaDimensionsPlugin
             Debug.debug = false; // Reset Debug
             Debug.debug = (PQSCityGroups.debug.Count > 0); Debug.Log(">>> Sigma Dimensions Log <<<");
 
-            foreach (CelestialBody body in FlightGlobals.Bodies)
+            foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
+                body = cb; // DON'T CHANGE THIS (body is public and required by other methods)
                 Debug.debug = (PQSCityGroups.debug.Count > 0);
                 Debug.Log("> Planet: " + body.name);
 
@@ -36,7 +37,6 @@ namespace SigmaDimensionsPlugin
 
                 foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
                 {
-                    Debug.Log("    > PQSCity2: " + mod.name);
                     City2Fixer(mod);
                 }
             }
