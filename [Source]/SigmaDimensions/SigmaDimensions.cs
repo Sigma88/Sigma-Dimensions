@@ -18,7 +18,7 @@ namespace SigmaDimensionsPlugin
         void Start()
         {
             Debug.debug = false; // Reset Debug
-            Debug.debug = (PQSCityGroups.debug.Count > 0); Debug.Log(">>> Sigma Dimensions Log <<<");
+            Debug.debug = (PQSCityGroups.debug.Count > 0); Debug.Log(">>> Sigma Dimensions Log: PQSCityGroups <<<");
 
             foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
