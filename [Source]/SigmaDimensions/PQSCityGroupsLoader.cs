@@ -53,8 +53,8 @@ namespace SigmaDimensionsPlugin
                 string name = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(name) || body == null) continue;
-                Debug.Log("Planet name = " + body.name + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
-                Debug.Log("Group name = " + name);
+                Debug.Log("> Planet: " + body.name + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
+                Debug.Log("    > Group: " + name);
 
 
                 // FIND GROUP CENTER
@@ -84,9 +84,11 @@ namespace SigmaDimensionsPlugin
 
                     if (center == null)
                         center = GetCenter(M, body);
+                    if (ExternalGroups.ContainsKey(body.name) && ExternalGroups[body.name].ContainsKey(name))
+                        center = GetPosition(ExternalGroups[body.name][name][0]);
                     if (center == null) continue;
                     if (Debug.debug && !debug.Contains(center)) debug.Add(center);
-                    Debug.Log("Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+                    Debug.Log("         > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
 
                     // ADD PQS MODS TO THE GROUP
 
@@ -99,7 +101,7 @@ namespace SigmaDimensionsPlugin
                             if (PQSList.ContainsKey(mod)) continue;
 
                             PQSList.Add(mod, center);
-                            Debug.Log("    PQSCity  >>> " + mod.name);
+                            Debug.Log("              > PQSCity:  " + mod.name);
                         }
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
@@ -109,7 +111,7 @@ namespace SigmaDimensionsPlugin
                         if (PQSList.ContainsKey(mod)) continue;
 
                         PQSList.Add(mod, center);
-                        Debug.Log("    PQSCity2 >>> " + mod.name);
+                        Debug.Log("              > PQSCity2: " + mod.name);
                     }
                 }
 
@@ -122,7 +124,7 @@ namespace SigmaDimensionsPlugin
                         if (PQSList.ContainsKey(mod)) continue;
 
                         PQSList.Add(mod, center);
-                        Debug.Log("    external >>> " + mod);
+                        Debug.Log("              > external: " + mod);
                     }
                 }
 
