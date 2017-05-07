@@ -217,7 +217,7 @@ namespace SigmaDimensionsPlugin
                 originalAltitude = (body.pqsController.GetSurfaceHeight(origin.vector) - body.Radius) / (resize * landscape);
             Debug.Log("         > Mod original altitude = " + originalAltitude);
 
-            FixAltitude(mod, (body.pqsController.GetSurfaceHeight(target.vector) - body.Radius) / (resize * landscape) - originalAltitude + fixAltitude);
+            FixAltitude(mod, (body.pqsController.GetSurfaceHeight(target.vector) - body.Radius) / (resize * landscape) - originalAltitude, fixAltitude);
         }
 
         Vector3? GetPosition(object mod)
@@ -243,21 +243,31 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void FixAltitude(object mod, double fixAltitude)
+        void FixAltitude(object mod, double terrainShift , double fixAltitude)
         {
             string type = mod.GetType().ToString();
             if (type == "PQSCity")
             {
                 PQSCity pqs = (PQSCity)mod;
                 if (!pqs.repositionToSphereSurface || !pqs.repositionToSphereSurfaceAddHeight)
-                    pqs.repositionRadiusOffset += fixAltitude;
+                    pqs.repositionRadiusOffset += terrainShift;
+
+                pqs.repositionRadiusOffset += fixAltitude;
                 Debug.Log("         > Fixed repositionRadiusOffset = " + pqs.repositionRadiusOffset);
             }
             else if (type == "PQSCity2")
             {
                 PQSCity2 pqs = (PQSCity2)mod;
-                if (!pqs.snapToSurface)
-                    pqs.alt += fixAltitude;
+                if (pqs.snapToSurface)
+                {
+                    pqs.snapHeightOffset += fixAltitude;
+                    Debug.Log("         > Fixed snapHeightOffset = " + pqs.snapHeightOffset);
+                }
+                else
+                {
+                    pqs.alt += terrainShift + fixAltitude;
+                    Debug.Log("         > Fixed PQSCity2.alt = " + pqs.alt);
+                }
             }
         }
 
