@@ -23,7 +23,7 @@ namespace SigmaDimensionsPlugin
             foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
                 body = cb; // DON'T CHANGE THIS (body is public and required by other methods)
-                Debug.debug = (PQSCityGroups.debug.Count > 0);
+                Debug.debug = (body.Has("PQSCityGroups"));
                 Debug.Log("> Planet: " + body.name);
 
                 resize = body.Has("resize") ? body.Get<double>("resize") : 1;
@@ -65,31 +65,36 @@ namespace SigmaDimensionsPlugin
 
             // Fix Altitude
             double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
-            Debug.Log("        > Ground Level at Mod = " + groundLevel);
+            Debug.Log("         > Ground Level at Mod   = " + groundLevel);
 
             if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
                 // Offset = Distance from the center of the planet
+                Debug.Log("              > Original Absolute Offset = " + pqs.repositionRadiusOffset);
 
                 double fromRadius = pqs.repositionRadiusOffset - (body.Radius / resize);
                 double builtInOffset = fromRadius - groundLevel / (resize * landscape);
 
                 pqs.repositionRadiusOffset = body.Radius + groundLevel + builtInOffset * resizeBuildings;
+                Debug.Log("              > Fixed Absolute Offset    = " + pqs.repositionRadiusOffset);
             }
             else if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
             {
                 // Offset = Distance from the radius of the planet
+                Debug.Log("              > Original Altitude = " + pqs.repositionRadiusOffset);
 
                 double builtInOffset = pqs.repositionRadiusOffset - groundLevel / (resize * landscape);
                 pqs.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
+                Debug.Log("              > Fixed Altitude    = " + pqs.repositionRadiusOffset);
             }
             else if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight)
             {
                 // Offset = Distance from the surface of the planet
+                Debug.Log("              > Original Offset = " + pqs.repositionRadiusOffset);
 
                 pqs.repositionRadiusOffset *= resizeBuildings;
+                Debug.Log("              > Fixed Offset    = " + pqs.repositionRadiusOffset);
             }
-            Debug.Log("        > PQSCity Offset = " + pqs.repositionRadiusOffset);
         }
 
         void City2Fixer(PQSCity2 pqs)
@@ -118,7 +123,7 @@ namespace SigmaDimensionsPlugin
                 // Offset = Distance from the radius of the planet
 
                 double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
-                Debug.Log("        > Ground Level at Mod = " + groundLevel);
+                Debug.Log("         > Ground Level at Mod = " + groundLevel);
 
                 if (body.ocean && groundLevel < 0)
                     groundLevel = 0;
@@ -126,14 +131,14 @@ namespace SigmaDimensionsPlugin
                 double builtInOffset = pqs.alt - groundLevel / (resize * landscape);
                 pqs.alt = groundLevel + builtInOffset * resizeBuildings;
 
-                Debug.Log("        > PQSCity2 Alt = " + pqs.alt);
+                Debug.Log("         > PQSCity2 Alt = " + pqs.alt);
             }
             else
             {
                 // Offset = Distance from the surface of the planet
 
                 pqs.snapHeightOffset *= resizeBuildings;
-                Debug.Log("        > PQSCity2 Offset = " + pqs.snapHeightOffset);
+                Debug.Log("         > PQSCity2 Offset = " + pqs.snapHeightOffset);
             }
         }
 
@@ -141,6 +146,8 @@ namespace SigmaDimensionsPlugin
         {
             // Moves the group
             Vector3 PQSposition = ((Vector3)GetPosition(mod));
+            Debug.Log("         > Group center position = " + REFvector + ", (LAT: " + new LatLon(REFvector).lat + ", LON: " + new LatLon(REFvector).lon + ")");
+            Debug.Log("         > Mod original position = " + PQSposition + ", (LAT: " + new LatLon(PQSposition).lat + ", LON: " + new LatLon(PQSposition).lon + ")");
 
             if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
             {
@@ -160,11 +167,13 @@ namespace SigmaDimensionsPlugin
                 }
             }
 
+            // Update PQSposition
+            PQSposition = ((Vector3)GetPosition(mod));
 
             // Spread or Shrinks the group to account for Resize
             Vector3 NEWvector = Vector3.LerpUnclamped(REFvector.normalized, PQSposition.normalized, (float)(resizeBuildings / resize));
             SetPosition(mod, NEWvector);
-            Debug.Log("        > Mod lerped position = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
+            Debug.Log("         > Mod lerped position   = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
         }
 
         void MoveGroup(object mod, Vector3 moveTo, float angle = 0, double fixAltitude = 0, double originalAltitude = double.NegativeInfinity)
@@ -178,9 +187,6 @@ namespace SigmaDimensionsPlugin
             LatLon origin = new LatLon(body.Get<Dictionary<object, Vector3>>("PQSCityGroups")[mod].normalized);
             Vector3 north = Vector3.ProjectOnPlane(Vector3.up, origin.vector);
             Vector3 east = QuaternionD.AngleAxis(90, origin.vector) * north;
-            Debug.Log("        > Group center position = " + origin.vector + ", (LAT: " + origin.lat + ", LON: " + origin.lon + ")");
-            Debug.Log("        > Final center position = " + target.vector + ", (LAT: " + target.lat + ", LON: " + target.lon + ")");
-            Debug.Log("        > Mod original position = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
 
             // PQS Vectors (PQS, North, East)
             Vector3 oldPQS = Vector3.ProjectOnPlane(((Vector3)GetPosition(mod)).normalized, origin.vector);
@@ -203,12 +209,13 @@ namespace SigmaDimensionsPlugin
             // Calculate final position by adding the north and east distances to the target position
             // then rotate the new vector by as many degrees as it is necessary to account for the PQS model rotation
             SetPosition(mod, rotation * (target.vector + newNorth * northward + newEast * eastward));
-            Debug.Log("        > Mod final position = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
+            Debug.Log("         > Group final position  = " + target.vector + ", (LAT: " + target.lat + ", LON: " + target.lon + ")");
+            Debug.Log("         > Mod final position    = " + (Vector3)GetPosition(mod) + ", (LAT: " + new LatLon((Vector3)GetPosition(mod)).lat + ", LON: " + new LatLon((Vector3)GetPosition(mod)).lon + ")");
 
             // Fix Altitude
             if (originalAltitude == double.NegativeInfinity)
                 originalAltitude = (body.pqsController.GetSurfaceHeight(origin.vector) - body.Radius) / (resize * landscape);
-            Debug.Log("        > Mod original altitude = " + originalAltitude);
+            Debug.Log("         > Mod original altitude = " + originalAltitude);
 
             FixAltitude(mod, (body.pqsController.GetSurfaceHeight(target.vector) - body.Radius) / (resize * landscape) - originalAltitude + fixAltitude);
         }
@@ -220,7 +227,7 @@ namespace SigmaDimensionsPlugin
                 return ((PQSCity)mod).repositionRadial;
             else if (type == "PQSCity2")
                 return ((PQSCity2)mod).PlanetRelativePosition;
-            else return null;
+            return null;
         }
 
         void SetPosition(object mod, Vector3 position)
@@ -240,11 +247,18 @@ namespace SigmaDimensionsPlugin
         {
             string type = mod.GetType().ToString();
             if (type == "PQSCity")
-                ((PQSCity)mod).repositionRadiusOffset += fixAltitude;
+            {
+                PQSCity pqs = (PQSCity)mod;
+                if (!pqs.repositionToSphereSurface || !pqs.repositionToSphereSurfaceAddHeight)
+                    pqs.repositionRadiusOffset += fixAltitude;
+                Debug.Log("         > Fixed repositionRadiusOffset = " + pqs.repositionRadiusOffset);
+            }
             else if (type == "PQSCity2")
-                ((PQSCity2)mod).alt += fixAltitude;
-
-            Debug.Log("        > Mod Fixed Altitude = " + fixAltitude);
+            {
+                PQSCity2 pqs = (PQSCity2)mod;
+                if (!pqs.snapToSurface)
+                    pqs.alt += fixAltitude;
+            }
         }
 
         void Rotate(object mod, float angle)
