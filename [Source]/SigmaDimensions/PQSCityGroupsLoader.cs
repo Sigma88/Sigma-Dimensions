@@ -84,17 +84,32 @@ namespace SigmaDimensionsPlugin
 
                     if (center == null)
                         center = GetCenter(M, body);
-                    if (ExternalGroups.ContainsKey(body.name) && ExternalGroups[body.name].ContainsKey(name))
-                        center = GetPosition(ExternalGroups[body.name][name][0]);
-                    if (center == null) continue;
-                    if (Debug.debug && !debug.Contains(center)) debug.Add(center);
-                    Debug.Log("         > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+                }
 
-                    // ADD PQS MODS TO THE GROUP
+                foreach (string planet in ExternalGroups.Keys)
+                {
+                    UnityEngine.Debug.Log("SigmaLog: EXTERNAL PLANET - " + planet);
+                    foreach (string group in ExternalGroups[planet].Keys)
+                    {
+                        UnityEngine.Debug.Log("SigmaLog: EXTERNAL GROUP     - " + group);
+                        UnityEngine.Debug.Log("SigmaLog: EXTERNAL MODS COUNT     - " + ExternalGroups[planet][group].Count);
+                    }
+                }
+                if (center == null && ExternalGroups.ContainsKey(body.name) && ExternalGroups[body.name].ContainsKey(name))
+                    center = GetPosition(ExternalGroups[body.name][name][0]);
+                if (center == null) continue;
+                if (Debug.debug && !debug.Contains(center)) debug.Add(center);
+                Debug.Log("         > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+
+
+                // ADD PQS MODS TO THE GROUP
+                if (Group.HasNode("MODS"))
+                {
+                    ConfigNode M = Group.GetNode("MODS");
 
                     foreach (string city in M.GetValues("PQSCity"))
                     {
-                        PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).First(m => m.name == city);
+                        PQSCity mod = body.GetComponentsInChildren<PQSCity>(true).FirstOrDefault(m => m.name == city);
 
                         if (mod != null)
                         {
@@ -106,12 +121,15 @@ namespace SigmaDimensionsPlugin
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
                     {
-                        PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).First(m => m.name == city2);
+                        PQSCity2 mod = body.GetComponentsInChildren<PQSCity2>(true).FirstOrDefault(m => m.name == city2);
 
-                        if (PQSList.ContainsKey(mod)) continue;
+                        if (mod != null)
+                        {
+                            if (PQSList.ContainsKey(mod)) continue;
 
-                        PQSList.Add(mod, center);
-                        Debug.Log("              > PQSCity2: " + mod.name);
+                            PQSList.Add(mod, center);
+                            Debug.Log("              > PQSCity2: " + mod.name);
+                        }
                     }
                 }
 
@@ -151,12 +169,12 @@ namespace SigmaDimensionsPlugin
                         info.Value[2].SetFromString(C2.GetValue("originalAltitude"));
                     else
                         info.Value[2].SetFromString("-Infinity"); Debug.Log("Original group altitude = " + (info.Value[2].value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].value.ToString()));
-                    
+
 
                     if (!body.Has("PQSCityGroupsMove"))
                         body.Set("PQSCityGroupsMove", new Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>());
                     var MoveList = body.Get<Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>>("PQSCityGroupsMove");
-                    
+
                     if (!MoveList.ContainsKey(center.value))
                         MoveList.Add(center.value, info);
 
