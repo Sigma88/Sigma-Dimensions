@@ -146,6 +146,14 @@ namespace SigmaDimensionsPlugin
                     }
                 }
 
+
+                // REMOVE KSC FROM THE LIST
+
+                PQSCity ksc = FlightGlobals.GetHomeBody().GetComponentsInChildren<PQSCity>(true).FirstOrDefault(m => m.name == "KSC");
+                if (PQSList.ContainsKey(ksc))
+                    PQSList.Remove(ksc);
+
+
                 body.Set("PQSCityGroups", PQSList);
 
 
@@ -206,6 +214,14 @@ namespace SigmaDimensionsPlugin
                         if (!PQSList.ContainsKey(mod))
                             PQSList.Add(mod, (Vector3)center);
                     }
+
+
+                    // REMOVE KSC FROM THE LIST
+
+                    PQSCity ksc = FlightGlobals.GetHomeBody().GetComponentsInChildren<PQSCity>(true).FirstOrDefault(m => m.name == "KSC");
+                    if (PQSList.ContainsKey(ksc))
+                        PQSList.Remove(ksc);
+
 
                     body.Set("PQSCityGroups", PQSList);
                 }
