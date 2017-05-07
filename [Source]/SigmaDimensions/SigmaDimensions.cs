@@ -159,9 +159,9 @@ namespace SigmaDimensionsPlugin
             {
                 var MovesInfo = body.Get<Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>>("PQSCityGroupsMove");
 
-                if (MovesInfo.ContainsKey(PQSposition))
+                if (MovesInfo.ContainsKey(REFvector))
                 {
-                    var info = MovesInfo[PQSposition];
+                    var info = MovesInfo[REFvector];
                     MoveGroup(mod, info.Key, (float)info.Value[0], info.Value[1], info.Value[2]);
                     REFvector = info.Key; // Change the REFvector the the new position for Lerping
                 }
