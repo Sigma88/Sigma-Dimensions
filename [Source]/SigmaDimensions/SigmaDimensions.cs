@@ -243,7 +243,7 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        void FixAltitude(object mod, double terrainShift , double fixAltitude)
+        void FixAltitude(object mod, double terrainShift, double fixAltitude)
         {
             string type = mod.GetType().ToString();
             if (type == "PQSCity")
