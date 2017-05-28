@@ -1,5 +1,5 @@
 {
-	"NAME": "Sigma Dimensions",
+	"NAME": "<b><color=#7080FF>Sigma Dimensions</color></b>",
 	"URL": "https://raw.githubusercontent.com/Sigma88/Sigma-Dimensions/master/GameData/Sigma/Dimensions/Configs/Sigma-Dimensions.version",
 	"DOWNLOAD": "http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0",
 	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/Sigma88/Sigma-Dimensions/master/Changelog.txt",
@@ -12,8 +12,8 @@
 	"VERSION":
 	{
 		"MAJOR": 0,
-		"MINOR": 7,
-		"PATCH": 8,
+		"MINOR": 8,
+		"PATCH": 0,
 		"BUILD": 0
 	},
 	"KSP_VERSION":
