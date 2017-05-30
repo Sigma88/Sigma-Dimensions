@@ -17,7 +17,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
 
   - **Resize (default value = 1)**
   
-    > Can be set to any positive number.
+    ```Can be set to any positive number.```
 		
     ```
     Planetary Radius is multiplied by this value.
@@ -27,7 +27,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
     
   - **Rescale (default value = 1)**
   
-    > Can be set to any positive number.
+    ```Can be set to any positive number.```
 		
     ```
     Orbit size (SemiMajor Axis) is multiplied by this value.
@@ -35,7 +35,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
     
   - **Atmosphere (default value = 1)**
   
-    > Can be set to any positive number.
+    ```Can be set to any positive number.```
 		
     ```
     Atmosphere height is multiplied by this value.
@@ -43,7 +43,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
     
   - **dayLengthMultiplier (default value = 1)**
   
-    > Can be set to any positive number.
+    ```Can be set to any positive number.```
 		
     ```
     Rotation period is multiplied by this value.
