@@ -135,7 +135,7 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
     Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
     ```
     
-	- **debug**, \<bool\>*, *default value = false*
+  - **debug**, \<bool\>*, *default value = false*
   
     <pre>
     When 'true' fills the file <i>output_log.txt</i> with debug information
