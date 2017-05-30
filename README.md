@@ -135,7 +135,7 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
     Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
     ```
     
-  - **debug**, \<bool\>*, *default value = false*
+  - **debug**, *\<bool\>*, *default value = false*
   
     <pre>
     When 'true' fills the file <i>output_log.txt</i> with debug information
@@ -197,21 +197,19 @@ The PQSCity_Groups root node contains the groups definitions:
 
     Every GROUP node contains four general settings and three nodes:
 
-    - **name**
-
-      *String, required*
+    - **name**, *\<string\>*, ***required***
+    
       ```
       The name of the group
       ```
       
-    - **body**
-
-      *String, required*
+    - **body**, *\<string\>*, ***required***
+    
       ```
       The name of the body on which the group is found
       ```
       
-    - **debug**, \<bool\>*, *default value = false*
+    - **debug**, *\<bool\>*, *default value = false*
   
     <pre>
     When 'true' fills the file <i>output_log.txt</i> with debug information
