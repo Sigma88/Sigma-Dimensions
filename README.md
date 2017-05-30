@@ -134,6 +134,40 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
     ```
     Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
     ```
+    
+	- **debug**, \<bool\>*, *default value = false*
+  
+    <pre>
+    When 'true' fills the file <i>output_log.txt</i> with debug information
+    </pre>
+    
+## Planet Specific Changes
+  
+To apply Planet Specific Changes follow these instructions.
+
+  **1.** Create a .cfg file with the following code in it
+
+  <pre>
+    @Kopernicus:BEFORE[SigDim2]:NEEDS[SigDim]
+    {
+        @Body:HAS[#name[<i>PLANET_NAME_HERE</i>]]
+        {
+            @SigmaDimensions
+            {
+                @<i>PARAMETER</i> = <i>VALUE</i>
+            }
+        }
+    }</pre>
+
+  **2.** Replace *```PLANET_NAME_HERE```* with the name of the planet you want to change
+
+  **3.** Replace *```PARAMETER```* with the name of the parameter you want to overwrite
+  
+  **4.** You can edit as many parameters as you want
+  
+  **5.** Save the .cfg file anywhere in your KSP GameData folder
+  
+  **6.** Do not mess this up. Everything will break
 
 # PQSCity_Groups
 
@@ -175,12 +209,11 @@ The PQSCity_Groups root node contains the groups definitions:
       The name of the body on which the group is found
       ```
       
-    - **debug**
-
-      *Boolean, default value = false*
-      ```
-      When 'true' fills the output_log.txt file with debug information
-      ```
+    - **debug**, \<bool\>*, *default value = false*
+  
+    <pre>
+    When 'true' fills the file <i>output_log.txt</i> with debug information
+    </pre>
     
     <br>**NOTE:** Groups with the same name found on the same body will be merged and considered as one.<br><br><br>
     
