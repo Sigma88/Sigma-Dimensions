@@ -13,6 +13,15 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
 
 # Settings
 
+```
+SigmaDimensions
+{
+}
+```
+This is the settings node, it is provided by the mod and should be edited using [ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
+
+The SigmaDimensions settings node contains both Base and Advanced settings:
+
 ## Base Settings Definitions
 
   - **Resize**, *\<double\>*, *default value = 1*, Can be set to any positive number.
