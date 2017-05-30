@@ -147,17 +147,17 @@ To apply Planet Specific Changes follow these instructions.
 
   **1.** Create a .cfg file with the following code in it
 
-  <pre>
-    @Kopernicus:BEFORE[SigDim2]:NEEDS[SigDim]
+<pre>
+@Kopernicus:BEFORE[SigDim2]:NEEDS[SigDim]
+{
+    @Body:HAS[#name[<i>PLANET_NAME_HERE</i>]]
     {
-        @Body:HAS[#name[<i>PLANET_NAME_HERE</i>]]
+        @SigmaDimensions
         {
-            @SigmaDimensions
-            {
-                @<i>PARAMETER</i> = <i>VALUE</i>
-            }
+            @<i>PARAMETER</i> = <i>VALUE</i>
         }
-    }</pre>
+    }
+}</pre>
 
   **2.** Replace *```PLANET_NAME_HERE```* with the name of the planet you want to change
 
@@ -167,7 +167,7 @@ To apply Planet Specific Changes follow these instructions.
   
   **5.** Save the .cfg file anywhere in your KSP GameData folder
   
-  **6.** Do not mess this up. Everything will break
+  **6.** **Do not mess this up. Everything will break.**
 
 # PQSCity_Groups
 
