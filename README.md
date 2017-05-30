@@ -18,7 +18,8 @@ SigmaDimensions
 {
 }
 ```
-This is the settings node, it is provided by the mod and should be edited using [ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
+This is the settings node, it is provided by the mod and should be edited using
+[ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
 
 The SigmaDimensions settings node contains both Base and Advanced settings:
 
@@ -141,7 +142,8 @@ PQSCity_Groups
 {
 }
 ```
-This is the root node, you can add as many as you want, and it can be modified using [ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
+This is the root node, you can add as many as you want, and it can be modified using
+[ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
 
 The PQSCity_Groups root node contains the groups definitions:
 
