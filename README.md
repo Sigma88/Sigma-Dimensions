@@ -88,7 +88,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
     Affects only bodies with the Sphere of Influence defined in their config file.
     </pre>
 
-  - **CustomRingSize, *\<double\>*, *default value = 0*, Enabled if set to any positive number.
+  - **CustomRingSize**, *\<double\>*, *default value = 0*, Enabled if set to any positive number.
 
     <pre>
     <b>ENABLED:</b>  rings size is multiplyed by this parameter.
