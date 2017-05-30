@@ -163,11 +163,13 @@ To apply Planet Specific Changes follow these instructions.
 
   **3.** Replace *```PARAMETER```* with the name of the parameter you want to overwrite
   
-  **4.** You can edit as many parameters as you want
+  **4.** Replace *```VALUE```* with the value you want to assign to the parameter
   
-  **5.** Save the .cfg file anywhere in your KSP GameData folder
+  **5.** You can edit as many parameters as you want
   
-  **6.** **Do not mess this up. Everything will break.**
+  **6.** Save the .cfg file anywhere in your KSP GameData folder
+  
+  **7.** **Do not mess this up. Everything will break.**
 
 # PQSCity_Groups
 
