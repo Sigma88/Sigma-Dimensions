@@ -267,11 +267,11 @@ The PQSCity_Groups root node contains the groups definitions:
       - **fixAltitude**, *\<double\>*, meters, added to the altitude of each mod in the group
       - **originalAltitude**, *\<double\>*, meters, needed if the base is designed for a different planet
       
-      **NOTE:**
+      <br>**NOTE:**
 
-      1- If the positions defined for the new center are not valid the group will not be affected
+      **1-** If the positions defined for the new center are not valid the group will not be affected
 
-      2- Groups centered around the KSC should not be moved using this feature,
+      **2-** Groups centered around the KSC should not be moved using this feature,
       <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use the SpaceCenter feature from Kopernicus
       
       
