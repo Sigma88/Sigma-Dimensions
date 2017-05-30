@@ -15,7 +15,7 @@ Dev version: https://github.com/Sigma88/Sigma-Dimensions/tree/Development
 
 ## Base Settings Definitions
 
-  - **Resize &nbsp; ```(default value = 1)```** &nbsp; ```Can be set to any positive number.```
+  - **Resize**, *\<double\>*, *```default value = 1```*, &nbsp; ```Can be set to any positive number```.
     
     ```
     Planetary Radius is multiplied by this value.
