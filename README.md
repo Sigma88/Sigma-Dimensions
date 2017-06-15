@@ -178,7 +178,7 @@ PQSCity_Groups
 {
 }
 ```
-This is the root node, you can add as many as you want, and it can be modified using
+This is the root node, you can add as many as you want, and they can be modified using
 [ModuleManager](http://forum.kerbalspaceprogram.com/index.php?/topic/50533-0/) patches.
 
 The PQSCity_Groups root node contains the groups definitions:
@@ -306,5 +306,3 @@ The PQSCity_Groups root node contains the groups definitions:
 
       **2-** Groups centered around the KSC should not be moved using this feature,
       <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use the SpaceCenter feature from Kopernicus
-      
-      
