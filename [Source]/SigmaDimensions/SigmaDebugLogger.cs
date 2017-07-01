@@ -1,10 +1,10 @@
 ﻿namespace SigmaDimensionsPlugin
 {
-    public static class Debug
+    internal static class Debug
     {
-        public static bool debug = false;
+        internal static bool debug = false;
 
-        public static void Log(string s)
+        internal static void Log(string s)
         {
             if (debug) UnityEngine.Debug.Log("SigmaLog: " + s);
         }

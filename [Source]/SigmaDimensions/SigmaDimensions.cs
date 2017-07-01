@@ -8,12 +8,12 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    public class SigmaDimensions : MonoBehaviour
+    class SigmaDimensions : MonoBehaviour
     {
-        public double resize = 1;
-        public double landscape = 1;
-        public double resizeBuildings = 1;
-        public CelestialBody body = null;
+        double resize = 1;
+        double landscape = 1;
+        double resizeBuildings = 1;
+        CelestialBody body = null;
 
         void Start()
         {
@@ -22,7 +22,7 @@ namespace SigmaDimensionsPlugin
 
             foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
-                body = cb; // DON'T CHANGE THIS (body is public and required by other methods)
+                body = cb; // DON'T CHANGE THIS (body is required by other methods)
                 Debug.debug = (body.Has("PQSCityGroups"));
                 Debug.Log("> Planet: " + body.name);
 

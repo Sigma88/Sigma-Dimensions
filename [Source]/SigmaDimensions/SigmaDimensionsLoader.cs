@@ -5,10 +5,10 @@ using Kopernicus.Configuration;
 namespace SigmaDimensionsPlugin
 {
     [ParserTargetExternal("Body", "SigmaDimensions", "Kopernicus")]
-    public class SigmaDimensionsLoader : BaseLoader, IParserEventSubscriber
+    class SigmaDimensionsLoader : BaseLoader, IParserEventSubscriber
     {
         [ParserTarget("Resize", optional = true)]
-        public NumericParser<double> resize
+        NumericParser<double> resize
         {
             set
             {
@@ -17,7 +17,7 @@ namespace SigmaDimensionsPlugin
         }
 
         [ParserTarget("landscape", optional = true)]
-        public NumericParser<double> landscape
+        NumericParser<double> landscape
         {
             set
             {
@@ -26,7 +26,7 @@ namespace SigmaDimensionsPlugin
         }
 
         [ParserTarget("resizeBuildings", optional = true)]
-        public NumericParser<double> resizeBuildings
+        NumericParser<double> resizeBuildings
         {
             set
             {
@@ -35,7 +35,7 @@ namespace SigmaDimensionsPlugin
         }
 
         [ParserTarget("atmoTopLayer", optional = true)]
-        public NumericParser<double> atmoTopLayer
+        NumericParser<double> atmoTopLayer
         {
             set
             {
@@ -45,7 +45,7 @@ namespace SigmaDimensionsPlugin
         }
 
         [ParserTarget("debug", optional = true)]
-        public NumericParser<bool> debug
+        NumericParser<bool> debug
         {
             set
             {
