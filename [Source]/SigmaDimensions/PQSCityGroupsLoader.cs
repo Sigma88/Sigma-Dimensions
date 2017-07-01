@@ -59,9 +59,9 @@ namespace SigmaDimensionsPlugin
                         Debug.debug = true;
                 }
 
-                string name = Group.GetValue("name");
+                string group = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
-                if (string.IsNullOrEmpty(name) || body == null) continue;
+                if (string.IsNullOrEmpty(group) || body == null) continue;
                 Debug.Log(">>> Sigma Dimensions Log: PQSCityGroupsLoader <<<");
                 Debug.Log("> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
                 Debug.Log("    > Group: " + group);
@@ -70,6 +70,7 @@ namespace SigmaDimensionsPlugin
                 // FIND GROUP CENTER
                 Vector3Parser center = null;
 
+                // Get Center position from the CENTER node
                 if (Group.HasNode("CENTER"))
                 {
                     ConfigNode C = Group.GetNode("CENTER");
@@ -88,6 +89,7 @@ namespace SigmaDimensionsPlugin
                     body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
 
+                // If the Center position has not been found get it from the MODS node
                 if (Group.HasNode("MODS"))
                 {
                     ConfigNode M = Group.GetNode("MODS");
@@ -96,8 +98,11 @@ namespace SigmaDimensionsPlugin
                         center = GetCenter(M, body);
                 }
 
-                center = GetPosition(ExternalGroups?[body]?[name]?.FirstOrDefault());
+                // If the Center position has not been found get it from the external groups
+                if (center == null)
+                    center = GetPosition(ExternalGroups?[body]?[group]?.FirstOrDefault());
 
+                // If the Center position has not been found stop here
                 if (center == null) continue;
                 if (Debug.debug && !debug.Contains(center)) debug.Add(center);
                 Debug.Log("        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
@@ -140,9 +145,9 @@ namespace SigmaDimensionsPlugin
 
 
                 // ADD EXTERNAL MODS TO THIS GROUP
-                if (ExternalGroups?[body]?[name]?.Where(m => m != null)?.Count() > 0)
+                if (ExternalGroups?[body]?[group]?.Where(m => m != null)?.Count() > 0)
                 {
-                    foreach (object mod in ExternalGroups[body][name].Where(m => m != null))
+                    foreach (object mod in ExternalGroups[body][group].Where(m => m != null))
                     {
                         // External groups should not overwrite custom ones
                         if (PQSList.ContainsKey(mod)) continue;
@@ -150,6 +155,7 @@ namespace SigmaDimensionsPlugin
                         PQSList.Add(mod, center);
                         Debug.Log("            > external: " + mod);
                     }
+                    ExternalGroups[body].Remove(group);
                 }
 
 
