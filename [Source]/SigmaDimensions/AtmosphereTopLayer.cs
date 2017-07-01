@@ -8,7 +8,7 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    public class AtmosphereTopLayer : MonoBehaviour
+    class AtmosphereTopLayer : MonoBehaviour
     {
         Ktype curve = Ktype.Exponential;
 

@@ -6,7 +6,7 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
-    public class SpaceCenterFixer : MonoBehaviour
+    class SpaceCenterFixer : MonoBehaviour
     {
         void Start()
         {
@@ -25,8 +25,8 @@ namespace SigmaDimensionsPlugin
         }
 
 
-        public bool fixLight = true;
-        public Light light = null;
+        bool fixLight = true;
+        Light light = null;
 
         void Update()
         {
