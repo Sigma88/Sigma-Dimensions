@@ -14,12 +14,15 @@ namespace SigmaDimensionsPlugin
 
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
         internal static List<Vector3> debug = new List<Vector3>();
+        internal static NumericParser<bool> debugAllGroups = false;
 
         void Start()
         {
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
                 AddGroups(GroupsLoader.GetNodes("GROUP"));
+                if (GroupsLoader.HasValue("debug") && !debugAllGroups.value)
+                    debugAllGroups.SetFromString(GroupsLoader.GetValue("debug"));
             }
 
             SaveGroups();
@@ -44,7 +47,11 @@ namespace SigmaDimensionsPlugin
             foreach (ConfigNode Group in GroupsList.Values)
             {
                 Debug.debug = false;
-                if (Group.HasValue("debug"))
+                if (debugAllGroups.value)
+                {
+                    Debug.debug = true;
+                }
+                else if (Group.HasValue("debug"))
                 {
                     NumericParser<bool> log = new NumericParser<bool>();
                     log.SetFromString(Group.GetValue("debug"));
@@ -56,8 +63,8 @@ namespace SigmaDimensionsPlugin
                 CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(name) || body == null) continue;
                 Debug.Log(">>> Sigma Dimensions Log: PQSCityGroupsLoader <<<");
-                Debug.Log("> Planet: " + body.name + (body.name != body.displayName ? (", (A.K.A.: " + body.displayName + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
-                Debug.Log("    > Group: " + name);
+                Debug.Log("> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
+                Debug.Log("    > Group: " + group);
 
 
                 // FIND GROUP CENTER
@@ -93,7 +100,7 @@ namespace SigmaDimensionsPlugin
 
                 if (center == null) continue;
                 if (Debug.debug && !debug.Contains(center)) debug.Add(center);
-                Debug.Log("         > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+                Debug.Log("        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
 
 
                 // ADD PQS MODS TO THE GROUP
@@ -112,7 +119,7 @@ namespace SigmaDimensionsPlugin
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
                             PQSList.Add(mod, center);
-                            Debug.Log("              > PQSCity:  " + mod.name);
+                            Debug.Log("            > PQSCity:  " + mod.name);
                         }
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
@@ -126,7 +133,7 @@ namespace SigmaDimensionsPlugin
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
                             PQSList.Add(mod, center);
-                            Debug.Log("              > PQSCity2: " + mod.name);
+                            Debug.Log("            > PQSCity2: " + mod.name);
                         }
                     }
                 }
@@ -141,7 +148,7 @@ namespace SigmaDimensionsPlugin
                         if (PQSList.ContainsKey(mod)) continue;
 
                         PQSList.Add(mod, center);
-                        Debug.Log("              > external: " + mod);
+                        Debug.Log("            > external: " + mod);
                     }
                 }
 
@@ -194,17 +201,22 @@ namespace SigmaDimensionsPlugin
             if (ExternalGroups == null) ExternalGroups = new Dictionary<CelestialBody, Dictionary<string, List<object>>>();
 
             // LOAD REMAINING EXTERNAL GROUPS
+            Debug.debug = (debugAllGroups?.value == true);
+            Debug.Log(">>> Sigma Dimensions Log: ExternalGroupsLoader <<<");
             foreach (CelestialBody planet in ExternalGroups.Keys.Where(p => p != null && ExternalGroups[p] != null))
             {
+                Debug.Log("> Planet: " + planet.name + (planet.name != planet.displayName.Replace("^N", "") ? (", (A.K.A.: " + planet.displayName.Replace("^N", "") + ")") : "") + (planet.name != planet.transform.name ? (", (A.K.A.: " + planet.transform.name + ")") : ""));
                 foreach (string group in ExternalGroups[planet].Keys.Where(g => !string.IsNullOrEmpty(g) && ExternalGroups[planet][g] != null))
                 {
                     if (ExternalGroups[planet][group].Count == 0) continue;
+                    Debug.Log("    > Group: " + group);
 
                     // Since these groups are new they don't have a center
                     // Define the center as the position of the first mod in the array
                     Vector3? center = null;
                     center = GetPosition(ExternalGroups?[planet]?[group]?.FirstOrDefault());
                     if (center == null) continue;
+                    Debug.Log("        > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon((Vector3)center).lat + ", LON: " + new SigmaDimensions.LatLon((Vector3)center).lon + ")");
 
                     if (!planet.Has("PQSCityGroups"))
                         planet.Set("PQSCityGroups", new Dictionary<object, Vector3>());
@@ -213,7 +225,10 @@ namespace SigmaDimensionsPlugin
                     foreach (object mod in ExternalGroups[planet][group])
                     {
                         if (!PQSList.ContainsKey(mod))
+                        {
                             PQSList.Add(mod, (Vector3)center);
+                            Debug.Log("            > external: " + mod);
+                        }
                     }
 
 
