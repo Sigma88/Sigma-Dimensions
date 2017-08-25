@@ -34,6 +34,7 @@
     <Compile Include="AtmosphereTopLayer.cs" />
     <Compile Include="NodeRemover.cs" />
     <Compile Include="PQSCityGroupsLoader.cs" />
+    <Compile Include="PQSMod_SigmaDimensions.cs" />
     <Compile Include="SigmaDebugLogger.cs" />
     <Compile Include="SpaceCenterFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
