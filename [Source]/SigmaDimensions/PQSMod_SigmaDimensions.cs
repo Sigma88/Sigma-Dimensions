@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using Kopernicus;
 using Kopernicus.Configuration.ModLoader;
-using Kopernicus.MaterialWrapper;
+
 
 namespace PQSMod_SigmaDimensions
 {
@@ -169,16 +168,11 @@ namespace PQSMod_SigmaDimensions
         // Material Edit
         public void EditProperties(Material material, string[] properties, double mult)
         {
-            Debug.Log("SigmaLog: mult = " + mult);
             for (int i = 0; i < properties.Length; i++)
             {
-                Debug.Log("SigmaLog: i = " + i);
-                Debug.Log("SigmaLog: property = " + properties[i]);
                 if (material.HasProperty(properties[i]))
                 {
-                    Debug.Log("SigmaLog: Float before = " + material.GetFloat(properties[i]));
                     material.SetFloat(properties[i], material.GetFloat(properties[i]) * (float)mult);
-                    Debug.Log("SigmaLog: Float after = " + material.GetFloat(properties[i]));
                 }
             }
         }
