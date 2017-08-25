@@ -2,29 +2,20 @@ using System;
 using UnityEngine;
 using Kopernicus;
 using Kopernicus.Configuration.ModLoader;
-
+using Kopernicus.MaterialWrapper;
 
 namespace PQSMod_SigmaDimensions
 {
     public class PQSMod_SigmaDimensions : PQSMod
     {
         public double Resize = 1;
-        public double Rescale = 1;
         public float Atmosphere = 1;
-        public double dayLengthMultiplier = 1;
         public double landscape = 1;
-        public double geeASLmultiplier = 1;
         public float changeScatterSize = 1;
         public float changeScatterDensity = 1;
         public double resizeBuildings = 1;
         public double groundTiling = 1;
-        public double CustomSoISize = 1;
-        public double CustomRingSize = 1;
-        public double atmoASL = 1;
-        public double tempASL = 1;
         public float atmoTopLayer = 1;
-        public double atmoVisualEffect = 1;
-        public double scanAltitude = 1;
 
         public override void OnVertexBuildHeight(PQS.VertexBuildData data)
         {
@@ -83,6 +74,14 @@ namespace PQSMod_SigmaDimensions
             set { mod.resizeBuildings = value; }
         }
 
+        // groundTiling
+        [ParserTarget("groundTiling", optional = true)]
+        private NumericParser<double> groundTiling
+        {
+            get { return mod.groundTiling; }
+            set { mod.groundTiling = value; }
+        }
+
         // atmoTopLayer
         [ParserTarget("atmoTopLayer", optional = true)]
         private NumericParser<float> atmoTopLayer
@@ -100,6 +99,19 @@ namespace PQSMod_SigmaDimensions
             // Always Load Last
             mod.order = int.MaxValue;
 
+            // PQS MATERIALS
+            string[] textures = new[] { "_groundTexStart", "_groundTexEnd", "_steepTexStart", "_steepTexEnd" };
+            string[] tilings = new[] { "_texTiling", "_steepNearTiling", "_steepTiling", "_lowNearTiling", "_lowBumpNearTiling", "_lowBumpFarTiling", "_midNearTiling", "_midBumpNearTiling", "_midBumpFarTiling", "_highNearTiling", "_highBumpNearTiling", "_highBumpFarTiling" };
+
+            Material surfaceMaterial = generatedBody.pqsVersion.surfaceMaterial;
+            EditProperties(surfaceMaterial, textures, mod.Resize * mod.landscape);
+            EditProperties(surfaceMaterial, tilings, mod.groundTiling);
+
+            Material fallbackMaterial = generatedBody.pqsVersion.surfaceMaterial;
+            EditProperties(fallbackMaterial, textures, mod.Resize * mod.landscape);
+            EditProperties(fallbackMaterial, tilings, mod.groundTiling);
+
+            // PQS MODS
             PQSMod[] modlist = generatedBody?.pqsVersion?.GetComponentsInChildren<PQSMod>();
             for (int i = 0; i < modlist.Length; i++)
             {
@@ -114,7 +126,7 @@ namespace PQSMod_SigmaDimensions
                         scatter.densityFactor *= mod.changeScatterDensity;
                     }
                 }
-                
+
                 // AerialPerspectiveMaterial
                 if (modlist[i].GetType() == typeof(PQSMod_AerialPerspectiveMaterial))
                 {
@@ -150,6 +162,23 @@ namespace PQSMod_SigmaDimensions
                 if (modlist[i].GetType() == typeof(PQSMod_MapDecal))
                 {
                     ((PQSMod_MapDecal)modlist[i]).radius *= mod.Resize;
+                }
+            }
+        }
+
+        // Material Edit
+        public void EditProperties(Material material, string[] properties, double mult)
+        {
+            Debug.Log("SigmaLog: mult = " + mult);
+            for (int i = 0; i < properties.Length; i++)
+            {
+                Debug.Log("SigmaLog: i = " + i);
+                Debug.Log("SigmaLog: property = " + properties[i]);
+                if (material.HasProperty(properties[i]))
+                {
+                    Debug.Log("SigmaLog: Float before = " + material.GetFloat(properties[i]));
+                    material.SetFloat(properties[i], material.GetFloat(properties[i]) * (float)mult);
+                    Debug.Log("SigmaLog: Float after = " + material.GetFloat(properties[i]));
                 }
             }
         }
