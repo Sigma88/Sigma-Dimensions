@@ -1,3 +1,9 @@
+**v0.9.0**
+
+- Improved code to be less reliable on cfg files
+- Improved code for ground scatter resize
+
+
 **v0.8.2**
 
 - Improved loading of SigmaDimensions Settings
