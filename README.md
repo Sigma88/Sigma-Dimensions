@@ -26,33 +26,33 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
 ## Base Settings Definitions
 
   - **Resize**, *\<double\>*, *default value = 1*, Can be set to any positive number.
-    
+
     ```
     Planetary Radius is multiplied by this value.
 
     The mass of each body is changed to maintain the same surface gravity.
     ```
-    
+
   - **Rescale**, *\<double\>*, *default value = 1*, Can be set to any positive number.
-		
+
     ```
     Orbit size (SemiMajor Axis) is multiplied by this value.
     ```
-    
+
   - **Atmosphere**, *\<double\>*, *default value = 1*, Can be set to any positive number.
-		
+
     ```
     Atmosphere height is multiplied by this value.
     ```
-    
+
   - **dayLengthMultiplier**, *\<double\>*, *default value = 1*, Can be set to any positive number.
-		
+
     ```
     Rotation period is multiplied by this value.
 
     Does not affect tidally locked bodies.
     ```
-    
+
 ## Advanced Settings Definitions
 
   - **landscape**, *\<double\>*, *default value = 1*, Can be set to any positive number.
@@ -72,7 +72,7 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
     <pre>
     <b>ENABLED:</b>  ground scatter size is multiplied by the "Resize" parameter.
     <b>DISABLED:</b> ground scatter size is not modified.
-    
+
     Ground scatter density is always adjusted to account for the different surface area.
     </pre>
 
@@ -129,20 +129,26 @@ The SigmaDimensions settings node contains both Base and Advanced settings:
     The height of the atmosphere aesthetics is multiplied by this parameter.
     ```
 
+  - **lightRange**, *\<double\>*, *default value = 1*, Can be set to any positive number.
+
+    ```
+    The distance component of light intensity curves is multiplied by the "Rescale" and "lightRange" parameters.
+    ```
+
   - **scanAltitude**, *\<double\>*, *default value = 1*, Can be set to any positive number.
 
     ```
     Altitude limits for orbital scanners is multiplied by the "Resize" and "scanAltitude" parameters.
     ```
-    
+
   - **debug**, *\<bool\>*, *default value = false*
   
     <pre>
     When 'true' fills the file <i>output_log.txt</i> with debug information
     </pre>
-    
+
 ## Planet Specific Changes
-  
+
 To apply Planet Specific Changes follow these instructions.
 
   **1.** Create a .cfg file with the following code in it
@@ -162,13 +168,13 @@ To apply Planet Specific Changes follow these instructions.
   **2.** Replace *```PLANET_NAME_HERE```* with the name of the planet you want to change
 
   **3.** Replace *```PARAMETER```* with the name of the parameter you want to overwrite
-  
+
   **4.** Replace *```VALUE```* with the value you want to assign to the parameter
-  
+
   **5.** You can edit as many parameters as you want
-  
+
   **6.** Save the .cfg file anywhere in your KSP GameData folder
-  
+
   **7.** **Do not mess this up. Everything will break.**
 
 # PQSCity_Groups
@@ -198,27 +204,27 @@ The PQSCity_Groups root node contains the groups definitions:
     Every GROUP node contains four general settings and three nodes:
 
     - **name**, *\<string\>*, ***required***
-    
+
       ```
       The name of the group
       ```
-      
+
     - **body**, *\<string\>*, ***required***
-    
+
       ```
       The name of the body on which the group is found
       ```
-      
+
     - **debug**, *\<bool\>*, *default value = false*
-  
+
     <pre>
     When 'true' fills the file <i>output_log.txt</i> with debug information
     </pre>
-    
+
     <br>**NOTE:** Groups with the same name found on the same body will be merged and considered as one.<br><br><br>
-    
+
     - **CENTER**
-      
+
       ```
       PQSCity_Groups
       {
@@ -230,25 +236,25 @@ The PQSCity_Groups root node contains the groups definitions:
           }
       }
       ```
-      
+
       This node is used to define the center of the group.
-      
+
       The center can be defined in many different ways, the first valid option will be chosen.
-      
+
       - **CentralPQSCity**, *\<string\>*, the name of the central PQSCity mod
       - **CentralPQSCity2**, *\<string\>*, the name of the central PQSCity2 mod
       - **CentralPosition**, *\<Vector3\>*, the position of the center defined in a 3D space
       - **CentralLAT**, *\<double\>*, the latitude of the center (requires CentralLON)
       - **CentralLON**, *\<double\>*, the longitude of the center (requires CentralLAT)
-      
+
       <br>**NOTE:**
 
       If the node CENTER is not defined, or the positions defined are not valid,
 
       the central position will be defined as the position of the first valid PQSMod of the group<br><br><br>
-    
+
     - **MODS**
-      
+
       ```
       PQSCity_Groups
       {
@@ -260,16 +266,16 @@ The PQSCity_Groups root node contains the groups definitions:
           }
       }
       ```
-      
+
       This node is used to list all PQSMods included in the group.
-      
+
       The PQSMods that are currently supported are:
-      
+
       - **PQSCity**, *\<string\>*, the name of the PQSCity mod
       - **PQSCity2**, *\<string\>*, the name of the PQSCity2 mod
       <br><br><br>
     - **MOVE**
-      
+
       ```
       PQSCity_Groups
       {
@@ -281,25 +287,25 @@ The PQSCity_Groups root node contains the groups definitions:
           }
       }
       ```
-    
+
       This node is used to define a new central position,
-      
+
       all mods in the group will be moved around this new center
-      
+
       The new center can be defined in many different ways, the first valid option will be chosen.
-      
+
       - **CentralPQSCity**, *\<string\>*, the name of the new central PQSCity mod
       - **CentralPQSCity2**, *\<string\>*, the name of the new central PQSCity2 mod
       - **CentralPosition**, *\<Vector3\>*, the position of the new center defined in a 3D space
       - **CentralLAT**, *\<double\>*, the latitude of the new center (requires CentralLON)
       - **CentralLON**, *\<double\>*, the longitude of the new center (requires CentralLAT)
-      
+
       In addition to the position of the new center, it is possible to define:
-      
+
       - **Rotate**, *\<double\>*, angle in degrees, the whole group will be rotated around the center
       - **fixAltitude**, *\<double\>*, meters, added to the altitude of each mod in the group
       - **originalAltitude**, *\<double\>*, meters, needed if the base is designed for a different planet
-      
+
       <br>**NOTE:**
 
       **1-** If the positions defined for the new center are not valid the group will not be affected

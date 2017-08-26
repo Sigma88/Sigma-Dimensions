@@ -145,6 +145,14 @@ The height of the atmosphere aesthetics is multiplied by this parameter.
 
 ---
 
+# lightRange (default value = 1)
+
+- Can be set to any positive number.
+
+The distance component of light intensity curves is multiplied by the "Rescale" and "lightRange" parameters.
+
+---
+
 # scanAltitude (default value = 1)
 
 - Can be set to any positive number.
