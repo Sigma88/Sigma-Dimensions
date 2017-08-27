@@ -59,17 +59,17 @@ namespace SigmaDimensionsPlugin
                     if (customRescale != 1)
                     {
                         sunGlareFadeDistance *= customRescale;
-                        if (flareSettings.value.Count > 2)
+                        if (flareSettings?.value?.Count > 2)
                             flareSettings.value[2] = flareSettings.value[2] / customRescale;
-                        if (spikesSettings.value.Count > 2)
+                        if (spikesSettings?.value?.Count > 2)
                             spikesSettings.value[2] = spikesSettings.value[2] / customRescale;
                     }
                     else
                     {
                         sunGlareFadeDistance *= Rescale;
-                        if (flareSettings.value.Count > 2)
+                        if (flareSettings?.value?.Count > 2)
                             flareSettings.value[2] = flareSettings.value[2] / Rescale;
-                        if (spikesSettings.value.Count > 2)
+                        if (spikesSettings?.value?.Count > 2)
                             spikesSettings.value[2] = spikesSettings.value[2] / Rescale;
                     }
 
@@ -78,13 +78,13 @@ namespace SigmaDimensionsPlugin
                     Debug.Log("SigmaLog: AFTER spikesSettings = " + spikesSettings);
 
                     // Save Rescaled Scatterer Settings
-                    if (flareSettings.value.Count > 2)
+                    if (flareSettings?.value?.Count > 2)
                     {
                         star.RemoveValues("flareSettings");
                         star.AddValue("flareSettings", string.Join(",", flareSettings.value.Select(p => p.ToString()).ToArray()));
                     }
 
-                    if (spikesSettings.value.Count > 2)
+                    if (spikesSettings?.value?.Count > 2)
                     {
                         star.RemoveValues("spikesSettings");
                         star.AddValue("spikesSettings", string.Join(",", spikesSettings.value.Select(p => p.ToString()).ToArray()));
