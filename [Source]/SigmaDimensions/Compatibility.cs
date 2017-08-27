@@ -46,8 +46,10 @@ namespace SigmaDimensionsPlugin
                     double sunGlareFadeDistance = 0;
                     double.TryParse(star.GetValue("sunGlareFadeDistance"), out sunGlareFadeDistance);
 
-                    flareSettings.SetFromString(star.GetValue("flareSettings")?.Replace(",", " "));
-                    spikesSettings.SetFromString(star.GetValue("spikesSettings")?.Replace(",", " "));
+                    if (star.HasValue("flareSettings"))
+                        flareSettings.SetFromString(star.GetValue("flareSettings").Replace(",", " "));
+                    if (star.HasValue("spikesSettings"))
+                        spikesSettings.SetFromString(star.GetValue("spikesSettings").Replace(",", " "));
 
                     Debug.Log("SigmaLog: BEFORE sunGlareFadeDistance = " + sunGlareFadeDistance);
                     Debug.Log("SigmaLog: BEFORE flareSettings = " + flareSettings);
