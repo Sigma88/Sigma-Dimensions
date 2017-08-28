@@ -6,16 +6,17 @@ using Kopernicus;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.Instantly, true)]
-    class Compatibility : MonoBehaviour
+    public class Compatibility : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
             if (AssemblyLoader.loadedAssemblies.FirstOrDefault(a => a.name == "scatterer") == null)
                 DestroyImmediate(this);
             else
                 DontDestroyOnLoad(this);
         }
-        void ModuleManagerPostLoad()
+
+        public void ModuleManagerPostLoad()
         {
             NumericCollectionParser<double> flareSettings = new NumericCollectionParser<double>();
             NumericCollectionParser<double> spikesSettings = new NumericCollectionParser<double>();
@@ -23,7 +24,7 @@ namespace SigmaDimensionsPlugin
             double Rescale = 1;
             double customRescale = 1;
 
-            if (!double.TryParse(GameDatabase.Instance.GetConfigNode("SigmaDimensions")?.GetValue("Rescale"), out Rescale))
+            if (!double.TryParse(GameDatabase.Instance.GetConfigNode("Sigma/Dimensions/Settings/SigmaDimensions")?.GetValue("Rescale"), out Rescale))
             {
                 Rescale = 1;
             }
@@ -32,15 +33,11 @@ namespace SigmaDimensionsPlugin
             {
                 foreach (ConfigNode star in node.GetNodes())
                 {
-                    Debug.Log("SigmaLog: star.name = " + star.name);
                     // Load customRescale
-                    if (!double.TryParse(star.GetValue("customRescale"), out Rescale))
+                    if (!double.TryParse(star.GetValue("customRescale"), out customRescale))
                     {
                         customRescale = 1;
                     }
-                    Debug.Log("SigmaLog: Rescale = " + Rescale);
-                    Debug.Log("SigmaLog: customRescale = " + customRescale);
-
 
                     // Load Scatterer Settings
                     double sunGlareFadeDistance = 0;
@@ -50,10 +47,6 @@ namespace SigmaDimensionsPlugin
                         flareSettings.SetFromString(star.GetValue("flareSettings").Replace(",", " "));
                     if (star.HasValue("spikesSettings"))
                         spikesSettings.SetFromString(star.GetValue("spikesSettings").Replace(",", " "));
-
-                    Debug.Log("SigmaLog: BEFORE sunGlareFadeDistance = " + sunGlareFadeDistance);
-                    Debug.Log("SigmaLog: BEFORE flareSettings = " + flareSettings);
-                    Debug.Log("SigmaLog: BEFORE spikesSettings = " + spikesSettings);
 
                     // Rescale Scatterer Settings
                     if (customRescale != 1)
@@ -72,10 +65,6 @@ namespace SigmaDimensionsPlugin
                         if (spikesSettings?.value?.Count > 2)
                             spikesSettings.value[2] = spikesSettings.value[2] / Rescale;
                     }
-
-                    Debug.Log("SigmaLog: AFTER sunGlareFadeDistance = " + sunGlareFadeDistance);
-                    Debug.Log("SigmaLog: AFTER flareSettings = " + flareSettings);
-                    Debug.Log("SigmaLog: AFTER spikesSettings = " + spikesSettings);
 
                     // Save Rescaled Scatterer Settings
                     if (flareSettings?.value?.Count > 2)
@@ -97,7 +86,6 @@ namespace SigmaDimensionsPlugin
                     }
                 }
             }
-
             DestroyImmediate(this);
         }
     }
