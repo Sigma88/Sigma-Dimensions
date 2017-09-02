@@ -1,3 +1,10 @@
+**v0.9.2**
+
+- Fixed scatterer compatibility
+- Fixed EVE compatibility
+- Fixed KSCSwitcher compatibility
+
+
 **v0.9.1**
 
 - Added the parameter lightRange

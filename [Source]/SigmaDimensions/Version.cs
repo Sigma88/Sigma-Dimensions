@@ -8,7 +8,7 @@ namespace SigmaDimensionsPlugin
     {
         void Awake()
         {
-            UnityEngine.Debug.Log("Sigma Version Check:   Sigma Dimensions v0.9.1");
+            UnityEngine.Debug.Log("Sigma Version Check:   Sigma Dimensions v0.9.2");
         }
     }
 }
