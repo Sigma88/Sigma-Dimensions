@@ -99,8 +99,15 @@ namespace SigmaDimensionsPlugin
                 }
 
                 // If the Center position has not been found get it from the external groups
-                if (center == null)
-                    center = GetPosition(ExternalGroups?[body]?[group]?.FirstOrDefault());
+                if
+                (
+                    center == null &&
+                    ExternalGroups?.ContainsKey(body) == true &&
+                    ExternalGroups[body].ContainsKey(group)
+                )
+                {
+                    center = GetPosition(ExternalGroups[body][group].FirstOrDefault());
+                }
 
                 // If the Center position has not been found stop here
                 if (center == null) continue;
@@ -145,7 +152,12 @@ namespace SigmaDimensionsPlugin
 
 
                 // ADD EXTERNAL MODS TO THIS GROUP
-                if (ExternalGroups?[body]?[group]?.Where(m => m != null)?.Count() > 0)
+                if
+                (
+                    ExternalGroups?.ContainsKey(body) == true &&
+                    ExternalGroups[body].ContainsKey(group) &&
+                    ExternalGroups[body][group].Where(m => m != null)?.Count() > 0
+                )
                 {
                     foreach (object mod in ExternalGroups[body][group].Where(m => m != null))
                     {
@@ -220,7 +232,7 @@ namespace SigmaDimensionsPlugin
                     // Since these groups are new they don't have a center
                     // Define the center as the position of the first mod in the array
                     Vector3? center = null;
-                    center = GetPosition(ExternalGroups?[planet]?[group]?.FirstOrDefault());
+                    center = GetPosition(ExternalGroups[planet][group].FirstOrDefault());
                     if (center == null) continue;
                     Debug.Log("        > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon((Vector3)center).lat + ", LON: " + new SigmaDimensions.LatLon((Vector3)center).lon + ")");
 
