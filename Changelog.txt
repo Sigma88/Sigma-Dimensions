@@ -3,6 +3,7 @@
 - Fixed scatterer compatibility
 - Fixed EVE compatibility
 - Fixed KSCSwitcher compatibility
+- Fixed PQSCity_Groups MOVE feature
 
 
 **v0.9.1**
