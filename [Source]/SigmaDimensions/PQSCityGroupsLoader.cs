@@ -187,7 +187,7 @@ namespace SigmaDimensionsPlugin
                     ConfigNode C2 = Group.GetNode("MOVE");
                     Vector3? newCenter = GetCenter(C2, body);
 
-                    if (newCenter == null) continue;
+                    if (newCenter == null) newCenter = center;
                     Debug.Log("Move Group to position = " + newCenter.Value + ", (LAT: " + new SigmaDimensions.LatLon(newCenter.Value).lat + ", LON: " + new SigmaDimensions.LatLon(newCenter.Value).lon + ")");
 
 
