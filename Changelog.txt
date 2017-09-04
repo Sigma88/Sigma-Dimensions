@@ -4,6 +4,8 @@
 - Fixed EVE compatibility
 - Fixed KSCSwitcher compatibility
 - Fixed PQSCity_Groups MOVE feature
+- Fixed spawn points relocation
+- Added CustomBarnKit compatibility
 
 
 **v0.9.1**
