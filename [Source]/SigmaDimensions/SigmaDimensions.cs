@@ -34,11 +34,13 @@ namespace SigmaDimensionsPlugin
                 foreach (PQSCity mod in body.GetComponentsInChildren<PQSCity>(true))
                 {
                     CityFixer(mod);
+                    mod.Orientate();
                 }
 
                 foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
                 {
                     City2Fixer(mod);
+                    mod.Orientate();
                 }
             }
         }
