@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 using Kopernicus;
 using Kopernicus.Configuration.ModLoader;
@@ -114,6 +115,9 @@ namespace PQSMod_SigmaDimensions
             PQSMod[] modlist = generatedBody?.pqsVersion?.GetComponentsInChildren<PQSMod>();
             for (int i = 0; i < modlist.Length; i++)
             {
+                // Fix scaleDeformityByRadius
+                ScaleByRadius(modlist[i]);
+
                 // PQSLandControl
                 if (modlist[i].GetType() == typeof(PQSLandControl))
                 {
@@ -165,8 +169,28 @@ namespace PQSMod_SigmaDimensions
             }
         }
 
+
+        // Scale By Radius
+        void ScaleByRadius(PQSMod mod)
+        {
+            FieldInfo scaleByRadius = mod.GetType().GetField("scaleDeformityByRadius");
+
+            if (scaleByRadius?.FieldType == typeof(bool) && (scaleByRadius?.GetValue(mod) as bool?) == true)
+            {
+                FieldInfo deformity = mod.GetType().GetField("heightMapDeformity");
+
+                if (deformity == null)
+                    mod.GetType().GetField("deformity");
+
+                if (deformity?.FieldType == typeof(double))
+                {
+                    deformity.SetValue(mod, (double)deformity.GetValue(mod) / Resize);
+                }
+            }
+        }
+
         // Material Edit
-        public void EditProperties(Material material, string[] properties, double mult)
+        void EditProperties(Material material, string[] properties, double mult)
         {
             for (int i = 0; i < properties.Length; i++)
             {
