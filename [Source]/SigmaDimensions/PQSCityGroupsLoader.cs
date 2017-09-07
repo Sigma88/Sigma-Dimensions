@@ -60,7 +60,7 @@ namespace SigmaDimensionsPlugin
                 }
 
                 string group = Group.GetValue("name");
-                CelestialBody body = FlightGlobals.Bodies.First(b => b.name == Group.GetValue("body"));
+                CelestialBody body = FlightGlobals.Bodies.FirstOrDefault(b => b.transform.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(group) || body == null) continue;
                 Debug.Log(">>> Sigma Dimensions Log: PQSCityGroupsLoader <<<");
                 Debug.Log("> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
