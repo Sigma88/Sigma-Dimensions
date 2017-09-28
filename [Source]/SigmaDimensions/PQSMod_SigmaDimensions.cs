@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Kopernicus;
 using Kopernicus.Configuration;
 using Kopernicus.Configuration.ModLoader;
+using Debug = SigmaDimensionsPlugin.Debug;
 
 
 namespace PQSMod_SigmaDimensions
@@ -115,7 +114,7 @@ namespace PQSMod_SigmaDimensions
 
         void FixPQS(Body body, ConfigNode node)
         {
-            Debug.Log("SigmaLog: FIX PQS FOR BODY " + body.name);
+            Debug.Log("PQSModsFixer.FixPQS", "Body = " + body.name);
 
             // generatedBody
             PSystemBody generatedBody = body?.generatedBody;

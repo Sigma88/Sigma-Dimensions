@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Kopernicus;
 
@@ -62,9 +62,9 @@ namespace SigmaDimensionsPlugin
                 string group = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.FirstOrDefault(b => b.transform.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(group) || body == null) continue;
-                Debug.Log(">>> Sigma Dimensions Log: PQSCityGroupsLoader <<<");
-                Debug.Log("> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
-                Debug.Log("    > Group: " + group);
+                Debug.Log("PQSCityGroups.SaveGroups", ">>> Loading PQSCityGroups from config files <<<");
+                Debug.Log("PQSCityGroups.SaveGroups", "> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
+                Debug.Log("PQSCityGroups.SaveGroups", "    > Group: " + group);
 
 
                 // FIND GROUP CENTER
@@ -112,7 +112,7 @@ namespace SigmaDimensionsPlugin
                 // If the Center position has not been found stop here
                 if (center == null) continue;
                 if (Debug.debug && !debug.Contains(center)) debug.Add(center);
-                Debug.Log("        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+                Debug.Log("PQSCityGroups.SaveGroups", "        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
 
 
                 // ADD PQS MODS TO THE GROUP
@@ -131,7 +131,7 @@ namespace SigmaDimensionsPlugin
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
                             PQSList.Add(mod, center);
-                            Debug.Log("            > PQSCity:  " + mod.name);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity:  " + mod.name);
                         }
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
@@ -145,7 +145,7 @@ namespace SigmaDimensionsPlugin
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
                             PQSList.Add(mod, center);
-                            Debug.Log("            > PQSCity2: " + mod.name);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity2: " + mod.name);
                         }
                     }
                 }
@@ -165,7 +165,7 @@ namespace SigmaDimensionsPlugin
                         if (PQSList.ContainsKey(mod)) continue;
 
                         PQSList.Add(mod, center);
-                        Debug.Log("            > external: " + mod);
+                        Debug.Log("PQSCityGroups.SaveGroups", "            > external: " + mod);
                     }
                     ExternalGroups[body].Remove(group);
                 }
@@ -188,19 +188,19 @@ namespace SigmaDimensionsPlugin
                     Vector3? newCenter = GetCenter(C2, body);
 
                     if (newCenter == null) newCenter = center;
-                    Debug.Log("Move Group to position = " + newCenter.Value + ", (LAT: " + new SigmaDimensions.LatLon(newCenter.Value).lat + ", LON: " + new SigmaDimensions.LatLon(newCenter.Value).lon + ")");
+                    Debug.Log("PQSCityGroups.SaveGroups", "Move Group to position = " + newCenter.Value + ", (LAT: " + new SigmaDimensions.LatLon(newCenter.Value).lat + ", LON: " + new SigmaDimensions.LatLon(newCenter.Value).lon + ")");
 
 
                     var info = new KeyValuePair<Vector3, NumericParser<double>[]>((Vector3)newCenter, new[] { 0, 0, new NumericParser<double>() });
 
                     if (C2.HasValue("Rotate"))
-                        info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("Rotate group = " + info.Value[0].value);
+                        info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("PQSCityGroups.SaveGroups", "Rotate group = " + info.Value[0].value);
                     if (C2.HasValue("fixAltitude"))
-                        info.Value[1].SetFromString(C2.GetValue("fixAltitude")); Debug.Log("Fix group altitude = " + info.Value[1].value);
+                        info.Value[1].SetFromString(C2.GetValue("fixAltitude")); Debug.Log("PQSCityGroups.SaveGroups", "Fix group altitude = " + info.Value[1].value);
                     if (C2.HasValue("originalAltitude"))
                         info.Value[2].SetFromString(C2.GetValue("originalAltitude"));
                     else
-                        info.Value[2].SetFromString("-Infinity"); Debug.Log("Original group altitude = " + (info.Value[2].value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].value.ToString()));
+                        info.Value[2].SetFromString("-Infinity"); Debug.Log("PQSCityGroups.SaveGroups", "Original group altitude = " + (info.Value[2].value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].value.ToString()));
 
 
                     if (!body.Has("PQSCityGroupsMove"))
@@ -220,21 +220,21 @@ namespace SigmaDimensionsPlugin
 
             // LOAD REMAINING EXTERNAL GROUPS
             Debug.debug = (debugAllGroups?.value == true);
-            Debug.Log(">>> Sigma Dimensions Log: ExternalGroupsLoader <<<");
+            Debug.Log("PQSCityGroups.SaveGroups", ">>> Loading external PQSCityGroups <<<");
             foreach (CelestialBody planet in ExternalGroups.Keys.Where(p => p != null && ExternalGroups[p] != null))
             {
-                Debug.Log("> Planet: " + planet.name + (planet.name != planet.displayName.Replace("^N", "") ? (", (A.K.A.: " + planet.displayName.Replace("^N", "") + ")") : "") + (planet.name != planet.transform.name ? (", (A.K.A.: " + planet.transform.name + ")") : ""));
+                Debug.Log("PQSCityGroups.SaveGroups", "> Planet: " + planet.name + (planet.name != planet.displayName.Replace("^N", "") ? (", (A.K.A.: " + planet.displayName.Replace("^N", "") + ")") : "") + (planet.name != planet.transform.name ? (", (A.K.A.: " + planet.transform.name + ")") : ""));
                 foreach (string group in ExternalGroups[planet].Keys.Where(g => !string.IsNullOrEmpty(g) && ExternalGroups[planet][g] != null))
                 {
                     if (ExternalGroups[planet][group].Count == 0) continue;
-                    Debug.Log("    > Group: " + group);
+                    Debug.Log("PQSCityGroups.SaveGroups", "    > Group: " + group);
 
                     // Since these groups are new they don't have a center
                     // Define the center as the position of the first mod in the array
                     Vector3? center = null;
                     center = GetPosition(ExternalGroups[planet][group].FirstOrDefault());
                     if (center == null) continue;
-                    Debug.Log("        > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon((Vector3)center).lat + ", LON: " + new SigmaDimensions.LatLon((Vector3)center).lon + ")");
+                    Debug.Log("PQSCityGroups.SaveGroups", "        > Center position = " + center + ", (LAT: " + new SigmaDimensions.LatLon((Vector3)center).lat + ", LON: " + new SigmaDimensions.LatLon((Vector3)center).lon + ")");
 
                     if (!planet.Has("PQSCityGroups"))
                         planet.Set("PQSCityGroups", new Dictionary<object, Vector3>());
@@ -245,7 +245,7 @@ namespace SigmaDimensionsPlugin
                         if (!PQSList.ContainsKey(mod))
                         {
                             PQSList.Add(mod, (Vector3)center);
-                            Debug.Log("            > external: " + mod);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > external: " + mod);
                         }
                     }
 
