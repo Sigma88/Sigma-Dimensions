@@ -3,10 +3,22 @@
     internal static class Debug
     {
         internal static bool debug = false;
+        static string Tag = "[SigmaLog SD]";
 
-        internal static void Log(string s)
+        internal static void Log(string message)
         {
-            if (debug) UnityEngine.Debug.Log("SigmaLog: " + s);
+            if (debug)
+            {
+                UnityEngine.Debug.Log(Tag + ": " + message);
+            }
+        }
+
+        internal static void Log(string Method, string message)
+        {
+            if (debug)
+            {
+                UnityEngine.Debug.Log(Tag + " " + Method + ": " + message);
+            }
         }
     }
 }

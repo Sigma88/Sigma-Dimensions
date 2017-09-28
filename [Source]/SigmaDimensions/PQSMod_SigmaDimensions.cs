@@ -1,6 +1,9 @@
+using System.Reflection;
 using UnityEngine;
 using Kopernicus;
+using Kopernicus.Configuration;
 using Kopernicus.Configuration.ModLoader;
+using Debug = SigmaDimensionsPlugin.Debug;
 
 
 namespace PQSMod_SigmaDimensions
@@ -97,6 +100,33 @@ namespace PQSMod_SigmaDimensions
         {
             // Always Load Last
             mod.order = int.MaxValue;
+        }
+    }
+
+
+    [KSPAddon(KSPAddon.Startup.Instantly, true)]
+    class PQSModsFixer : MonoBehaviour
+    {
+        void Start()
+        {
+            Events.OnBodyPostApply.Add(FixPQS);
+        }
+
+        void FixPQS(Body body, ConfigNode node)
+        {
+            Debug.Log("PQSModsFixer.FixPQS", "Body = " + body.name);
+
+            // generatedBody
+            PSystemBody generatedBody = body?.generatedBody;
+
+            // PQSMod_SigmaDimensions
+            PQSMod_SigmaDimensions mod = generatedBody?.pqsVersion?.gameObject?.GetComponentInChildren<PQS>(true)?.GetComponentInChildren<PQSMod_SigmaDimensions>(true);
+
+            // PQS MODS LIST
+            PQSMod[] modlist = generatedBody?.pqsVersion?.gameObject?.GetComponentInChildren<PQS>(true)?.GetComponentsInChildren<PQSMod>(true);
+
+            if (generatedBody == null || mod == null || modlist == null) return;
+
 
             // PQS MATERIALS
             string[] textures = new[] { "_groundTexStart", "_groundTexEnd", "_steepTexStart", "_steepTexEnd" };
@@ -110,10 +140,12 @@ namespace PQSMod_SigmaDimensions
             EditProperties(fallbackMaterial, textures, mod.Resize * mod.landscape);
             EditProperties(fallbackMaterial, tilings, mod.groundTiling);
 
-            // PQS MODS
-            PQSMod[] modlist = generatedBody?.pqsVersion?.GetComponentsInChildren<PQSMod>();
-            for (int i = 0; i < modlist.Length; i++)
+
+            for (int i = 0; i < modlist?.Length; i++)
             {
+                // Fix scaleDeformityByRadius
+                ScaleByRadius(modlist[i], mod.Resize);
+
                 // PQSLandControl
                 if (modlist[i].GetType() == typeof(PQSLandControl))
                 {
@@ -165,8 +197,25 @@ namespace PQSMod_SigmaDimensions
             }
         }
 
+        // Scale By Radius
+        void ScaleByRadius(PQSMod mod, double Resize)
+        {
+            FieldInfo scaleByRadius = mod.GetType().GetField("scaleDeformityByRadius");
+
+            if (scaleByRadius?.FieldType == typeof(bool) && (scaleByRadius?.GetValue(mod) as bool?) == true)
+            {
+                FieldInfo deformity = mod.GetType().GetField("heightMapDeformity");
+
+                if (deformity == null)
+                    deformity = mod.GetType().GetField("deformity");
+
+                if (deformity?.FieldType == typeof(double))
+                    deformity.SetValue(mod, (double)deformity.GetValue(mod) / Resize);
+            }
+        }
+
         // Material Edit
-        public void EditProperties(Material material, string[] properties, double mult)
+        void EditProperties(Material material, string[] properties, double mult)
         {
             for (int i = 0; i < properties.Length; i++)
             {
