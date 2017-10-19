@@ -3,7 +3,7 @@
     internal static class Debug
     {
         internal static bool debug = false;
-        static string Tag = "[SigmaLog SD]";
+        internal static string Tag = "[SigmaLog SD]";
 
         internal static void Log(string message)
         {
