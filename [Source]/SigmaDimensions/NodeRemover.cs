@@ -14,13 +14,13 @@ namespace SigmaDimensionsPlugin
             string folder = "GameData/Sigma/Dimensions/";
             string file = "Settings";
             string node = "SigmaDimensions";
-            string path = Assembly.GetExecutingAssembly().Location;
 
 
-            if (path != folder + "Plugin/" + Path.GetFileName(path))
-            {
+            string path = Assembly.GetExecutingAssembly().Location.Replace('\\','/');
+            while (path.Substring(1).Contains("GameData/"))
+                path = path.Substring(1 + path.Substring(1).IndexOf("GameData/"));
+            if (path != folder + "Plugins/" + Path.GetFileName(path))
                 UnityEngine.Debug.Log(Debug.Tag + " WARNING: Incorrect plugin location => " + path);
-            }
 
             if (!Directory.Exists(folder))
             {
