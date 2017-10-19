@@ -1,3 +1,14 @@
+**v0.9.5**
+
+- Updated to Sigma LoadingScreens v0.3.1
+- Added checks for incorrect install
+    > A warning will be shown in case of incorrect plugin location
+    > A warning will be shown in case of missing mod folder
+- Added checks for missing Settings file and node
+    > If missing, a new Settings.cfg file will be generated
+    > If missing, an empty SigmaDimensions node will be generated
+
+
 **v0.9.4**
 
 - Updated to KSP 1.3.1 and Kopernicus 1.3.1-2
