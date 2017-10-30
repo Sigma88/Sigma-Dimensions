@@ -7,6 +7,7 @@
 - Added checks for missing Settings file and node
     > If missing, a new Settings.cfg file will be generated
     > If missing, an empty SigmaDimensions node will be generated
+- A warning will be displayed when the debug spam feature is activated
 
 
 **v0.9.4**
