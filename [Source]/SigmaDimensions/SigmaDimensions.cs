@@ -19,26 +19,36 @@ namespace SigmaDimensionsPlugin
         {
             Debug.Log("SigmaDimensions.Start", ">>> Moving PQSCityGroups <<<");
 
-            foreach (CelestialBody cb in FlightGlobals.Bodies)
+            for (int i = 0; i < FlightGlobals.Bodies?.Count; i++)
             {
-                body = cb; // DON'T CHANGE THIS (body is required by other methods)
+                body = FlightGlobals.Bodies[i];
 
                 Debug.Log("SigmaDimensions.Start", "> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
 
+
+                // Sigma Dimensions Settings
                 resize = body.Has("resize") ? body.Get<double>("resize") : 1;
                 landscape = body.Has("landscape") ? body.Get<double>("landscape") : 1;
                 resizeBuildings = body.Has("resizeBuildings") ? body.Get<double>("resizeBuildings") : 1;
 
-                foreach (PQSCity mod in body.GetComponentsInChildren<PQSCity>(true))
+
+                // All PQSCity mods
+                PQSCity[] cities = body.GetComponentsInChildren<PQSCity>(true);
+
+                for (int j = 0; j < cities?.Length; j++)
                 {
-                    CityFixer(mod);
-                    mod.Orientate();
+                    CityFixer(cities[j]);
+                    cities[j].Orientate();
                 }
 
-                foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
+
+                // All PQSCity2 mods
+                PQSCity2[] cities2 = body.GetComponentsInChildren<PQSCity2>(true);
+
+                for (int j = 0; j < cities2?.Length; j++)
                 {
-                    City2Fixer(mod);
-                    mod.Orientate();
+                    City2Fixer(cities2[j]);
+                    cities2[j].Orientate();
                 }
             }
         }
@@ -61,6 +71,11 @@ namespace SigmaDimensionsPlugin
             }
 
 
+            // Add PQSCityFixer Component
+            PQSCityFixer fixer = pqs.GetComponent<PQSCityFixer>() ?? pqs.gameObject.AddComponent<PQSCityFixer>();
+
+
+            /*
             // Fix Altitude
             double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
             Debug.Log("SigmaDimensions.CityFixer", "        > Ground Level at Mod   = " + groundLevel);
@@ -92,7 +107,7 @@ namespace SigmaDimensionsPlugin
 
                 pqs.repositionRadiusOffset *= resizeBuildings;
                 Debug.Log("SigmaDimensions.CityFixer", "             > Fixed Offset    = " + pqs.repositionRadiusOffset);
-            }
+            }*/
         }
 
         void City2Fixer(PQSCity2 pqs)
@@ -113,6 +128,10 @@ namespace SigmaDimensionsPlugin
             }
 
 
+            // Add PQSCity2Fixer Component
+            PQSCity2Fixer fixer = pqs.GetComponent<PQSCity2Fixer>() ?? pqs.gameObject.AddComponent<PQSCity2Fixer>();
+
+            /*
             // Fix Altitude
             if (!pqs.snapToSurface)
             {
@@ -135,7 +154,7 @@ namespace SigmaDimensionsPlugin
 
                 pqs.snapHeightOffset *= resizeBuildings;
                 Debug.Log("SigmaDimensions.City2Fixer", "        > PQSCity2 Offset = " + pqs.snapHeightOffset);
-            }
+            }*/
         }
 
         void GroupFixer(object mod, Vector3 REFvector)
@@ -147,7 +166,7 @@ namespace SigmaDimensionsPlugin
 
             if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
             {
-                PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
+                PQSCity KSC = body.GetComponentsInChildren<PQSCity>().FirstOrDefault(m => m.name == "KSC");
                 MoveGroup(mod, KSC.repositionRadial, KSC.reorientFinalAngle - (-15), 0, 64.7846885412);
                 REFvector = KSC.repositionRadial; // Change the REFvector the the new position for Lerping
             }
