@@ -17,14 +17,12 @@ namespace SigmaDimensionsPlugin
 
         void Start()
         {
-            bool debug = (PQSCityGroups.debug.Count > 0 || PQSCityGroups.debugAllGroups);
-            Debug.debug = debug; Debug.Log("SigmaDimensions.Start", ">>> Moving PQSCityGroups <<<");
+            Debug.Log("SigmaDimensions.Start", ">>> Moving PQSCityGroups <<<");
 
             foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
                 body = cb; // DON'T CHANGE THIS (body is required by other methods)
 
-                if (debug) Debug.debug = body.Has("PQSCityGroups");
                 Debug.Log("SigmaDimensions.Start", "> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
 
                 resize = body.Has("resize") ? body.Get<double>("resize") : 1;
@@ -47,9 +45,6 @@ namespace SigmaDimensionsPlugin
 
         void CityFixer(PQSCity pqs)
         {
-            // Reset Debug
-            Debug.debug = false;
-
             // Resize the Building
             pqs.transform.localScale *= (float)resizeBuildings;
 
@@ -60,7 +55,6 @@ namespace SigmaDimensionsPlugin
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
                 if (PQSList.ContainsKey(pqs))
                 {
-                    Debug.debug = (PQSCityGroups.debug.Contains(PQSList[pqs]) || PQSCityGroups.debugAllGroups);
                     Debug.Log("SigmaDimensions.CityFixer", "    > PQSCity: " + pqs.name);
                     GroupFixer(pqs, PQSList[pqs]);
                 }
@@ -103,9 +97,6 @@ namespace SigmaDimensionsPlugin
 
         void City2Fixer(PQSCity2 pqs)
         {
-            // Reset Debug
-            Debug.debug = false;
-
             // Resize the Building
             pqs.transform.localScale *= (float)resizeBuildings;
 
@@ -116,7 +107,6 @@ namespace SigmaDimensionsPlugin
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
                 if (PQSList.ContainsKey(pqs))
                 {
-                    Debug.debug = (PQSCityGroups.debug.Contains(PQSList[pqs]) || PQSCityGroups.debugAllGroups);
                     Debug.Log("SigmaDimensions.City2Fixer", "    > PQSCity2: " + pqs.name);
                     GroupFixer(pqs, PQSList[pqs]);
                 }
@@ -300,6 +290,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public double lon
             {
                 get { return data[1]; }
@@ -309,6 +300,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public double alt
             {
                 get { return data[2]; }
@@ -318,6 +310,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public Vector3 vector
             {
                 get { return v; }
@@ -329,6 +322,7 @@ namespace SigmaDimensionsPlugin
                     data[2] = Math.Pow(v.x * v.x + v.y * v.y + v.z * v.z, 0.5);
                 }
             }
+
             void Update()
             {
                 v = Utility.LLAtoECEF(data[0], data[1], 0, data[2]);
@@ -342,6 +336,7 @@ namespace SigmaDimensionsPlugin
             {
                 vector = input;
             }
+
             public LatLon(LatLon input)
             {
                 data[0] = input.lat;

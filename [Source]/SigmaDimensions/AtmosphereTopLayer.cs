@@ -17,7 +17,6 @@ namespace SigmaDimensionsPlugin
             foreach (CelestialBody body in FlightGlobals.Bodies.FindAll(b => b.atmosphere && b.Has("atmoTopLayer")))
             {
                 // Debug
-                Debug.debug = body.Has("debug") ? body.Get<bool>("debug") : false;
                 PrintCurve(body, "Original Curves");
 
                 Normalize(body, body.atmosphereDepth);
