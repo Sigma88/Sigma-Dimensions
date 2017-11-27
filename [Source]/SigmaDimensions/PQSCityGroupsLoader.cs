@@ -46,19 +46,6 @@ namespace SigmaDimensionsPlugin
             // LOAD SD GROUPS
             foreach (ConfigNode Group in GroupsList.Values)
             {
-                Debug.debug = false;
-                if (debugAllGroups.value)
-                {
-                    Debug.debug = true;
-                }
-                else if (Group.HasValue("debug"))
-                {
-                    NumericParser<bool> log = new NumericParser<bool>();
-                    log.SetFromString(Group.GetValue("debug"));
-                    if (log.value)
-                        Debug.debug = true;
-                }
-
                 string group = Group.GetValue("name");
                 CelestialBody body = FlightGlobals.Bodies.FirstOrDefault(b => b.transform.name == Group.GetValue("body"));
                 if (string.IsNullOrEmpty(group) || body == null) continue;
@@ -111,7 +98,6 @@ namespace SigmaDimensionsPlugin
 
                 // If the Center position has not been found stop here
                 if (center == null) continue;
-                if (Debug.debug && !debug.Contains(center)) debug.Add(center);
                 Debug.Log("PQSCityGroups.SaveGroups", "        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
 
 
@@ -219,7 +205,6 @@ namespace SigmaDimensionsPlugin
             if (ExternalGroups == null) ExternalGroups = new Dictionary<CelestialBody, Dictionary<string, List<object>>>();
 
             // LOAD REMAINING EXTERNAL GROUPS
-            Debug.debug = (debugAllGroups?.value == true);
             Debug.Log("PQSCityGroups.SaveGroups", ">>> Loading external PQSCityGroups <<<");
             foreach (CelestialBody planet in ExternalGroups.Keys.Where(p => p != null && ExternalGroups[p] != null))
             {

@@ -17,134 +17,168 @@ namespace SigmaDimensionsPlugin
 
         void Start()
         {
-            bool debug = (PQSCityGroups.debug.Count > 0 || PQSCityGroups.debugAllGroups);
-            Debug.debug = debug; Debug.Log("SigmaDimensions.Start", ">>> Moving PQSCityGroups <<<");
-
-            foreach (CelestialBody cb in FlightGlobals.Bodies)
+            for (int i = 0; i < FlightGlobals.Bodies?.Count; i++)
             {
-                body = cb; // DON'T CHANGE THIS (body is required by other methods)
+                body = FlightGlobals.Bodies[i];
 
-                if (debug) Debug.debug = body.Has("PQSCityGroups");
                 Debug.Log("SigmaDimensions.Start", "> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
 
+
+                // Sigma Dimensions Settings
                 resize = body.Has("resize") ? body.Get<double>("resize") : 1;
                 landscape = body.Has("landscape") ? body.Get<double>("landscape") : 1;
                 resizeBuildings = body.Has("resizeBuildings") ? body.Get<double>("resizeBuildings") : 1;
 
-                foreach (PQSCity mod in body.GetComponentsInChildren<PQSCity>(true))
+
+                // All PQSCity mods
+                PQSCity[] cities = body.GetComponentsInChildren<PQSCity>(true);
+
+                for (int j = 0; j < cities?.Length; j++)
                 {
-                    CityFixer(mod);
-                    mod.Orientate();
+                    CityFixer(cities[j]);
+                    cities[j].Orientate();
                 }
 
-                foreach (PQSCity2 mod in body.GetComponentsInChildren<PQSCity2>(true))
+
+                // All PQSCity2 mods
+                PQSCity2[] cities2 = body.GetComponentsInChildren<PQSCity2>(true);
+
+                for (int j = 0; j < cities2?.Length; j++)
                 {
-                    City2Fixer(mod);
-                    mod.Orientate();
+                    City2Fixer(cities2[j]);
+                    cities2[j].Orientate();
                 }
             }
         }
 
-        void CityFixer(PQSCity pqs)
+        void CityFixer(PQSCity city)
         {
-            // Reset Debug
-            Debug.debug = false;
+            Debug.Log("SigmaDimensions.CityFixer", "    > PQSCity: " + city.name);
 
             // Resize the Building
-            pqs.transform.localScale *= (float)resizeBuildings;
+            city.transform.localScale *= (float)resizeBuildings;
 
 
             // Fix PQSCity Groups
             if (body.Has("PQSCityGroups"))
             {
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
-                if (PQSList.ContainsKey(pqs))
+                if (PQSList.ContainsKey(city))
                 {
-                    Debug.debug = (PQSCityGroups.debug.Contains(PQSList[pqs]) || PQSCityGroups.debugAllGroups);
-                    Debug.Log("SigmaDimensions.CityFixer", "    > PQSCity: " + pqs.name);
-                    GroupFixer(pqs, PQSList[pqs]);
+                    GroupFixer(city, PQSList[city]);
                 }
             }
 
 
-            // Fix Altitude
-            double groundLevel = body.pqsController.GetSurfaceHeight(pqs.repositionRadial) - body.Radius;
-            Debug.Log("SigmaDimensions.CityFixer", "        > Ground Level at Mod   = " + groundLevel);
-
-            if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
-            {
-                // Offset = Distance from the center of the planet
-                Debug.Log("SigmaDimensions.CityFixer", "             > Original Absolute Offset = " + pqs.repositionRadiusOffset);
-
-                double fromRadius = pqs.repositionRadiusOffset - (body.Radius / resize);
-                double builtInOffset = fromRadius - groundLevel / (resize * landscape);
-
-                pqs.repositionRadiusOffset = body.Radius + groundLevel + builtInOffset * resizeBuildings;
-                Debug.Log("SigmaDimensions.CityFixer", "             > Fixed Absolute Offset    = " + pqs.repositionRadiusOffset);
-            }
-            else if (pqs.repositionToSphere && !pqs.repositionToSphereSurface)
-            {
-                // Offset = Distance from the radius of the planet
-                Debug.Log("SigmaDimensions.CityFixer", "             > Original Altitude = " + pqs.repositionRadiusOffset);
-
-                double builtInOffset = pqs.repositionRadiusOffset - groundLevel / (resize * landscape);
-                pqs.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
-                Debug.Log("SigmaDimensions.CityFixer", "             > Fixed Altitude    = " + pqs.repositionRadiusOffset);
-            }
-            else if (pqs.repositionToSphereSurface && pqs.repositionToSphereSurfaceAddHeight)
-            {
-                // Offset = Distance from the surface of the planet
-                Debug.Log("SigmaDimensions.CityFixer", "             > Original Offset = " + pqs.repositionRadiusOffset);
-
-                pqs.repositionRadiusOffset *= resizeBuildings;
-                Debug.Log("SigmaDimensions.CityFixer", "             > Fixed Offset    = " + pqs.repositionRadiusOffset);
-            }
-        }
-
-        void City2Fixer(PQSCity2 pqs)
-        {
-            // Reset Debug
-            Debug.debug = false;
-
-            // Resize the Building
-            pqs.transform.localScale *= (float)resizeBuildings;
+            // Add PQSCityFixer Component
+            PQSCityFixer fixer = city.GetComponent<PQSCityFixer>() ?? city.gameObject.AddComponent<PQSCityFixer>();
 
 
-            // Fix PQSCity Groups
-            if (body.Has("PQSCityGroups"))
-            {
-                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
-                if (PQSList.ContainsKey(pqs))
-                {
-                    Debug.debug = (PQSCityGroups.debug.Contains(PQSList[pqs]) || PQSCityGroups.debugAllGroups);
-                    Debug.Log("SigmaDimensions.City2Fixer", "    > PQSCity2: " + pqs.name);
-                    GroupFixer(pqs, PQSList[pqs]);
-                }
-            }
+            // Terrain
+            double groundLevel = body.pqsController.GetSurfaceHeight(city.repositionRadial) - body.Radius;
+            double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
+            groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
 
 
             // Fix Altitude
-            if (!pqs.snapToSurface)
+            if (city.repositionToSphere && !city.repositionToSphereSurface)
             {
+                double builtInOffset = city.repositionRadiusOffset - groundLevel / (resize * landscape);
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > Builtuin Offset = " + builtInOffset);
+
                 // Offset = Distance from the radius of the planet
 
-                double groundLevel = body.pqsController.GetSurfaceHeight(pqs.PlanetRelativePosition) - body.Radius;
-                Debug.Log("SigmaDimensions.City2Fixer", "        > Ground Level at Mod = " + groundLevel);
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Original Radius Offset = " + city.repositionRadiusOffset);
 
-                if (body.ocean && groundLevel < 0)
-                    groundLevel = 0;
+                city.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
 
-                double builtInOffset = pqs.alt - groundLevel / (resize * landscape);
-                pqs.alt = groundLevel + builtInOffset * resizeBuildings;
-
-                Debug.Log("SigmaDimensions.City2Fixer", "        > PQSCity2 Alt = " + pqs.alt);
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Fixed Radius Offset = " + city.repositionRadiusOffset);
             }
             else
             {
+                if (!city.repositionToSphereSurface)
+                {
+                    city.repositionToSphereSurface = true;
+                    city.repositionRadiusOffset = 0;
+                }
+                if (!city.repositionToSphereSurfaceAddHeight)
+                {
+                    city.repositionToSphereSurfaceAddHeight = true;
+                    city.repositionRadiusOffset = 0;
+                }
+
+                double builtInOffset = city.repositionRadiusOffset - oceanDepth / (resize * landscape);
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > Builtuin Offset = " + builtInOffset);
+
                 // Offset = Distance from the surface of the planet
 
-                pqs.snapHeightOffset *= resizeBuildings;
-                Debug.Log("SigmaDimensions.City2Fixer", "        > PQSCity2 Offset = " + pqs.snapHeightOffset);
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Original Surface Offset = " + city.repositionRadiusOffset);
+
+                city.repositionRadiusOffset = oceanDepth + builtInOffset * resizeBuildings;
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Fixed Surface Offset = " + city.repositionRadiusOffset);
+            }
+        }
+
+        void City2Fixer(PQSCity2 city)
+        {
+            Debug.Log("SigmaDimensions.City2Fixer", "    > PQSCity2: " + city.name);
+
+            // Resize the Building
+            city.transform.localScale *= (float)resizeBuildings;
+
+
+            // Fix PQSCity Groups
+            if (body.Has("PQSCityGroups"))
+            {
+                Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
+                if (PQSList.ContainsKey(city))
+                {
+                    GroupFixer(city, PQSList[city]);
+                }
+            }
+
+
+            // Add PQSCity2Fixer Component
+            PQSCity2Fixer fixer = city.GetComponent<PQSCity2Fixer>() ?? city.gameObject.AddComponent<PQSCity2Fixer>();
+
+
+            // Terrain
+            double groundLevel = body.pqsController.GetSurfaceHeight(city.PlanetRelativePosition) - body.Radius;
+            double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
+            groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
+
+
+            // Fix Altitude
+            if (!city.snapToSurface)
+            {
+                double builtInOffset = city.alt - groundLevel / (resize * landscape);
+
+                Debug.Log("SigmaDimensions.City2Fixer", "        > Builtuin Offset = " + builtInOffset);
+
+                // Offset = Distance from the radius of the planet
+
+                Debug.Log("SigmaDimensions.City2Fixer", "        > PQSCity Original Radius Offset = " + city.alt);
+
+                city.alt = groundLevel + builtInOffset * resizeBuildings;
+
+                Debug.Log("SigmaDimensions.City2Fixer", "        > PQSCity Fixed Radius Offset = " + city.alt);
+            }
+            else
+            {
+                double builtInOffset = city.snapHeightOffset - oceanDepth / (resize * landscape);
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > Builtuin Offset = " + builtInOffset);
+
+                // Offset = Distance from the surface of the planet
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Original Surface Offset = " + city.snapHeightOffset);
+
+                city.snapHeightOffset = oceanDepth + builtInOffset * resizeBuildings;
+
+                Debug.Log("SigmaDimensions.CityFixer", "        > PQSCity Fixed Surface Offset = " + city.snapHeightOffset);
             }
         }
 
@@ -157,7 +191,7 @@ namespace SigmaDimensionsPlugin
 
             if (body == FlightGlobals.GetHomeBody() && REFvector == new Vector3(157000, -1000, -570000))
             {
-                PQSCity KSC = body.GetComponentsInChildren<PQSCity>().First(m => m.name == "KSC");
+                PQSCity KSC = body.GetComponentsInChildren<PQSCity>().FirstOrDefault(m => m.name == "KSC");
                 MoveGroup(mod, KSC.repositionRadial, KSC.reorientFinalAngle - (-15), 0, 64.7846885412);
                 REFvector = KSC.repositionRadial; // Change the REFvector the the new position for Lerping
             }
@@ -251,13 +285,28 @@ namespace SigmaDimensionsPlugin
 
         void FixAltitude(object mod, double terrainShift, double fixAltitude)
         {
+            Debug.Log("SigmaDimensions.FixAltitude", "        > Terrain Shift = " + terrainShift);
+
             string type = mod.GetType().ToString();
             if (type == "PQSCity")
             {
                 PQSCity pqs = (PQSCity)mod;
-                if (!pqs.repositionToSphereSurface || !pqs.repositionToSphereSurfaceAddHeight)
+                if (!pqs.repositionToSphere && !pqs.repositionToSphereSurface)
+                {
+                    pqs.repositionToSphereSurface = true;
+                    pqs.repositionRadiusOffset = 0;
+                }
+                if (pqs.repositionToSphereSurface && !pqs.repositionToSphereSurfaceAddHeight)
+                {
+                    pqs.repositionToSphereSurfaceAddHeight = true;
+                    pqs.repositionRadiusOffset = 0;
+                }
+                if (!pqs.repositionToSphereSurface)
+                {
                     pqs.repositionRadiusOffset += terrainShift;
+                }
 
+                Debug.Log("SigmaDimensions.FixAltitude", "        > Mod original repositionRadiusOffset = " + pqs.repositionRadiusOffset);
                 pqs.repositionRadiusOffset += fixAltitude;
                 Debug.Log("SigmaDimensions.FixAltitude", "        > Fixed repositionRadiusOffset = " + pqs.repositionRadiusOffset);
             }
@@ -300,6 +349,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public double lon
             {
                 get { return data[1]; }
@@ -309,6 +359,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public double alt
             {
                 get { return data[2]; }
@@ -318,6 +369,7 @@ namespace SigmaDimensionsPlugin
                     Update();
                 }
             }
+
             public Vector3 vector
             {
                 get { return v; }
@@ -329,6 +381,7 @@ namespace SigmaDimensionsPlugin
                     data[2] = Math.Pow(v.x * v.x + v.y * v.y + v.z * v.z, 0.5);
                 }
             }
+
             void Update()
             {
                 v = Utility.LLAtoECEF(data[0], data[1], 0, data[2]);
@@ -342,6 +395,7 @@ namespace SigmaDimensionsPlugin
             {
                 vector = input;
             }
+
             public LatLon(LatLon input)
             {
                 data[0] = input.lat;

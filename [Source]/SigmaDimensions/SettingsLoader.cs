@@ -47,10 +47,7 @@ namespace SigmaDimensionsPlugin
         [ParserTarget("debug", optional = true)]
         NumericParser<bool> debug
         {
-            set
-            {
-                generatedBody.celestialBody.Set("debug", value.value);
-            }
+            set { Debug.debug = value?.value == true ? true : Debug.debug; }
         }
 
         void IParserEventSubscriber.Apply(ConfigNode node)

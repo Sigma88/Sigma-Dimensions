@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="AtmosphereTopLayer.cs" />
     <Compile Include="Compatibility.cs" />
+    <Compile Include="PQSCityFixer.cs" />
     <Compile Include="PQSCityGroupsLoader.cs" />
     <Compile Include="PQSMod_SigmaDimensions.cs" />
     <Compile Include="DebugLogger.cs" />
