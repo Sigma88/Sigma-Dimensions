@@ -1,3 +1,9 @@
+**v0.9.6**
+
+- Fixed PQSCity altitude calculation
+- Fixed debug feature
+
+
 **v0.9.5**
 
 - Updated to Sigma LoadingScreens v0.3.1
