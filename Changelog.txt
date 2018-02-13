@@ -1,3 +1,10 @@
+**v0.9.7**
+
+- Updated to Kopernicus 1.3.1-5
+- Updated to Sigma LoadingScreens v0.3.3
+- Fixed minor compatibility bug in scaling atmospheres
+
+
 **v0.9.6**
 
 - Fixed PQSCity altitude calculation

@@ -21,7 +21,7 @@ namespace SigmaDimensionsPlugin
             foreach (ConfigNode GroupsLoader in GameDatabase.Instance.GetConfigNodes("PQSCity_Groups"))
             {
                 AddGroups(GroupsLoader.GetNodes("GROUP"));
-                if (GroupsLoader.HasValue("debug") && !debugAllGroups.value)
+                if (GroupsLoader.HasValue("debug") && !debugAllGroups.Value)
                     debugAllGroups.SetFromString(GroupsLoader.GetValue("debug"));
             }
 
@@ -98,7 +98,7 @@ namespace SigmaDimensionsPlugin
 
                 // If the Center position has not been found stop here
                 if (center == null) continue;
-                Debug.Log("PQSCityGroups.SaveGroups", "        > Center position = " + center.value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
+                Debug.Log("PQSCityGroups.SaveGroups", "        > Center position = " + center.Value + ", (LAT: " + new SigmaDimensions.LatLon(center).lat + ", LON: " + new SigmaDimensions.LatLon(center).lon + ")");
 
 
                 // ADD PQS MODS TO THE GROUP
@@ -180,21 +180,21 @@ namespace SigmaDimensionsPlugin
                     var info = new KeyValuePair<Vector3, NumericParser<double>[]>((Vector3)newCenter, new[] { 0, 0, new NumericParser<double>() });
 
                     if (C2.HasValue("Rotate"))
-                        info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("PQSCityGroups.SaveGroups", "Rotate group = " + info.Value[0].value);
+                        info.Value[0].SetFromString(C2.GetValue("Rotate")); Debug.Log("PQSCityGroups.SaveGroups", "Rotate group = " + info.Value[0].Value);
                     if (C2.HasValue("fixAltitude"))
-                        info.Value[1].SetFromString(C2.GetValue("fixAltitude")); Debug.Log("PQSCityGroups.SaveGroups", "Fix group altitude = " + info.Value[1].value);
+                        info.Value[1].SetFromString(C2.GetValue("fixAltitude")); Debug.Log("PQSCityGroups.SaveGroups", "Fix group altitude = " + info.Value[1].Value);
                     if (C2.HasValue("originalAltitude"))
                         info.Value[2].SetFromString(C2.GetValue("originalAltitude"));
                     else
-                        info.Value[2].SetFromString("-Infinity"); Debug.Log("PQSCityGroups.SaveGroups", "Original group altitude = " + (info.Value[2].value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].value.ToString()));
+                        info.Value[2].SetFromString("-Infinity"); Debug.Log("PQSCityGroups.SaveGroups", "Original group altitude = " + (info.Value[2].Value == double.NegativeInfinity ? "[Not Specified]" : info.Value[2].Value.ToString()));
 
 
                     if (!body.Has("PQSCityGroupsMove"))
                         body.Set("PQSCityGroupsMove", new Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>());
                     var MoveList = body.Get<Dictionary<Vector3, KeyValuePair<Vector3, NumericParser<double>[]>>>("PQSCityGroupsMove");
 
-                    if (!MoveList.ContainsKey(center.value))
-                        MoveList.Add(center.value, info);
+                    if (!MoveList.ContainsKey(center.Value))
+                        MoveList.Add(center.Value, info);
 
                     body.Set("PQSCityGroupsMove", MoveList);
                 }

@@ -218,7 +218,7 @@ namespace SigmaDimensionsPlugin
             foreach (string k in config.GetValues("key"))
             {
                 value.SetFromString(k);
-                list.Add(value.value.ToArray());
+                list.Add(value.Value.ToArray());
             }
 
             return list;
