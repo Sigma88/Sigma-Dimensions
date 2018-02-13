@@ -7,47 +7,47 @@ namespace SigmaDimensionsPlugin
     [ParserTargetExternal("Body", "SigmaDimensions", "Kopernicus")]
     class SettingsLoader : BaseLoader, IParserEventSubscriber
     {
-        [ParserTarget("Resize", optional = true)]
+        [ParserTarget("Resize", Optional = true)]
         NumericParser<double> resize
         {
             set
             {
-                generatedBody.celestialBody.Set("resize", value.value);
+                generatedBody.celestialBody.Set("resize", value.Value);
             }
         }
 
-        [ParserTarget("landscape", optional = true)]
+        [ParserTarget("landscape", Optional = true)]
         NumericParser<double> landscape
         {
             set
             {
-                generatedBody.celestialBody.Set("landscape", value.value);
+                generatedBody.celestialBody.Set("landscape", value.Value);
             }
         }
 
-        [ParserTarget("resizeBuildings", optional = true)]
+        [ParserTarget("resizeBuildings", Optional = true)]
         NumericParser<double> resizeBuildings
         {
             set
             {
-                generatedBody.celestialBody.Set("resizeBuildings", value.value);
+                generatedBody.celestialBody.Set("resizeBuildings", value.Value);
             }
         }
 
-        [ParserTarget("atmoTopLayer", optional = true)]
+        [ParserTarget("atmoTopLayer", Optional = true)]
         NumericParser<double> atmoTopLayer
         {
             set
             {
-                if (value.value != 1)
-                    generatedBody.celestialBody.Set("atmoTopLayer", value.value);
+                if (value.Value != 1)
+                    generatedBody.celestialBody.Set("atmoTopLayer", value.Value);
             }
         }
 
-        [ParserTarget("debug", optional = true)]
+        [ParserTarget("debug", Optional = true)]
         NumericParser<bool> debug
         {
-            set { Debug.debug = value?.value == true ? true : Debug.debug; }
+            set { Debug.debug = value?.Value == true ? true : Debug.debug; }
         }
 
         void IParserEventSubscriber.Apply(ConfigNode node)

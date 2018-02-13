@@ -29,7 +29,7 @@ namespace PQSMod_SigmaDimensions
     public class SigmaDimensions : ModLoader<PQSMod_SigmaDimensions>, IParserEventSubscriber
     {
         // Resize
-        [ParserTarget("Resize", optional = true)]
+        [ParserTarget("Resize", Optional = true)]
         private NumericParser<double> Resize
         {
             get { return mod.Resize; }
@@ -37,7 +37,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // Atmosphere
-        [ParserTarget("Atmosphere", optional = true)]
+        [ParserTarget("Atmosphere", Optional = true)]
         private NumericParser<float> Atmosphere
         {
             get { return mod.Atmosphere; }
@@ -45,7 +45,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // landscape
-        [ParserTarget("landscape", optional = true)]
+        [ParserTarget("landscape", Optional = true)]
         private NumericParser<double> landscape
         {
             get { return mod.landscape; }
@@ -53,7 +53,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // changeScatterSize
-        [ParserTarget("changeScatterSize", optional = true)]
+        [ParserTarget("changeScatterSize", Optional = true)]
         private NumericParser<float> changeScatterSize
         {
             get { return mod.changeScatterSize; }
@@ -61,7 +61,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // changeScatterDensity
-        [ParserTarget("changeScatterDensity", optional = true)]
+        [ParserTarget("changeScatterDensity", Optional = true)]
         private NumericParser<float> changeScatterDensity
         {
             get { return mod.changeScatterDensity; }
@@ -69,7 +69,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // Resize
-        [ParserTarget("resizeBuildings", optional = true)]
+        [ParserTarget("resizeBuildings", Optional = true)]
         private NumericParser<double> resizeBuildings
         {
             get { return mod.resizeBuildings; }
@@ -77,7 +77,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // groundTiling
-        [ParserTarget("groundTiling", optional = true)]
+        [ParserTarget("groundTiling", Optional = true)]
         private NumericParser<double> groundTiling
         {
             get { return mod.groundTiling; }
@@ -85,7 +85,7 @@ namespace PQSMod_SigmaDimensions
         }
 
         // atmoTopLayer
-        [ParserTarget("atmoTopLayer", optional = true)]
+        [ParserTarget("atmoTopLayer", Optional = true)]
         private NumericParser<float> atmoTopLayer
         {
             get { return mod.atmoTopLayer; }

@@ -52,31 +52,31 @@ namespace SigmaDimensionsPlugin
                     if (customRescale != 1)
                     {
                         sunGlareFadeDistance *= customRescale;
-                        if (flareSettings?.value?.Count > 2)
-                            flareSettings.value[2] = flareSettings.value[2] / customRescale;
-                        if (spikesSettings?.value?.Count > 2)
-                            spikesSettings.value[2] = spikesSettings.value[2] / customRescale;
+                        if (flareSettings?.Value?.Count > 2)
+                            flareSettings.Value[2] = flareSettings.Value[2] / customRescale;
+                        if (spikesSettings?.Value?.Count > 2)
+                            spikesSettings.Value[2] = spikesSettings.Value[2] / customRescale;
                     }
                     else
                     {
                         sunGlareFadeDistance *= Rescale;
-                        if (flareSettings?.value?.Count > 2)
-                            flareSettings.value[2] = flareSettings.value[2] / Rescale;
-                        if (spikesSettings?.value?.Count > 2)
-                            spikesSettings.value[2] = spikesSettings.value[2] / Rescale;
+                        if (flareSettings?.Value?.Count > 2)
+                            flareSettings.Value[2] = flareSettings.Value[2] / Rescale;
+                        if (spikesSettings?.Value?.Count > 2)
+                            spikesSettings.Value[2] = spikesSettings.Value[2] / Rescale;
                     }
 
                     // Save Rescaled Scatterer Settings
-                    if (flareSettings?.value?.Count > 2)
+                    if (flareSettings?.Value?.Count > 2)
                     {
                         star.RemoveValues("flareSettings");
-                        star.AddValue("flareSettings", string.Join(",", flareSettings.value.Select(p => p.ToString()).ToArray()));
+                        star.AddValue("flareSettings", string.Join(",", flareSettings.Value.Select(p => p.ToString()).ToArray()));
                     }
 
-                    if (spikesSettings?.value?.Count > 2)
+                    if (spikesSettings?.Value?.Count > 2)
                     {
                         star.RemoveValues("spikesSettings");
-                        star.AddValue("spikesSettings", string.Join(",", spikesSettings.value.Select(p => p.ToString()).ToArray()));
+                        star.AddValue("spikesSettings", string.Join(",", spikesSettings.Value.Select(p => p.ToString()).ToArray()));
                     }
 
                     if (sunGlareFadeDistance != 0)
