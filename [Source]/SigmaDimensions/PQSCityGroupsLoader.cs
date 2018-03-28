@@ -11,6 +11,7 @@ namespace SigmaDimensionsPlugin
     {
         // Public Dictionary for External Groups
         public static Dictionary<CelestialBody, Dictionary<string, List<object>>> ExternalGroups = new Dictionary<CelestialBody, Dictionary<string, List<object>>>();
+        public static Dictionary<CelestialBody, Dictionary<string, List<object>>> ExternalExceptions = new Dictionary<CelestialBody, Dictionary<string, List<object>>>();
 
         Dictionary<string, ConfigNode> GroupsList = new Dictionary<string, ConfigNode>();
         internal static List<Vector3> debug = new List<Vector3>();
@@ -53,6 +54,7 @@ namespace SigmaDimensionsPlugin
                 Debug.Log("PQSCityGroups.SaveGroups", "> Planet: " + body.name + (body.name != body.displayName.Replace("^N", "") ? (", (A.K.A.: " + body.displayName.Replace("^N", "") + ")") : "") + (body.name != body.transform.name ? (", (A.K.A.: " + body.transform.name + ")") : ""));
                 Debug.Log("PQSCityGroups.SaveGroups", "    > Group: " + group);
 
+                bool.TryParse(Group.GetValue("exclude"), out bool exclude);
 
                 // FIND GROUP CENTER
                 Vector3Parser center = null;
@@ -75,6 +77,10 @@ namespace SigmaDimensionsPlugin
                 if (!body.Has("PQSCityGroups"))
                     body.Set("PQSCityGroups", new Dictionary<object, Vector3>());
                 Dictionary<object, Vector3> PQSList = body.Get<Dictionary<object, Vector3>>("PQSCityGroups");
+
+                if (!body.Has("ExcludedPQSCityMods"))
+                    body.Set("ExcludedPQSCityMods", new List<object>());
+                List<object> ExcludeList = body.Get<List<object>>("ExcludedPQSCityMods");
 
                 // If the Center position has not been found get it from the MODS node
                 if (Group.HasNode("MODS"))
@@ -116,8 +122,16 @@ namespace SigmaDimensionsPlugin
                             // This way custom groups will overwrite external ones
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
-                            PQSList.Add(mod, center);
-                            Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity:  " + mod.name);
+                            if (!exclude)
+                            {
+                                PQSList.Add(mod, center);
+                                Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity:  " + mod.name);
+                            }
+                            else
+                            {
+                                ExcludeList.Add(mod);
+                                Debug.Log("PQSCityGroups.SaveGroups", "            > Excluded PQSCity:  " + mod.name);
+                            }
                         }
                     }
                     foreach (string city2 in M.GetValues("PQSCity2"))
@@ -130,8 +144,16 @@ namespace SigmaDimensionsPlugin
                             // This way custom groups will overwrite external ones
                             if (PQSList.ContainsKey(mod)) PQSList.Remove(mod);
 
-                            PQSList.Add(mod, center);
-                            Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity2: " + mod.name);
+                            if (!exclude)
+                            {
+                                PQSList.Add(mod, center);
+                                Debug.Log("PQSCityGroups.SaveGroups", "            > PQSCity2:  " + mod.name);
+                            }
+                            else
+                            {
+                                ExcludeList.Add(mod);
+                                Debug.Log("PQSCityGroups.SaveGroups", "            > Excluded PQSCity2:  " + mod.name);
+                            }
                         }
                     }
                 }
@@ -150,8 +172,16 @@ namespace SigmaDimensionsPlugin
                         // External groups should not overwrite custom ones
                         if (PQSList.ContainsKey(mod)) continue;
 
-                        PQSList.Add(mod, center);
-                        Debug.Log("PQSCityGroups.SaveGroups", "            > external: " + mod);
+                        if (!exclude)
+                        {
+                            PQSList.Add(mod, center);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > external:  " + mod);
+                        }
+                        else
+                        {
+                            ExcludeList.Add(mod);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > Excluded external:  " + mod);
+                        }
                     }
                     ExternalGroups[body].Remove(group);
                 }
@@ -162,9 +192,12 @@ namespace SigmaDimensionsPlugin
                 PQSCity ksc = FlightGlobals.GetHomeBody().GetComponentsInChildren<PQSCity>(true).FirstOrDefault(m => m.name == "KSC");
                 if (PQSList.ContainsKey(ksc))
                     PQSList.Remove(ksc);
+                if (ExcludeList.Contains(ksc))
+                    ExcludeList.Remove(ksc);
 
 
                 body.Set("PQSCityGroups", PQSList);
+                body.Set("ExcludedPQSCityMods", ExcludeList);
 
 
                 // ADD THIS GROUP TO THE MOVE LIST
@@ -243,6 +276,43 @@ namespace SigmaDimensionsPlugin
 
 
                     planet.Set("PQSCityGroups", PQSList);
+                }
+            }
+
+            // LOAD EXTERNAL EXCEPTIONS
+            Debug.Log("PQSCityGroups.SaveGroups", ">>> Loading external PQSCityGroups exceptions <<<");
+            foreach (CelestialBody planet in ExternalExceptions.Keys.Where(p => p != null && ExternalExceptions[p] != null))
+            {
+                Debug.Log("PQSCityGroups.SaveGroups", "> Planet: " + planet.name + (planet.name != planet.displayName.Replace("^N", "") ? (", (A.K.A.: " + planet.displayName.Replace("^N", "") + ")") : "") + (planet.name != planet.transform.name ? (", (A.K.A.: " + planet.transform.name + ")") : ""));
+                foreach (string group in ExternalExceptions[planet].Keys.Where(g => !string.IsNullOrEmpty(g) && ExternalExceptions[planet][g] != null))
+                {
+                    if (ExternalExceptions[planet][group].Count == 0) continue;
+                    Debug.Log("PQSCityGroups.SaveGroups", "    > Group: " + group);
+
+                    // Since these groups are exceptions they don't need a center
+
+                    if (!planet.Has("ExcludedPQSCityMods"))
+                        planet.Set("ExcludedPQSCityMods", new Dictionary<object, Vector3>());
+                    List<object> ExcludeList = planet.Get<List<object>>("PQSCityGroups");
+
+                    foreach (object mod in ExternalExceptions[planet][group])
+                    {
+                        if (!ExcludeList.Contains(mod))
+                        {
+                            ExcludeList.Add(mod);
+                            Debug.Log("PQSCityGroups.SaveGroups", "            > excluded external: " + mod);
+                        }
+                    }
+
+
+                    // REMOVE KSC FROM THE LIST
+
+                    PQSCity ksc = FlightGlobals.GetHomeBody().GetComponentsInChildren<PQSCity>(true).FirstOrDefault(m => m.name == "KSC");
+                    if (ExcludeList.Contains(ksc))
+                        ExcludeList.Remove(ksc);
+
+
+                    planet.Set("ExcludedPQSCityMods", ExcludeList);
                 }
             }
         }

@@ -29,14 +29,19 @@ namespace SigmaDimensionsPlugin
                 landscape = body.Has("landscape") ? body.Get<double>("landscape") : 1;
                 resizeBuildings = body.Has("resizeBuildings") ? body.Get<double>("resizeBuildings") : 1;
 
+                // Excluded mods
+                List<object> ExcludeList = body.Has("ExcludedPQSCityMods") ? body.Get<List<object>>("ExcludedPQSCityMods") : new List<object>();
 
                 // All PQSCity mods
                 PQSCity[] cities = body.GetComponentsInChildren<PQSCity>(true);
 
                 for (int j = 0; j < cities?.Length; j++)
                 {
-                    CityFixer(cities[j]);
-                    cities[j].Orientate();
+                    if (!ExcludeList.Contains(cities[j]))
+                    {
+                        CityFixer(cities[j]);
+                        cities[j].Orientate();
+                    }
                 }
 
 
@@ -45,8 +50,11 @@ namespace SigmaDimensionsPlugin
 
                 for (int j = 0; j < cities2?.Length; j++)
                 {
-                    City2Fixer(cities2[j]);
-                    cities2[j].Orientate();
+                    if (!ExcludeList.Contains(cities2[j]))
+                    {
+                        City2Fixer(cities2[j]);
+                        cities2[j].Orientate();
+                    }
                 }
             }
         }
