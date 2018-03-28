@@ -1,6 +1,6 @@
 ## Sigma Dimensions ##
 
-# Forum Thread: http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0
+# GitHub Repository: https://www.github.com/Sigma88/Sigma-Dimensions
 
 
 
@@ -221,8 +221,8 @@ To apply Planet Specific Changes follow these instructions.
 
 
 
-## For other questions, visit the Forum Thread:
-# http://forum.kerbalspaceprogram.com/index.php?/topic/126548-0
+## For other questions, visit the GitHub Repository:
+# https://www.github.com/Sigma88/Sigma-Dimensions
 
 
 
