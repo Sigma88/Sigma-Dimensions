@@ -7,12 +7,7 @@ namespace SigmaDimensionsPlugin
 {
     public class PQSCityFixer : MonoBehaviour
     {
-        void Start()
-        {
-            TimingManager.UpdateAdd(TimingManager.TimingStage.Normal, FixAltitude);
-        }
-
-        void FixAltitude()
+        void Update()
         {
             CelestialBody body = FlightGlobals.currentMainBody;
             if (body == null) return;
@@ -45,20 +40,18 @@ namespace SigmaDimensionsPlugin
             {
                 if (hits[i].collider?.GetComponent<PQ>())
                 {
-                    // Update only once
-                    TimingManager.UpdateRemove(TimingManager.TimingStage.Normal, FixAltitude);
                     Debug.Log("PQSCityFixer", "> Planet: " + body.transform.name);
                     Debug.Log("PQSCityFixer", "    > PQSCity: " + city);
 
                     // PQSCity parameters
                     double groundLevel = (hits[i].point - planet).magnitude - body.Radius;
+                    Debug.Log("PQSCityFixer", "        > Ground Level at Mod (RAYCAST) = " + groundLevel);
                     double error = pqs.GetSurfaceHeight(city.repositionRadial) - body.Radius - groundLevel;
+                    Debug.Log("PQSCityFixer", "        > Ground Level Error at Mod = " + error);
                     double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
+                    Debug.Log("PQSCityFixer", "        > Ocean Depth at Mod = " + oceanDepth);
                     groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
-
-                    Debug.Log("PQSCityFixer", "        > Ground Level at Mod = " + groundLevel);
-                    Debug.Log("PQSCityFixer", "        > Ocean Depth at Mod = " + groundLevel);
-                    Debug.Log("PQSCityFixer", "        > Ground Level Error at Mod = " + groundLevel);
+                    Debug.Log("PQSCityFixer", "        > Ground Level at Mod (NEW) = " + groundLevel);
 
                     // Fix Altitude
                     if (city.repositionToSphere && !city.repositionToSphereSurface)
@@ -105,12 +98,7 @@ namespace SigmaDimensionsPlugin
 
     public class PQSCity2Fixer : MonoBehaviour
     {
-        void Start()
-        {
-            TimingManager.UpdateAdd(TimingManager.TimingStage.Normal, FixAltitude);
-        }
-
-        void FixAltitude()
+        void Update()
         {
             CelestialBody body = FlightGlobals.currentMainBody;
             if (body == null) return;
@@ -143,26 +131,26 @@ namespace SigmaDimensionsPlugin
             {
                 if (hits[i].collider?.GetComponent<PQ>())
                 {
-                    // Update only once
-                    TimingManager.UpdateRemove(TimingManager.TimingStage.Normal, FixAltitude);
                     Debug.Log("PQSCity2Fixer", "> Planet: " + body.transform.name);
                     Debug.Log("PQSCity2Fixer", "    > PQSCity2: " + city);
 
-
                     // PQSCity2 parameters
                     double groundLevel = (hits[i].point - planet).magnitude - body.Radius;
+                    Debug.Log("PQSCity2Fixer", "        > Ground Level at Mod (RAYCAST) = " + groundLevel);
                     double error = pqs.GetSurfaceHeight(city.PlanetRelativePosition) - body.Radius - groundLevel;
+                    Debug.Log("PQSCity2Fixer", "        > Ground Level Error at Mod = " + error);
                     double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
+                    Debug.Log("PQSCity2Fixer", "        > Ocean Depth at Mod = " + oceanDepth);
                     groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
+                    Debug.Log("PQSCity2Fixer", "        > Ground Level at Mod (NEW) = " + groundLevel);
 
-                    Debug.Log("PQSCity2Fixer", "        > Ground Level at Mod = " + groundLevel);
-                    Debug.Log("PQSCity2Fixer", "        > Ocean Depth at Mod = " + groundLevel);
-                    Debug.Log("PQSCity2Fixer", "        > Ground Level Error at Mod = " + groundLevel);
+                    // Because, SQUAD
+                    city.PositioningPoint.localPosition /= (float)(body.Radius + city.alt);
 
                     // Fix Altitude
                     if (!city.snapToSurface)
                     {
-                        // Offset = Distance from the radius of the planet
+                        // Alt = Distance from the radius of the planet
 
                         Debug.Log("PQSCity2Fixer", "        > PQSCity2 Original Radius Offset = " + city.alt);
 
@@ -176,13 +164,22 @@ namespace SigmaDimensionsPlugin
                     }
                     else
                     {
+                        // Offset = Distance from the surface of the planet
+
                         Debug.Log("PQSCity2Fixer", "        > PQSCity2 Original Surface Offset = " + city.snapHeightOffset);
 
-                        city.snapHeightOffset = oceanDepth + error / (resize * landscape) - (oceanDepth + error - city.snapHeightOffset) / resizeBuildings;
+                        double newOffset = oceanDepth + error / (resize * landscape) - (oceanDepth + error - city.snapHeightOffset) / resizeBuildings;
 
-                        Debug.Log("PQSCity2Fixer", "        > PQSCity2 Fixed Surface Offset = " + city.snapHeightOffset);
+                        city.alt += newOffset - city.snapHeightOffset;
+                        city.snapHeightOffset = newOffset;
+
+                        Debug.Log("PQSCity2Fixer", "        > PQSCity2 New Surface Offset = " + city.snapHeightOffset);
                     }
 
+                    // Because, SQUAD
+                    city.PositioningPoint.localPosition *= (float)(body.Radius + city.alt);
+
+                    // Apply Changes and Destroy
                     city.Orientate();
                     DestroyImmediate(this);
                 }
