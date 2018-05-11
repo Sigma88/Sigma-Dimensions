@@ -1,3 +1,8 @@
+**v0.10.1**
+
+- Fixed PQSCity2Fixer
+
+
 **v0.10.0**
 
 - Recompiled against KSP 1.4.3 and Kopernicus 1.4.3-1
