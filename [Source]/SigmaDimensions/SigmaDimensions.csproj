@@ -54,14 +54,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\[References]\Kopernicus\Kopernicus.dll</HintPath>
     </Reference>
-    <Reference Include="Kopernicus.Components, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\[References]\Kopernicus\Kopernicus.Components.dll</HintPath>
-    </Reference>
-    <Reference Include="Kopernicus.OnDemand, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\[References]\Kopernicus\Kopernicus.OnDemand.dll</HintPath>
-    </Reference>
     <Reference Include="Kopernicus.Parser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\[References]\Kopernicus\Kopernicus.Parser.dll</HintPath>

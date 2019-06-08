@@ -1,5 +1,8 @@
 using Kopernicus;
-using Kopernicus.Configuration;
+using Kopernicus.ConfigParser.Attributes;
+using Kopernicus.ConfigParser.BuiltinTypeParsers;
+using Kopernicus.ConfigParser.Interfaces;
+using Kopernicus.Configuration.Parsing;
 
 
 namespace SigmaDimensionsPlugin

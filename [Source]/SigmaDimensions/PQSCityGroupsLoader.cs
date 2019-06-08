@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using Kopernicus;
+using Kopernicus.ConfigParser.BuiltinTypeParsers;
 
 
 namespace SigmaDimensionsPlugin
