@@ -1,6 +1,10 @@
 using System.Reflection;
 using UnityEngine;
 using Kopernicus;
+using Kopernicus.ConfigParser.Attributes;
+using Kopernicus.ConfigParser.BuiltinTypeParsers;
+using Kopernicus.ConfigParser.Enumerations;
+using Kopernicus.ConfigParser.Interfaces;
 using Kopernicus.Configuration;
 using Kopernicus.Configuration.ModLoader;
 using Debug = SigmaDimensionsPlugin.Debug;
@@ -32,64 +36,64 @@ namespace PQSMod_SigmaDimensions
         [ParserTarget("Resize", Optional = true)]
         private NumericParser<double> Resize
         {
-            get { return mod.Resize; }
-            set { mod.Resize = value; }
+            get { return Mod.Resize; }
+            set { Mod.Resize = value; }
         }
 
         // Atmosphere
         [ParserTarget("Atmosphere", Optional = true)]
         private NumericParser<float> Atmosphere
         {
-            get { return mod.Atmosphere; }
-            set { mod.Atmosphere = value; }
+            get { return Mod.Atmosphere; }
+            set { Mod.Atmosphere = value; }
         }
 
         // landscape
         [ParserTarget("landscape", Optional = true)]
         private NumericParser<double> landscape
         {
-            get { return mod.landscape; }
-            set { mod.landscape = value; }
+            get { return Mod.landscape; }
+            set { Mod.landscape = value; }
         }
 
         // changeScatterSize
         [ParserTarget("changeScatterSize", Optional = true)]
         private NumericParser<float> changeScatterSize
         {
-            get { return mod.changeScatterSize; }
-            set { mod.changeScatterSize = value; }
+            get { return Mod.changeScatterSize; }
+            set { Mod.changeScatterSize = value; }
         }
 
         // changeScatterDensity
         [ParserTarget("changeScatterDensity", Optional = true)]
         private NumericParser<float> changeScatterDensity
         {
-            get { return mod.changeScatterDensity; }
-            set { mod.changeScatterDensity = value; }
+            get { return Mod.changeScatterDensity; }
+            set { Mod.changeScatterDensity = value; }
         }
 
         // Resize
         [ParserTarget("resizeBuildings", Optional = true)]
         private NumericParser<double> resizeBuildings
         {
-            get { return mod.resizeBuildings; }
-            set { mod.resizeBuildings = value; }
+            get { return Mod.resizeBuildings; }
+            set { Mod.resizeBuildings = value; }
         }
 
         // groundTiling
         [ParserTarget("groundTiling", Optional = true)]
         private NumericParser<double> groundTiling
         {
-            get { return mod.groundTiling; }
-            set { mod.groundTiling = value; }
+            get { return Mod.groundTiling; }
+            set { Mod.groundTiling = value; }
         }
 
         // atmoTopLayer
         [ParserTarget("atmoTopLayer", Optional = true)]
         private NumericParser<float> atmoTopLayer
         {
-            get { return mod.atmoTopLayer; }
-            set { mod.atmoTopLayer = value; }
+            get { return Mod.atmoTopLayer; }
+            set { Mod.atmoTopLayer = value; }
         }
 
         void IParserEventSubscriber.Apply(ConfigNode node)
@@ -99,7 +103,7 @@ namespace PQSMod_SigmaDimensions
         void IParserEventSubscriber.PostApply(ConfigNode node)
         {
             // Always Load Last
-            mod.order = int.MaxValue;
+            Mod.order = int.MaxValue;
         }
     }
 
@@ -114,10 +118,10 @@ namespace PQSMod_SigmaDimensions
 
         void FixPQS(Body body, ConfigNode node)
         {
-            Debug.Log("PQSModsFixer.FixPQS", "Body = " + body.name);
+            Debug.Log("PQSModsFixer.FixPQS", "Body = " + body.Name);
 
             // generatedBody
-            PSystemBody generatedBody = body?.generatedBody;
+            PSystemBody generatedBody = body?.GeneratedBody;
 
             // PQSMod_SigmaDimensions
             PQSMod_SigmaDimensions mod = generatedBody?.pqsVersion?.gameObject?.GetComponentInChildren<PQS>(true)?.GetComponentInChildren<PQSMod_SigmaDimensions>(true);
