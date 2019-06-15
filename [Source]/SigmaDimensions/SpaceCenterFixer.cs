@@ -1,48 +1,46 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Kopernicus;
 
 
 namespace SigmaDimensionsPlugin
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
-    class SpaceCenterFixer : MonoBehaviour
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+    internal class LightsFixer : MonoBehaviour
     {
         void Start()
         {
-            if (!HighLogic.LoadedSceneIsFlight)
+            foreach (CelestialBody cb in FlightGlobals.Bodies)
             {
-                foreach (SpaceCenterCamera2 camera in Resources.FindObjectsOfTypeAll<SpaceCenterCamera2>())
+                if (cb?.pqsController != null)
                 {
-                    float resizeBuildings = (float)FlightGlobals.GetHomeBody().Get<double>("resizeBuildings");
+                    if (cb.Has("resizeBuildings"))
+                    {
+                        float resizeBuildings = (float)cb.Get<double>("resizeBuildings");
 
-                    camera.zoomInitial *= resizeBuildings;
-                    camera.zoomMax *= resizeBuildings;
-                    camera.zoomMin *= resizeBuildings;
-                    camera.zoomSpeed *= resizeBuildings;
+                        foreach (Light light in cb.pqsController.GetComponentsInChildren<Light>(true))
+                        {
+                            UnityEngine.Debug.Log("SigmaLog: LIGHT = " + light);
+                            light.range *= resizeBuildings;
+                        }
+                    }
                 }
             }
         }
+    }
 
-
-        bool fixLight = true;
-        Light light = null;
-
-        void Update()
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    internal class SpaceCenterFixer : MonoBehaviour
+    {
+        void Start()
         {
-            if (fixLight)
+            foreach (SpaceCenterCamera2 camera in Resources.FindObjectsOfTypeAll<SpaceCenterCamera2>())
             {
-                if (light == null)
-                {
-                    light = Array.Find((Light[])FindObjectsOfType(typeof(Light)), o => o.name == "Spotlight" && o.tag == "KSC_Pad_Water_Tower");
-                }
-                else
-                {
-                    if (FlightGlobals.GetHomeBody().Has("resizeBuildings"))
-                        light.range *= (float)(FlightGlobals.GetHomeBody().Get<double>("resizeBuildings"));
+                float resizeBuildings = (float)FlightGlobals.GetHomeBody().Get<double>("resizeBuildings");
 
-                    fixLight = false;
-                }
+                camera.zoomInitial *= resizeBuildings;
+                camera.zoomMax *= resizeBuildings;
+                camera.zoomMin *= resizeBuildings;
+                camera.zoomSpeed *= resizeBuildings;
             }
         }
     }

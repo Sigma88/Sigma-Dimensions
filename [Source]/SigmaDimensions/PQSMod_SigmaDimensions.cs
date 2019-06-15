@@ -109,7 +109,7 @@ namespace PQSMod_SigmaDimensions
 
 
     [KSPAddon(KSPAddon.Startup.Instantly, true)]
-    class PQSModsFixer : MonoBehaviour
+    internal class PQSModsFixer : MonoBehaviour
     {
         void Start()
         {

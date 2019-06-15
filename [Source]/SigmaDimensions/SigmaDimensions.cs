@@ -9,7 +9,7 @@ using Kopernicus.ConfigParser.BuiltinTypeParsers;
 namespace SigmaDimensionsPlugin
 {
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    class SigmaDimensions : MonoBehaviour
+    internal class SigmaDimensions : MonoBehaviour
     {
         double resize = 1;
         double landscape = 1;
@@ -80,7 +80,7 @@ namespace SigmaDimensionsPlugin
 
 
             // Add PQSCityFixer Component
-            PQSCityFixer fixer = city.GetComponent<PQSCityFixer>() ?? city.gameObject.AddComponent<PQSCityFixer>();
+            PQSCityFixer fixer = city.gameObject.AddOrGetComponent<PQSCityFixer>();
 
 
             // Terrain
@@ -151,7 +151,7 @@ namespace SigmaDimensionsPlugin
 
 
             // Add PQSCity2Fixer Component
-            PQSCity2Fixer fixer = city.GetComponent<PQSCity2Fixer>() ?? city.gameObject.AddComponent<PQSCity2Fixer>();
+            PQSCity2Fixer fixer = city.gameObject.AddOrGetComponent<PQSCity2Fixer>();
 
 
             // Terrain

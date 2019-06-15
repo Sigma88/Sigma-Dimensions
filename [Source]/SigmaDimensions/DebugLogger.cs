@@ -26,7 +26,7 @@ namespace SigmaDimensionsPlugin
     }
 
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
-    class DebugWarning : MonoBehaviour
+    internal class DebugWarning : MonoBehaviour
     {
         void Start()
         {
