@@ -11,8 +11,6 @@ namespace SigmaDimensionsPlugin
 
         void Update()
         {
-            if (HighLogic.LoadedScene != GameScenes.FLIGHT) return;
-
             if (time < 0.2)
             {
                 time += Time.deltaTime;
@@ -45,7 +43,6 @@ namespace SigmaDimensionsPlugin
                 maxDistance *= resize * landscape > 1 ? resize * landscape : 1;
                 maxDistance += body.Radius;
 
-
                 RaycastHit[] hits = Physics.RaycastAll(planet + location * (float)maxDistance, -location, (float)maxDistance, LayerMask.GetMask("Local Scenery"));
 
                 for (int i = 0; i < hits?.Length; i++)
@@ -56,47 +53,61 @@ namespace SigmaDimensionsPlugin
                         Debug.Log("PQSCityFixer", "    > PQSCity: " + city);
 
                         // PQSCity parameters
+                        double oldGroundLevel = pqs.GetSurfaceHeight(city.repositionRadial) - body.Radius;
+                        Debug.Log("PQSCityFixer", "        > Old Ground Level at Mod (GETSURFACE) = " + oldGroundLevel);
+                        double oldOceanOffset = body.ocean && oldGroundLevel < 0 ? oldGroundLevel : 0d;
+                        Debug.Log("PQSCityFixer", "        > Old Ocean Offset at Mod = " + oldOceanOffset);
+                        oldGroundLevel = body.ocean && oldGroundLevel < 0 ? 0d : oldGroundLevel;
+                        Debug.Log("PQSCityFixer", "        > Old Ground Level at Mod (WITH OCEAN) = " + oldGroundLevel);
+
                         double groundLevel = (hits[i].point - planet).magnitude - body.Radius;
                         Debug.Log("PQSCityFixer", "        > Ground Level at Mod (RAYCAST) = " + groundLevel);
-                        double error = pqs.GetSurfaceHeight(city.repositionRadial) - body.Radius - groundLevel;
-                        Debug.Log("PQSCityFixer", "        > Ground Level Error at Mod = " + error);
-                        double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
-                        Debug.Log("PQSCityFixer", "        > Ocean Depth at Mod = " + oceanDepth);
+                        double oceanOffset = body.ocean && groundLevel < 0 ? groundLevel : 0d;
+                        Debug.Log("PQSCityFixer", "        > Ocean Offset at Mod = " + oceanOffset);
                         groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
-                        Debug.Log("PQSCityFixer", "        > Ground Level at Mod (NEW) = " + groundLevel);
+                        Debug.Log("PQSCityFixer", "        > Ground Level at Mod (WITH OCEAN) = " + groundLevel);
 
                         // Fix Altitude
-                        if (city.repositionToSphere && !city.repositionToSphereSurface)
+                        if (!city.repositionToSphere && !city.repositionToSphereSurface)
+                        {
+                            // Offset = Distance from the center of the planet
+                            // THIS IS NOT POSSIBLE AS OF KSP 1.7.1
+
+                            Debug.Log("PQSCityFixer", "        > PQSCity Current Center Offset = " + city.repositionRadiusOffset);
+
+                            double builtInOffset = (city.repositionRadiusOffset - body.Radius - oldGroundLevel - oceanOffset) / resizeBuildings - (groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset) / (resize * landscape);
+
+                            Debug.Log("PQSCityFixer", "        > Builtin Offset = " + builtInOffset);
+
+                            city.repositionRadiusOffset = body.Radius + groundLevel + oceanOffset + builtInOffset * resizeBuildings;
+
+                            Debug.Log("PQSCityFixer", "        > PQSCity Fixed Center Offset = " + city.repositionRadiusOffset);
+                        }
+                        else if (city.repositionToSphere && !city.repositionToSphereSurface)
                         {
                             // Offset = Distance from the radius of the planet
 
-                            Debug.Log("PQSCityFixer", "        > PQSCity Original Radius Offset = " + city.repositionRadiusOffset);
+                            Debug.Log("PQSCityFixer", "        > PQSCity Current Radius Offset = " + city.repositionRadiusOffset);
 
-                            double builtInOffset = city.repositionRadiusOffset - groundLevel / (resize * landscape);
+                            double builtInOffset = (city.repositionRadiusOffset - oldGroundLevel) / resizeBuildings - (groundLevel - oldGroundLevel) / (resize * landscape);
 
-                            Debug.Log("PQSCityFixer", "        > Builtuin Offset = " + builtInOffset);
+                            Debug.Log("PQSCityFixer", "        > Builtin Offset = " + builtInOffset);
 
-                            city.repositionRadiusOffset = groundLevel + error / (resize * landscape) - (groundLevel + error - city.repositionRadiusOffset) / resizeBuildings;
+                            city.repositionRadiusOffset = groundLevel + builtInOffset * resizeBuildings;
 
                             Debug.Log("PQSCityFixer", "        > PQSCity Fixed Radius Offset = " + city.repositionRadiusOffset);
                         }
                         else
                         {
                             // Offset = Distance from the surface of the planet
-                            if (!city.repositionToSphereSurface)
-                            {
-                                city.repositionToSphereSurface = true;
-                                city.repositionRadiusOffset = 0;
-                            }
-                            if (!city.repositionToSphereSurfaceAddHeight)
-                            {
-                                city.repositionToSphereSurfaceAddHeight = true;
-                                city.repositionRadiusOffset = 0;
-                            }
 
-                            Debug.Log("PQSCityFixer", "        > PQSCity Original Surface Offset = " + city.repositionRadiusOffset);
+                            Debug.Log("PQSCityFixer", "        > PQSCity Current Surface Offset = " + city.repositionRadiusOffset);
 
-                            city.repositionRadiusOffset = oceanDepth + error / (resize * landscape) - (oceanDepth + error - city.repositionRadiusOffset) / resizeBuildings;
+                            double builtInOffset = city.repositionRadiusOffset / resizeBuildings - (groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset) / (resize * landscape);
+
+                            Debug.Log("PQSCityFixer", "        > Builtin Offset = " + builtInOffset);
+
+                            city.repositionRadiusOffset = builtInOffset * resizeBuildings + groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset;
 
                             Debug.Log("PQSCityFixer", "        > PQSCity Fixed Surface Offset = " + city.repositionRadiusOffset);
                         }
@@ -147,7 +158,6 @@ namespace SigmaDimensionsPlugin
                 maxDistance *= resize * landscape > 1 ? resize * landscape : 1;
                 maxDistance += body.Radius;
 
-
                 RaycastHit[] hits = Physics.RaycastAll(planet + location * (float)maxDistance, -location, (float)maxDistance, LayerMask.GetMask("Local Scenery"));
 
                 for (int i = 0; i < hits?.Length; i++)
@@ -158,12 +168,17 @@ namespace SigmaDimensionsPlugin
                         Debug.Log("PQSCity2Fixer", "    > PQSCity2: " + city);
 
                         // PQSCity2 parameters
+                        double oldGroundLevel = pqs.GetSurfaceHeight(city.PlanetRelativePosition) - body.Radius;
+                        Debug.Log("PQSCity2Fixer", "        > Old Ground Level at Mod (GETSURFACE) = " + oldGroundLevel);
+                        double oldOceanOffset = body.ocean && oldGroundLevel < 0 ? oldGroundLevel : 0d;
+                        Debug.Log("PQSCity2Fixer", "        > Old Ocean Offset at Mod = " + oldOceanOffset);
+                        oldGroundLevel = body.ocean && oldGroundLevel < 0 ? 0d : oldGroundLevel;
+                        Debug.Log("PQSCity2Fixer", "        > Old Ground Level at Mod (WITH OCEAN) = " + oldGroundLevel);
+
                         double groundLevel = (hits[i].point - planet).magnitude - body.Radius;
                         Debug.Log("PQSCity2Fixer", "        > Ground Level at Mod (RAYCAST) = " + groundLevel);
-                        double error = pqs.GetSurfaceHeight(city.PlanetRelativePosition) - body.Radius - groundLevel;
-                        Debug.Log("PQSCity2Fixer", "        > Ground Level Error at Mod = " + error);
-                        double oceanDepth = body.ocean && groundLevel < 0 ? -groundLevel : 0d;
-                        Debug.Log("PQSCity2Fixer", "        > Ocean Depth at Mod = " + oceanDepth);
+                        double oceanOffset = body.ocean && groundLevel < 0 ? groundLevel : 0d;
+                        Debug.Log("PQSCity2Fixer", "        > Ocean Offset at Mod = " + oceanOffset);
                         groundLevel = body.ocean && groundLevel < 0 ? 0d : groundLevel;
                         Debug.Log("PQSCity2Fixer", "        > Ground Level at Mod (NEW) = " + groundLevel);
 
@@ -177,11 +192,11 @@ namespace SigmaDimensionsPlugin
 
                             Debug.Log("PQSCity2Fixer", "        > PQSCity2 Original Radius Offset = " + city.alt);
 
-                            double builtInOffset = city.alt - groundLevel / (resize * landscape);
+                            double builtInOffset = (city.alt - oldGroundLevel) / resizeBuildings - (groundLevel - oldGroundLevel) / (resize * landscape);
 
-                            Debug.Log("PQSCity2Fixer", "        > Builtuin Offset = " + builtInOffset);
+                            Debug.Log("PQSCity2Fixer", "        > Builtin Offset = " + builtInOffset);
 
-                            city.alt = groundLevel + error / (resize * landscape) - (groundLevel + error - city.alt) / resizeBuildings;
+                            city.alt = groundLevel + builtInOffset * resizeBuildings;
 
                             Debug.Log("PQSCity2Fixer", "        > PQSCity2 Fixed Radius Offset = " + city.alt);
                         }
@@ -191,12 +206,16 @@ namespace SigmaDimensionsPlugin
 
                             Debug.Log("PQSCity2Fixer", "        > PQSCity2 Original Surface Offset = " + city.snapHeightOffset);
 
-                            double newOffset = oceanDepth + error / (resize * landscape) - (oceanDepth + error - city.snapHeightOffset) / resizeBuildings;
+                            double builtInOffset = city.snapHeightOffset / resizeBuildings - (groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset) / (resize * landscape);
+
+                            Debug.Log("PQSCity2Fixer", "        > Builtin Offset = " + builtInOffset);
+
+                            double newOffset = builtInOffset * resizeBuildings + groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset;
+
+                            Debug.Log("PQSCity2Fixer", "        > PQSCity Fixed Surface Offset = " + newOffset);
 
                             city.alt += newOffset - city.snapHeightOffset;
                             city.snapHeightOffset = newOffset;
-
-                            Debug.Log("PQSCity2Fixer", "        > PQSCity2 New Surface Offset = " + city.snapHeightOffset);
                         }
 
                         // Because, SQUAD
