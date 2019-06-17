@@ -19,7 +19,6 @@ namespace SigmaDimensionsPlugin
 
                         foreach (Light light in cb.pqsController.GetComponentsInChildren<Light>(true))
                         {
-                            UnityEngine.Debug.Log("SigmaLog: LIGHT = " + light);
                             light.range *= resizeBuildings;
                         }
                     }
