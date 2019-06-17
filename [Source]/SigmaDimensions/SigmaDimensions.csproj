@@ -31,16 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AtmosphereTopLayer.cs" />
-    <Compile Include="Compatibility.cs" />
-    <Compile Include="Configs.cs" />
-    <Compile Include="PQSCityFixer.cs" />
-    <Compile Include="PQSCityGroupsLoader.cs" />
-    <Compile Include="PQSMod_SigmaDimensions.cs" />
+    <Compile Include="Dimensions\AtmosphereTopLayer.cs" />
+    <Compile Include="Dimensions\Compatibility.cs" />
+    <Compile Include="PQSCity\LightsFixer.cs" />
+    <Compile Include="PQSCity\PQSCity2Fixer.cs" />
+    <Compile Include="PQSCity\PQSCityFixer.cs" />
+    <Compile Include="PQSCity\PQSCityGroupsLoader.cs" />
+    <Compile Include="PQSMod\PQSModsFixer.cs" />
+    <Compile Include="PQSMod\PQSMod_SigmaDimensions.cs" />
     <Compile Include="DebugLogger.cs" />
-    <Compile Include="SpaceCenterFixer.cs" />
+    <Compile Include="PQSCity\SpaceCenterFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SigmaDimensions.cs" />
+    <Compile Include="Dimensions\SigmaDimensions.cs" />
     <Compile Include="SettingsLoader.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="UserSettings.cs" />
