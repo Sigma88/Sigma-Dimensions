@@ -112,6 +112,7 @@ namespace SigmaDimensionsPlugin
                             Debug.Log("PQSCityFixer", "        > PQSCity Fixed Surface Offset = " + city.repositionRadiusOffset);
                         }
 
+                        // Apply Changes and Destroy
                         city.Orientate();
                         DestroyImmediate(this);
                     }
