@@ -213,7 +213,7 @@ namespace SigmaDimensionsPlugin
 
                             double newOffset = builtInOffset * resizeBuildings + groundLevel + oceanOffset - oldGroundLevel - oldOceanOffset;
 
-                            Debug.Log("PQSCity2Fixer", "        > PQSCity Fixed Surface Offset = " + newOffset);
+                            Debug.Log("PQSCity2Fixer", "        > PQSCity2 Fixed Surface Offset = " + newOffset);
 
                             city.alt += newOffset - city.snapHeightOffset;
                             city.snapHeightOffset = newOffset;
