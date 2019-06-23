@@ -8,7 +8,7 @@ using Kopernicus.Configuration.Parsing;
 namespace SigmaDimensionsPlugin
 {
     [ParserTargetExternal("Body", "SigmaDimensions", "Kopernicus")]
-    class SettingsLoader : BaseLoader, IParserEventSubscriber
+    internal class SettingsLoader : BaseLoader, IParserEventSubscriber
     {
         [ParserTarget("Resize", Optional = true)]
         NumericParser<double> resize
