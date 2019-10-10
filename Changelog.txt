@@ -1,3 +1,10 @@
+**v0.10.5**
+
+- Updated to KSP 1.7.3 and Kopernicus 1.7.3-2
+- Fixed issue with MM 4.0.3 math
+- Added automatic rescale of minDetailDistance
+
+
 **v0.10.4**
 
 - Added compatibility with custom 'Orbit/period'
