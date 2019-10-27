@@ -1,3 +1,8 @@
+**v0.10.6**
+
+- Fixed automatic rescale of minDetailDistance
+
+
 **v0.10.5**
 
 - Updated to KSP 1.7.3 and Kopernicus 1.7.3-2
