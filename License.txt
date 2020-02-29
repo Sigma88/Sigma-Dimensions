@@ -6,9 +6,3 @@ All Rights Reserved
 
 For more info visit the GitHub Repository:
 https://github.com/Sigma88/Sigma-Dimensions
-
-
-
-Includes the Sigma88LoadingScreens plugin.
-License: All Rights Reserved
-Source: https://github.com/Sigma88/Sigma-LoadingScreens
