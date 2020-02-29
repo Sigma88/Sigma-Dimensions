@@ -1,6 +1,7 @@
-**v0.11.0**
+**v0.10.7**
 
-- Updated to KSP 1.8.0 and Kopernicus 1.8.0-1
+- Updated to KSP 1.8.1 and Kopernicus 1.8.1-1
+- Removed outdated ISP Fix
 
 
 **v0.10.6**
