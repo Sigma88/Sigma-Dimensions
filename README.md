@@ -17,7 +17,7 @@
 
 If you enjoy my mods, please consider supporting me with a small donation.
 
-[![DonatePounds](https://i.imgur.com/xBBQy19.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=GBP)[![DonateEuros](https://i.imgur.com/kKYb2lE.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=EUR)[![DonateDollars](https://i.imgur.com/TT1Vymu.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=USD)
+[![DonatePounds](https://i.imgur.com/xBBQy19.png "Donate Pounds")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=GBP)[![DonateEuros](https://i.imgur.com/kKYb2lE.png "Donate Euros")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=EUR)[![DonateDollars](https://i.imgur.com/TT1Vymu.png "Donate Dollars")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=USD)
 
 
 ### How To Report A Bug
