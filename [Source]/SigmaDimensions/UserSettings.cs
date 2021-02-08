@@ -17,7 +17,7 @@ namespace SigmaDimensionsPlugin
             }
         }
 
-        static string folder = "GameData/Sigma/Dimensions/";
+        static string folder = "GameData/SigmaDimensions/";
         static string file = "Settings";
         internal static string nodeName = "SigmaDimensions";
 

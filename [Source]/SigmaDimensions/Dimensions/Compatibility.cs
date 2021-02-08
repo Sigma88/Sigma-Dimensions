@@ -24,7 +24,7 @@ namespace SigmaDimensionsPlugin
             double Rescale = 1;
             double customRescale = 1;
 
-            if (!double.TryParse(GameDatabase.Instance.GetConfigNode("Sigma/Dimensions/Settings/SigmaDimensions")?.GetValue("Rescale"), out Rescale))
+            if (!double.TryParse(GameDatabase.Instance.GetConfigNode("SigmaDimensions/Settings/SigmaDimensions")?.GetValue("Rescale"), out Rescale))
             {
                 Rescale = 1;
             }
