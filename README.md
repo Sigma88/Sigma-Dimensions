@@ -287,7 +287,6 @@ The PQSCity_Groups root node contains the groups definitions:
       <br>**NOTE:**
 
       If the node CENTER is not defined, or the positions defined are not valid,
-
       the central position will be defined as the position of the first valid PQSMod of the group<br><br><br>
 
     - **MODS**
