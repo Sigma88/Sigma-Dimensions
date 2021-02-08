@@ -1,23 +1,26 @@
-# Sigma Dimensions
+# *Sigma Dimensions*
+
+*The Universal Rescale Mod for KSP*
 
 
-**The Universal Rescale Mod for KSP**
+### Downloads
+- [GitHub](https://github.com/Sigma88/Sigma-Dimensions/releases)
+- [CurseForge](https://www.curseforge.com/kerbal/ksp-mods/sigma-dimensions) (Automatic install available)
 
 
-- [Releases](https://github.com/Sigma88/Sigma-Dimensions/releases)
+### Other Links
 - [ChangeLog](https://raw.githubusercontent.com/Sigma88/Sigma-Dimensions/master/Changelog.txt)
+- [Source](https://github.com/Sigma88/Sigma-Dimensions/)
 
 
-### Required Mods
-
-- [Kopernicus](https://github.com/Kopernicus/Kopernicus)
-
-
-### How to support me
-
+### Support
 If you enjoy my mods, please consider supporting me with a small donation.
 
-[![DonatePounds](https://i.imgur.com/xBBQy19.png "Donate Pounds")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=GBP)[![DonateEuros](https://i.imgur.com/kKYb2lE.png "Donate Euros")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=EUR)[![DonateDollars](https://i.imgur.com/TT1Vymu.png "Donate Dollars")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=USD)
+[![Donate Pounds](https://i.imgur.com/xBBQy19.png)][£][![Donate Euros](https://i.imgur.com/kKYb2lE.png)][€][![Donate Dollars](https://i.imgur.com/TT1Vymu.png)][$]
+
+[£]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=GBP "Donate Pounds"
+[€]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=EUR "Donate Euros"
+[$]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=65VBNHB39BTKG&item_name=Sigma-Dimensions&currency_code=USD "Donate Dollars"
 
 
 ### How To Report A Bug
@@ -27,17 +30,21 @@ To report a bug or to ask for support, open an issue on [GitHub](https://github.
 
 ### How To Install
 
-To install the mod, follow these instructions:
+This mod can be installed and updated automatically using the [CurseForge App](https://curseforge.overwolf.com/).
 
-```
->> Install Manually
-  - Remove any other version of the mod.
-  - Unzip the archive directly into the folder 'KSP\GameData'
-  - Install any required mods
+To install the mod manually, follow these instructions:
 
->> Uninstall manually
-  - Delete the folder 'KSP\GameData\Sigma\Dimensions'
-```
+**1. Install Manually**
+- Remove any other version of the mod.
+- Unzip the archive directly into the folder 'KSP\GameData'
+
+**2. Uninstall manually**
+- Delete the folder 'KSP\GameData\SigmaDimensions'
+
+
+### License
+All Rights Reserved
+
 
 
 # Settings
