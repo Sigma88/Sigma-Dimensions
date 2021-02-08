@@ -1,3 +1,10 @@
+**v0.10.8**
+
+- Changed folder for better install automation (CurseForge client)
+- Updated to KSP 1.11.1 and Kopernicus 1.11.1_Release77
+- Removed buggy minDetailDistance scaling
+
+
 **v0.10.7**
 
 - Updated to KSP 1.8.1 and Kopernicus 1.8.1-1
